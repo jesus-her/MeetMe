@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-} from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { SIZES } from "../constants";
 import HorizontalSwipe from "../components/playScreen/HorizontalSwipe";
 import LiquidSwipe from "../LiquidSwipe";
@@ -19,7 +12,7 @@ import { Reflectly } from "../Reflectly";
 import Snapchat from "../Snapchat/Snapchat";
 import Darkroom from "../Darkroom";
 import Picker from "../Picker/Picker";
-import WelcomeScreen from "../Meetme/WelcomeScreen";
+import HomeScreen from "./HomeScreen";
 
 const PlayScreen = () => {
   return (
@@ -41,7 +34,6 @@ const PlayScreen = () => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: "pink",
     width: SIZES.width,
     height: SIZES.height,
   },

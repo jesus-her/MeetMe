@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Text, Image } from "react-native";
+import { TouchableOpacity, Text, Image, View } from "react-native";
 import { COLORS, FONTS } from "../constants";
 
 const CustomButton = ({
@@ -16,27 +16,31 @@ const CustomButton = ({
       style={{
         zIndex: 10,
         alignItems: "center",
-        justifyContent: "space-around",
+        justifyContent: "center",
         flexDirection: "row",
         ...contentContainerStyle,
       }}
       disabled={disabled}
       onPress={onPress}
     >
-      <Image
-        source={icon}
-        resizeMode="contain"
+      <View
         style={{
-          width: 20,
-          height: 20,
-          tintColor: COLORS.black,
-          ...iconStyle,
+          marginRight: 10,
         }}
-      />
+      >
+        <Image
+          source={icon}
+          resizeMode="contain"
+          style={{
+            width: 20,
+            height: 20,
+            ...iconStyle,
+          }}
+        />
+      </View>
       <Text
         style={{
-          color: COLORS.white,
-          ...FONTS.h3,
+          ...FONTS.h2,
           ...labelStyle,
         }}
       >

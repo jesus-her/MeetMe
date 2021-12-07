@@ -1,10 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import WelcomeScreen from "./src/Meetme/WelcomeScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 import PlayScreen from "./src/screens/PlayScreen";
 import Picker from "./src/Picker/Picker";
 import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "react-native";
 
 /*import {Routes} from "./src/Routes";
 import Examples from "./src/Examples";
@@ -50,8 +51,15 @@ const assets = [
 const Stack = createStackNavigator();
 const AppNavigator = () => (
   <NavigationContainer>
+    <StatusBar hidden={true} />
     <Stack.Navigator>
-      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="PlayScreen"
         component={PlayScreen}
@@ -173,7 +181,7 @@ const App = () => {
   return (
     /* <LoadAssets assets={assets} fonts={fonts}>
 
-                </LoadAssets>*/
+                    </LoadAssets>*/
     <>
       <AppNavigator />
     </>

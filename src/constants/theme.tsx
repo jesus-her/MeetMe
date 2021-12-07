@@ -1,11 +1,12 @@
 import { Dimensions } from "react-native";
-const { width, height } = Dimensions.get("window");
 
+const { width, height } = Dimensions.get("window");
+//https://color.adobe.com/create/color-wheel
 export const COLORS = {
-  primary: "#ff6f16", // Yellow
-  primary2: "#ff6f16", // Orange
-  primary3: "#990000", // Dark Red
-  secondary: "#00ffa6", // Red
+  primary: "#7b00ff", // Purple
+  primary2: "#4EF2B5", // Green
+  primary3: "#E6B355", // Yellow
+  secondary: "#FC5A51", // Orange
   gray10: "#E5E5E5",
   gray20: "#CCCCCC",
   gray30: "#A1A1A1",

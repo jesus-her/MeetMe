@@ -24,7 +24,7 @@ const { width, height } = Dimensions.get("screen");
 // inspiration: https://dribbble.com/shots/11164698-Onboarding-screens-animation
 // https://twitter.com/mironcatalin/status/1321180191935373312
 
-const bgs = [COLORS.secondary, "#ff5274", "#FEDB41", "#f54b4b", "#70c3e8"];
+const bgs = [COLORS.secondary, "#ff5274", "#FEDB41", "#ff5757", "#70c3e8"];
 const DATA = [
   {
     key: 1,
@@ -162,7 +162,6 @@ export default function HorizontalSwipe() {
   return (
     <>
       <View style={styles.container}>
-        <StatusBar hidden={true} />
         <Backdrop scrollX={scrollX} />
         <Square scrollX={scrollX} />
         <Animated.FlatList
