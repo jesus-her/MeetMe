@@ -2,9 +2,9 @@ import Color from "color";
 import React from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import Svg, { RadialGradient, Defs, Rect, Stop } from "react-native-svg";
-import CustomButton from "../components/CustomButton";
 import { COLORS, FONTS, SIZES } from "../constants";
-import { COL } from "../Chrome/Config";
+import Footer from "../Duolingo/components/Footer";
+import CustomButton from "../components/CustomButton";
 
 const { width, height } = Dimensions.get("screen");
 const SIZE = width - 75;
@@ -14,15 +14,15 @@ const styles = StyleSheet.create({
     padding: 75,
     paddingTop: 50,
     alignItems: "center",
-    justifyContent: "flex-start",
   },
   image: {
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{ translateX: -50 }, { translateY: -50 }],
+    transform: [{ translateX: -70 }, { translateY: -50 }],
     width: SIZE - 30,
     height: SIZE - 30,
+    borderColor: "#000",
   },
   title: {
     ...FONTS.largeTitle,
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
 
 export interface SlideProps {
   slide: {
+    id: number;
     color: string;
     title: string;
     description: string;
@@ -45,9 +46,7 @@ export interface SlideProps {
   };
 }
 
-const Slide = ({
-  slide: { picture, color, title, description },
-}: SlideProps) => {
+const Slide = ({ slide: { picture, color, title, id } }: SlideProps) => {
   const lighterColor = Color(color).lighten(0.8).toString();
 
   return (
@@ -63,19 +62,9 @@ const Slide = ({
       </Svg>
 
       <View style={styles.container}>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "rgba(0,0,0,0.3)",
-            width: SIZES.width / 2,
-            height: 100,
-            borderRadius: SIZES.radius,
-          }}
-        >
-          <Text style={styles.title}>{title}</Text>
-        </View>
+        <Text style={styles.title}>{title}</Text>
         <Image source={picture} style={styles.image} />
+        {id !== 2 && <Footer />}
       </View>
     </>
   );

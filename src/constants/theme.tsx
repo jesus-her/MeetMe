@@ -8,8 +8,8 @@ export const COLORS = {
   primary: "#0195E5", // Purple
   primary2: "#06DBC6", // Green
   primary3: "#04386F", // Yellow
-  /*secondary: "#FC5A51", // Orange*/
-  secondary: "#FE5A51",
+  /*secondary: "#FC5A51", */
+  secondary: "#FE5A51", // Orange
   secondary2: "#E4DC02",
   gray10: "#E5E5E5",
   gray20: "#CCCCCC",

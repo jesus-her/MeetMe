@@ -4,10 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MARGIN } from "./Config";
 import Tile from "./Tile";
 import SortableList from "./SortableList";
-import { COLORS, SIZES } from "../constants";
+import { COLORS, FONTS, SIZES } from "../constants";
 import { StyleSheet, Text, View } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import Footer from "../Duolingo/components/Footer";
+import { LinearGradient } from "expo-linear-gradient";
 
 const tiles = [
   {
@@ -27,12 +28,12 @@ const tiles = [
 
 const Chrome = () => {
   return (
-    <SafeAreaView
+    <LinearGradient
+      colors={["#0195E5", "#0276BE", "#04386F"]}
       style={{
-        backgroundColor: COLORS.secondary,
         width: SIZES.width,
         height: SIZES.height,
-        paddingBottom: 10,
+        paddingTop: SIZES.padding,
       }}
     >
       <View
@@ -43,10 +44,11 @@ const Chrome = () => {
       >
         <Text
           style={{
-            fontSize: SIZES.h1,
+            color: COLORS.white,
+            ...FONTS.h1,
           }}
         >
-          ????????
+          Resolve it!
         </Text>
       </View>
       <SortableList
@@ -71,7 +73,7 @@ const Chrome = () => {
       >
         <Footer />
       </View>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 const styles = StyleSheet.create({

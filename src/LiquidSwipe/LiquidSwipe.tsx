@@ -1,51 +1,54 @@
 import React, { useState } from "react";
 import Slider from "./Slider";
 import Slide from "./Slide";
-import { StatusBar, View } from "react-native";
-import { COLORS, SIZES } from "../constants";
-import CustomButton from "../components/CustomButton";
+import { View } from "react-native";
+import { SIZES } from "../constants";
+/*import CustomButton from "../components/CustomButton";*/
 import Footer from "../Duolingo/components/Footer";
 
 const slides = [
   {
-    color: "#ffed26",
-    title: "DÍA",
+    id: 1,
+    color: "#ffcc02",
+    title: "",
     description: "",
-    picture: require("../../assets/sun-2.png"),
+    picture: require("../../assets/sunny.gif"),
   },
   {
-    color: "#0090D6",
-    title: "¿Día o noche?",
+    id: 2,
+    color: "#048BA8",
+    title: "¿DÍA O NOCHE?",
     description: "",
-    picture: require("../../assets/day-and-night.png"),
+    picture: require("../../assets/half-sun.png"),
   },
   {
-    color: "#41446b",
-    title: "NOCHE",
+    id: 3,
+    color: "#032B43",
+    title: "",
     description: "",
-    picture: require("../../assets/moon.png"),
+    picture: require("../../assets/moon-animated.gif"),
   },
   /*{
-        color: "#FB3A4D",
-        title: "10000+ Recipes",
-        description:
-          "Browse thousands of curated recipes from top chefs, each with detailled cooking instructions",
-        picture: require("./assets/2.png"),
-      },
-      {
-        color: "#F2AD62",
-        title: "Video Tutorials",
-        description:
-          "Browse our best themed recipes, cooking tips, and how-to food video & photos",
-        picture: require("./assets/3.png"),
-      },
-      {
-        color: "#41e9ff",
-        title: "Video Tutorials",
-        description:
-          "Browse our best themed recipes, cooking tips, and how-to food video & photos",
-        picture: require("./assets/3.png"),
-      },*/
+          color: "#FB3A4D",
+          title: "10000+ Recipes",
+          description:
+            "Browse thousands of curated recipes from top chefs, each with detailled cooking instructions",
+          picture: require("./assets/2.png"),
+        },
+        {
+          color: "#F2AD62",
+          title: "Video Tutorials",
+          description:
+            "Browse our best themed recipes, cooking tips, and how-to food video & photos",
+          picture: require("./assets/3.png"),
+        },
+        {
+          color: "#41e9ff",
+          title: "Video Tutorials",
+          description:
+            "Browse our best themed recipes, cooking tips, and how-to food video & photos",
+          picture: require("./assets/3.png"),
+        },*/
 ];
 
 export const assets = slides.map(({ picture }) => picture);
@@ -68,15 +71,13 @@ const LiquidSwipe = () => {
         <View
           style={{
             width: "65%",
-            height: "100%",
+            height: "90%",
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "rgba(29,29,29,0)",
             zIndex: 1,
           }}
-        >
-          <Footer />
-        </View>
+        />
         <Slider
           key={index}
           index={index}

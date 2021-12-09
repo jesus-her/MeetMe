@@ -1,8 +1,10 @@
 import React from "react";
 import { TouchableOpacity, Text, Image, View } from "react-native";
-import { COLORS, FONTS } from "../constants";
+import { COLORS, FONTS, SIZES } from "../constants";
+import { LinearGradient } from "expo-linear-gradient";
 
 const CustomButton = ({
+  colors,
   contentContainerStyle,
   disabled,
   label,
@@ -12,41 +14,43 @@ const CustomButton = ({
   iconStyle,
 }) => {
   return (
-    <TouchableOpacity
-      style={{
-        zIndex: 10,
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row",
-        ...contentContainerStyle,
-      }}
-      disabled={disabled}
-      onPress={onPress}
-    >
-      <View
+    <LinearGradient colors={colors} style={{ borderRadius: SIZES.radius }}>
+      <TouchableOpacity
         style={{
-          marginRight: 10,
+          zIndex: 999,
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "row",
+          ...contentContainerStyle,
         }}
+        disabled={disabled}
+        onPress={onPress}
       >
-        <Image
-          source={icon}
-          resizeMode="contain"
+        <View
           style={{
-            width: 20,
-            height: 20,
-            ...iconStyle,
+            marginRight: 10,
           }}
-        />
-      </View>
-      <Text
-        style={{
-          ...FONTS.h2,
-          ...labelStyle,
-        }}
-      >
-        {label}
-      </Text>
-    </TouchableOpacity>
+        >
+          <Image
+            source={icon}
+            resizeMode="contain"
+            style={{
+              width: 20,
+              height: 20,
+              ...iconStyle,
+            }}
+          />
+        </View>
+        <Text
+          style={{
+            ...FONTS.h2,
+            ...labelStyle,
+          }}
+        >
+          {label}
+        </Text>
+      </TouchableOpacity>
+    </LinearGradient>
   );
 };
 

@@ -23,11 +23,19 @@ const CustomDrawerNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
+          title: "MeetMe",
           headerShown: true,
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerStyle: {
+            backgroundColor: COLORS.secondary,
+          },
           drawerIcon: ({ color }) => (
             <Ionicons name="home-outline" size={22} color={color} />
           ),
-          drawerType: "front",
+          drawerType: "slide",
         }}
       />
       <Drawer.Screen

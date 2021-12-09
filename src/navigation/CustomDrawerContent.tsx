@@ -12,7 +12,6 @@ import {
 } from "@react-navigation/drawer";
 import { COLORS, FONTS, SIZES } from "../constants";
 import { LinearGradient } from "expo-linear-gradient";
-import { COL } from "../Chrome/Config";
 import { Ionicons } from "@expo/vector-icons";
 
 const CustomDrawerContent = (props) => {

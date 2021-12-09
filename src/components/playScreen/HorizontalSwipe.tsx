@@ -12,6 +12,7 @@ import {
   Alert,
   SafeAreaView,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import CustomButton from "../CustomButton";
 import { COLORS, FONTS, icons, SIZES } from "../../constants";
@@ -143,7 +144,7 @@ const Square = ({ scrollX }) => {
         backgroundColor: COLORS.white,
         position: "absolute",
         top: -height * 0.6,
-        left: -height * 0.3,
+        left: -height * 0.31,
         transform: [
           {
             rotate,
@@ -188,8 +189,9 @@ export default function HorizontalSwipe() {
 
                 <View
                   style={{
-                    flex: 0.7,
-                    justifyContent: "center",
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Image
@@ -201,9 +203,10 @@ export default function HorizontalSwipe() {
                     source={{ uri: item.image }}
                   />
                 </View>
+
                 <View
                   style={{
-                    flex: 0.3,
+                    height: SIZES.height / 6,
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
@@ -213,21 +216,19 @@ export default function HorizontalSwipe() {
                       ...FONTS.h1,
                       textAlign: "center",
                       color: COLORS.black,
-                      fontWeight: "bold",
                     }}
                   >
                     {item.title}
                   </Text>
                   {item.key !== 1 && (
                     <CustomButton
+                      colors={["#fff", "#D5DEE7"]}
                       icon={item.buttonIcon}
                       label="Seleccionar"
                       contentContainerStyle={{
-                        backgroundColor: COLORS.white,
                         borderRadius: SIZES.radius,
-                        width: 150,
+                        width: SIZES.width / 2,
                         height: 30,
-                        marginTop: 30,
                       }}
                       labelStyle={{
                         color: COLORS.black,

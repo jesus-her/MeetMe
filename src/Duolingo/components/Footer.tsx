@@ -3,12 +3,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../constants";
+import { LinearGradient } from "expo-linear-gradient";
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.primary2,
     width: "100%",
-    height: 45,
+    height: 40,
     borderRadius: 16,
     justifyContent: "center",
   },
@@ -23,8 +23,10 @@ const styles = StyleSheet.create({
 const Footer = () => {
   const insets = useSafeAreaInsets();
   return (
-    <View
+    <LinearGradient
+      colors={["#FE5A51", "#FA7044", "#F58537"]}
       style={{
+        zIndex: 999,
         position: "absolute",
         bottom: 0,
         width: SIZES.width / 2,
@@ -32,20 +34,22 @@ const Footer = () => {
         alignItems: "center",
         justifyContent: "center",
         margin: 16,
+        borderRadius: 16,
       }}
     >
       <View
         style={{
           backgroundColor: "rgba(29,29,29,0.3)",
+          zIndex: -1,
           borderRadius: 16,
-          height: 50,
+          height: 47,
           ...StyleSheet.absoluteFillObject,
         }}
       />
       <RectButton style={styles.button}>
         <Text style={styles.label}>CHECK</Text>
       </RectButton>
-    </View>
+    </LinearGradient>
   );
 };
 

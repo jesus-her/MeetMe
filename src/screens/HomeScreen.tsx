@@ -14,7 +14,7 @@ const HomeScreen = () => {
   return (
     <>
       <LinearGradient
-        colors={["#12355B", "#058ED9"]}
+        colors={["#035796", "#0195E5"]}
         style={{
           height: SIZES.height - 56,
           width: SIZES.width,
@@ -31,7 +31,7 @@ const HomeScreen = () => {
           }}
         >
           <Image
-            source={require("../../assets/sorprendido.png")}
+            source={require("../../assets/sunny.gif")}
             style={{
               width: "100%",
               height: "100%",
@@ -40,7 +40,7 @@ const HomeScreen = () => {
           <Text
             style={{
               ...FONTS.h1,
-              color: COLORS.secondary2,
+              color: COLORS.primary2,
               marginTop: 10,
             }}
           >
@@ -82,6 +82,7 @@ const HomeScreen = () => {
           }}
         >
           <CustomButton
+            colors={["#FE5A51", "#FA7044", "#F58537"]}
             onPress={() => {
               navigation.navigate("Play");
             }}
@@ -91,7 +92,6 @@ const HomeScreen = () => {
               tintColor: COLORS.white,
             }}
             contentContainerStyle={{
-              backgroundColor: COLORS.secondary,
               borderRadius: SIZES.radius,
               height: 40,
             }}
@@ -101,6 +101,7 @@ const HomeScreen = () => {
             }}
           />
           <CustomButton
+            colors={["#FE5A51", "#FA7044", "#F58537"]}
             onPress={() => {
               navigation.navigate("Picker");
             }}
@@ -110,7 +111,6 @@ const HomeScreen = () => {
               tintColor: COLORS.white,
             }}
             contentContainerStyle={{
-              backgroundColor: COLORS.secondary,
               borderRadius: SIZES.radius,
               height: 40,
             }}
