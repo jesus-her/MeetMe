@@ -3,7 +3,8 @@ import React from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import Svg, { RadialGradient, Defs, Rect, Stop } from "react-native-svg";
 import CustomButton from "../components/CustomButton";
-import { COLORS, SIZES } from "../constants";
+import { COLORS, FONTS, SIZES } from "../constants";
+import { COL } from "../Chrome/Config";
 
 const { width, height } = Dimensions.get("screen");
 const SIZE = width - 75;
@@ -11,9 +12,9 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     padding: 75,
-    paddingTop: 150,
+    paddingTop: 50,
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
   },
   image: {
     position: "absolute",
@@ -24,13 +25,9 @@ const styles = StyleSheet.create({
     height: SIZE - 30,
   },
   title: {
-    fontSize: 48,
-    fontWeight: "bold",
-    color: "#ffffff",
-    textShadowColor: "black",
-    textShadowRadius: 1,
+    ...FONTS.largeTitle,
+    color: COLORS.white,
     textAlign: "center",
-    marginBottom: 16,
   },
   description: {
     fontSize: 18,
@@ -64,35 +61,21 @@ const Slide = ({
         </Defs>
         <Rect x={0} y={0} width={width} height={height} fill="url(#gradient)" />
       </Svg>
+
       <View style={styles.container}>
-        <Image source={picture} style={styles.image} />
         <View
           style={{
             alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(0,0,0,0.3)",
+            width: SIZES.width / 2,
+            height: 100,
+            borderRadius: SIZES.radius,
           }}
         >
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.description}>{description}</Text>
-          <View
-            style={{
-              zIndex: 1000,
-            }}
-          >
-            {/*<CustomButton
-              label="Seleccionar"
-              contentContainerStyle={{
-                backgroundColor: COLORS.black,
-                borderRadius: SIZES.radius,
-                width: 150,
-                height: 30,
-                marginTop: 30,
-              }}
-              labelStyle={{
-                color: COLORS.white,
-              }}
-            />*/}
-          </View>
         </View>
+        <Image source={picture} style={styles.image} />
       </View>
     </>
   );

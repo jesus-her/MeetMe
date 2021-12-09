@@ -2,11 +2,15 @@ import { Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 //https://color.adobe.com/create/color-wheel
+//https://coolors.co/gradient-palette/fc5a51-d7cf07?number=7
+//https://coolors.co/fe5a51-04386f-06dbc6-e4dc02-0195e5
 export const COLORS = {
-  primary: "#7b00ff", // Purple
-  primary2: "#4EF2B5", // Green
-  primary3: "#E6B355", // Yellow
-  secondary: "#FC5A51", // Orange
+  primary: "#0195E5", // Purple
+  primary2: "#06DBC6", // Green
+  primary3: "#04386F", // Yellow
+  /*secondary: "#FC5A51", // Orange*/
+  secondary: "#FE5A51",
+  secondary2: "#E4DC02",
   gray10: "#E5E5E5",
   gray20: "#CCCCCC",
   gray30: "#A1A1A1",
@@ -54,7 +58,7 @@ export const SIZES = {
   height,
 };
 export const FONTS = {
-  largeTitle: { fontFamily: "Roboto-Black", fontSize: SIZES.largeTitle },
+  largeTitle: { fontWeight: "bold", fontSize: SIZES.largeTitle },
   h1: { fontSize: SIZES.h1, fontWeight: "bold" },
   h2: { fontSize: SIZES.h2, fontWeight: "bold", lineHeight: 30 },
   h3: { fontSize: SIZES.h3, fontWeight: "bold", lineHeight: 22 },

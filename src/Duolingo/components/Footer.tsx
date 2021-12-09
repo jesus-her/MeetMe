@@ -6,7 +6,7 @@ import { COLORS, SIZES } from "../../constants";
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.primary2,
     width: "100%",
     height: 45,
     borderRadius: 16,

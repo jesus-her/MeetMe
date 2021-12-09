@@ -3,6 +3,7 @@ import { View, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, FONTS, SIZES } from "../constants";
 import CustomButton from "../components/CustomButton";
+import { LinearGradient } from "expo-linear-gradient";
 /*import meetmeService from "../services/MeetmeRequest";*/
 
 const HomeScreen = () => {
@@ -12,11 +13,11 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   return (
     <>
-      <View
+      <LinearGradient
+        colors={["#12355B", "#058ED9"]}
         style={{
-          height: SIZES.height,
+          height: SIZES.height - 56,
           width: SIZES.width,
-          backgroundColor: COLORS.primary,
           justifyContent: "space-around",
           alignItems: "center",
           padding: SIZES.padding,
@@ -30,7 +31,7 @@ const HomeScreen = () => {
           }}
         >
           <Image
-            source={require("../../assets/rubik.png")}
+            source={require("../../assets/sorprendido.png")}
             style={{
               width: "100%",
               height: "100%",
@@ -39,7 +40,7 @@ const HomeScreen = () => {
           <Text
             style={{
               ...FONTS.h1,
-              color: COLORS.primary2,
+              color: COLORS.secondary2,
               marginTop: 10,
             }}
           >
@@ -82,7 +83,7 @@ const HomeScreen = () => {
         >
           <CustomButton
             onPress={() => {
-              navigation.navigate("PlayScreen");
+              navigation.navigate("Play");
             }}
             label="Play Now"
             icon={require("../../assets/fire.png")}
@@ -119,7 +120,7 @@ const HomeScreen = () => {
             }}
           />
         </View>
-      </View>
+      </LinearGradient>
     </>
   );
 };
