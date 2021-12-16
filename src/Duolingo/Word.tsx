@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import { WORD_HEIGHT } from "./Layout";
+import { COLORS, FONTS } from "../constants";
 
 const styles = StyleSheet.create({
   root: {
@@ -12,11 +13,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#E8E6E8",
-    backgroundColor: "white",
+    backgroundColor: COLORS.primary3,
     height: WORD_HEIGHT - 8,
   },
   text: {
-    fontSize: 19,
+    color: COLORS.white,
+    ...FONTS.h3,
+    textAlign: "center",
   },
   shadow: {
     ...StyleSheet.absoluteFillObject,

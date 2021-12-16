@@ -4,7 +4,7 @@ import { Dimensions, View, StyleSheet, Text } from "react-native";
 import { Product } from "./Model";
 import Button from "./components/Button";
 /*import CardHeader from "./components/CardHeader";*/
-import { SIZES } from "../constants";
+import { FONTS, SIZES } from "../constants";
 
 const { width } = Dimensions.get("window");
 export const CARD_HEIGHT = (width * 1564) / 974;
@@ -14,11 +14,10 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   title: {
-    fontSize: 50,
-    fontWeight: "bold",
+    ...FONTS.largeTitle,
     textAlign: "center",
-    color: "#432406",
-    marginBottom: 16,
+    color: "black",
+    letterSpacing: 5,
   },
   subtitle: {
     fontSize: SIZES.h2,
@@ -46,12 +45,17 @@ const Card = ({ product: { color1, title, subtitle } }: CardProps) => {
       >
         <View
           style={{
-            backgroundColor: "rgba(29,29,29,0.15)",
+            backgroundColor: "rgba(255,255,255,0.7)",
             borderRadius: SIZES.radius,
+            height: 100,
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           {/*<CardHeader />*/}
-          <Text style={styles.title}>{title}</Text>
+          <Text numberOfLines={2} style={styles.title}>
+            {title}
+          </Text>
           {/*<Text style={styles.subtitle}>{subtitle}</Text>*/}
         </View>
         <Button label="Select" />

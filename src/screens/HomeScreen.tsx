@@ -14,7 +14,10 @@ const HomeScreen = () => {
   return (
     <>
       <LinearGradient
-        colors={["#035796", "#0195E5"]}
+        colors={["#ffffff", "#ffffff"]}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+        locations={[0, 1]}
         style={{
           height: SIZES.height - 56,
           width: SIZES.width,
@@ -25,13 +28,15 @@ const HomeScreen = () => {
       >
         <View
           style={{
-            width: 200,
-            height: 200,
+            width: 150,
+            height: 150,
             alignItems: "center",
+            backgroundColor: COLORS.black,
+            borderRadius: 35,
           }}
         >
           <Image
-            source={require("../../assets/sunny.gif")}
+            source={require("../../assets/adaptive-icon_NO_background.png")}
             style={{
               width: "100%",
               height: "100%",
@@ -39,9 +44,10 @@ const HomeScreen = () => {
           />
           <Text
             style={{
-              ...FONTS.h1,
-              color: COLORS.primary2,
+              ...FONTS.h2,
+              color: COLORS.secondary,
               marginTop: 10,
+              textAlign: "center",
             }}
           >
             MeetMe App
@@ -58,7 +64,7 @@ const HomeScreen = () => {
           <Text
             style={{
               ...FONTS.h1,
-              color: COLORS.white,
+              color: COLORS.black,
               letterSpacing: 7,
             }}
           >
@@ -67,8 +73,9 @@ const HomeScreen = () => {
           <Text
             style={{
               ...FONTS.h2,
-              color: COLORS.white,
+              color: COLORS.black,
               letterSpacing: 5,
+              textAlign: "center",
             }}
           >
             Invite your friends

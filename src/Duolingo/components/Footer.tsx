@@ -26,8 +26,8 @@ const Footer = () => {
     <LinearGradient
       colors={["#FE5A51", "#FA7044", "#F58537"]}
       style={{
-        zIndex: 999,
-        position: "absolute",
+        zIndex: 99,
+        position: "relative",
         bottom: 0,
         width: SIZES.width / 2,
         paddingBottom: insets.bottom,

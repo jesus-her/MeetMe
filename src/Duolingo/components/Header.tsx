@@ -5,6 +5,7 @@ import Cross from "./Cross";
 import Heart from "./Heart";
 import Progress from "./Progress";
 import Character from "./Character";
+import { COLORS, FONTS, SIZES } from "../../constants";
 
 const styles = StyleSheet.create({
   row: {
@@ -14,19 +15,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   title: {
-    fontSize: 24,
-    paddingLeft: 16,
+    ...FONTS.h1,
+    textAlign: "center",
+    color: COLORS.secondary,
+    padding: SIZES.padding,
   },
 });
 
 const Header = () => {
   return (
-    <View>
-      <View style={styles.row}>
+    <View style={{ alignItems: "center" }}>
+      {/*<View style={styles.row}>
         <Cross />
         <Progress />
         <Heart />
-      </View>
+      </View>*/}
       <Text style={styles.title}>Translate this sentence</Text>
       <Character />
     </View>

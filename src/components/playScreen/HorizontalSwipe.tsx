@@ -177,7 +177,7 @@ export default function HorizontalSwipe() {
           )}
           contentContainerStyle={{ paddingBottom: 100 }}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item, index }) => {
+          renderItem={({ item }) => {
             return (
               <View
                 style={{

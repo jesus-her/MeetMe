@@ -6,6 +6,7 @@ import LiquidSwipe from "../LiquidSwipe";
 import Chrome from "../Chrome";
 import Duolingo from "../Duolingo";
 import PhilzCoffee from "../PhilzCoffee";
+import Billboard from "../Billboard/Billboard";
 
 const PlayScreen = () => {
   return (
@@ -16,6 +17,7 @@ const PlayScreen = () => {
         <Duolingo />
         <PhilzCoffee />
         <LiquidSwipe />
+        <Billboard />
       </ScrollView>
     </>
   );

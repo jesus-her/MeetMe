@@ -1,6 +1,13 @@
 import Color from "color";
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  ImageBackground,
+} from "react-native";
 import Svg, { RadialGradient, Defs, Rect, Stop } from "react-native-svg";
 import { COLORS, FONTS, SIZES } from "../constants";
 import Footer from "../Duolingo/components/Footer";
@@ -22,7 +29,20 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -70 }, { translateY: -50 }],
     width: SIZE - 30,
     height: SIZE - 30,
-    borderColor: "#000",
+  },
+  backUp: {
+    position: "absolute",
+    top: 50,
+    width: "100%",
+    height: 100,
+    resizeMode: "contain",
+  },
+  backDown: {
+    position: "absolute",
+    bottom: 70,
+    width: "100%",
+    height: 100,
+    resizeMode: "contain",
   },
   title: {
     ...FONTS.largeTitle,
@@ -46,7 +66,9 @@ export interface SlideProps {
   };
 }
 
-const Slide = ({ slide: { picture, color, title, id } }: SlideProps) => {
+const Slide = ({
+  slide: { picture, color, title, id, pictureBack },
+}: SlideProps) => {
   const lighterColor = Color(color).lighten(0.8).toString();
 
   return (
@@ -63,8 +85,20 @@ const Slide = ({ slide: { picture, color, title, id } }: SlideProps) => {
 
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
+        <Image source={pictureBack} style={styles.backUp} />
         <Image source={picture} style={styles.image} />
-        {id !== 2 && <Footer />}
+        <Image source={pictureBack} style={styles.backDown} />
+
+        {id !== 2 && (
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+            }}
+          >
+            <Footer />
+          </View>
+        )}
       </View>
     </>
   );

@@ -17,7 +17,7 @@ const Character = () => {
       <Image
         width="100%"
         height="100%"
-        href={require("../assets/character.png")}
+        href={require("../../../assets/up.png")}
       />
     </Svg>
   );

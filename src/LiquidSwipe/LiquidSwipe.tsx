@@ -9,14 +9,15 @@ import Footer from "../Duolingo/components/Footer";
 const slides = [
   {
     id: 1,
-    color: "#ffcc02",
+    color: "#0195E5",
     title: "",
     description: "",
     picture: require("../../assets/sunny.gif"),
+    pictureBack: require("../../assets/Cartoon-cloud-on-transparent-background-PNG.png"),
   },
   {
     id: 2,
-    color: "#048BA8",
+    color: "#026094",
     title: "¿DÍA O NOCHE?",
     description: "",
     picture: require("../../assets/half-sun.png"),
@@ -27,6 +28,7 @@ const slides = [
     title: "",
     description: "",
     picture: require("../../assets/moon-animated.gif"),
+    pictureBack: require("../../assets/falling-star.png"),
   },
   /*{
           color: "#FB3A4D",
