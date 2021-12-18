@@ -64,7 +64,7 @@ const HomeScreen = () => {
           <Text
             style={{
               ...FONTS.h1,
-              color: COLORS.black,
+              color: COLORS.primary3,
               letterSpacing: 7,
             }}
           >
@@ -73,7 +73,7 @@ const HomeScreen = () => {
           <Text
             style={{
               ...FONTS.h2,
-              color: COLORS.black,
+              color: COLORS.primary3,
               letterSpacing: 5,
               textAlign: "center",
             }}

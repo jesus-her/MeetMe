@@ -3,6 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawerContent from "./CustomDrawerContent";
 import HomeScreen from "../screens/HomeScreen";
 import PlayScreen from "../screens/PlayScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 import Picker from "../Picker/Picker";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../constants";
@@ -52,13 +53,20 @@ const CustomDrawerNavigator = () => {
         name="Picker"
         component={Picker}
         options={{
+          title: "Social",
           headerShown: false,
           drawerIcon: ({ color }) => (
-            <Ionicons
-              name="information-circle-outline"
-              size={22}
-              color={color}
-            />
+            <Ionicons name="share-social-outline" size={22} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{
+          headerShown: false,
+          drawerIcon: ({ color }) => (
+            <Ionicons name="albums-outline" size={22} color={color} />
           ),
         }}
       />

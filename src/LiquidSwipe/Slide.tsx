@@ -26,27 +26,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: [{ translateX: -70 }, { translateY: -50 }],
+    transform: [{ translateX: -50 }, { translateY: -50 }],
     width: SIZE - 30,
     height: SIZE - 30,
   },
-  backUp: {
-    position: "absolute",
-    top: 50,
-    width: "100%",
-    height: 100,
-    resizeMode: "contain",
-  },
-  backDown: {
-    position: "absolute",
-    bottom: 70,
-    width: "100%",
-    height: 100,
-    resizeMode: "contain",
-  },
   title: {
-    ...FONTS.largeTitle,
-    color: COLORS.white,
+    ...FONTS.h1,
+    color: COLORS.black,
     textAlign: "center",
   },
   description: {
@@ -66,17 +52,15 @@ export interface SlideProps {
   };
 }
 
-const Slide = ({
-  slide: { picture, color, title, id, pictureBack },
-}: SlideProps) => {
-  const lighterColor = Color(color).lighten(0.8).toString();
+const Slide = ({ slide: { picture, color, title, id } }: SlideProps) => {
+  const lighterColor = Color(color).lighten(0.25).toString();
 
   return (
     <>
       <Svg style={StyleSheet.absoluteFill}>
         <Defs>
-          <RadialGradient id="gradient" cx="50%" cy="35%">
-            <Stop offset="0%" stopColor={lighterColor} />
+          <RadialGradient id="gradient" cx="50%" cy="50%">
+            <Stop offset="10%" stopColor={lighterColor} />
             <Stop offset="100%" stopColor={color} />
           </RadialGradient>
         </Defs>
@@ -85,9 +69,9 @@ const Slide = ({
 
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
-        <Image source={pictureBack} style={styles.backUp} />
+        {/*<Image source={pictureBack} style={styles.backUp} />*/}
         <Image source={picture} style={styles.image} />
-        <Image source={pictureBack} style={styles.backDown} />
+        {/*<Image source={pictureBack} style={styles.backDown} />*/}
 
         {id !== 2 && (
           <View

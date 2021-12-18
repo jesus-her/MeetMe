@@ -16,13 +16,13 @@ import {
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 import data from "./data";
-import { COLORS, SIZES } from "../constants";
+import { COLORS, FONTS } from "../constants";
 
 const ICON_SIZE = 42;
 const ITEM_HEIGHT = ICON_SIZE * 2;
 const colors = {
-  yellow: "#FFE8A3",
-  dark: "#2D2D2D",
+  orange: COLORS.secondary,
+  white: "#fff",
 };
 const { width, height } = Dimensions.get("window");
 
@@ -56,10 +56,10 @@ const ConnectWithText = React.memo(() => {
     >
       <Text
         style={{
-          color: COLORS.primary,
-          fontSize: 52,
-          fontWeight: "700",
+          color: COLORS.secondary,
+          ...FONTS.largeTitle,
           lineHeight: 52,
+          letterSpacing: 3,
         }}
       >
         Connect with...
@@ -81,7 +81,7 @@ const ConnectButton = React.memo(({ onPress }) => {
         style={{
           height: ITEM_HEIGHT * 2,
           width: 4,
-          backgroundColor: COLORS.primary,
+          backgroundColor: COLORS.secondary,
         }}
       />
       <TouchableOpacity
@@ -89,15 +89,13 @@ const ConnectButton = React.memo(({ onPress }) => {
         style={{
           paddingVertical: 10,
           paddingHorizontal: 12,
-          backgroundColor: COLORS.primary,
+          backgroundColor: COLORS.secondary,
           alignItems: "center",
           justifyContent: "center",
         }}
         activeOpacity={0.8}
       >
-        <Text style={{ fontSize: 32, fontWeight: "800", color: colors.dark }}>
-          Done!
-        </Text>
+        <Text style={{ ...FONTS.h1, color: colors.white }}>Done!</Text>
       </TouchableOpacity>
     </View>
   );
@@ -172,18 +170,18 @@ export default function Picker() {
       <ConnectWithText />
       <List
         ref={yellowRef}
-        color={COLORS.primary}
+        color={COLORS.secondary}
         style={StyleSheet.absoluteFillObject}
         onScroll={onScroll}
         onItemIndexChange={onItemIndexChange}
       />
       <List
         ref={darkRef}
-        color={colors.dark}
+        color={colors.white}
         showText
         style={{
           position: "absolute",
-          backgroundColor: COLORS.primary,
+          backgroundColor: COLORS.secondary,
           width,
           height: ITEM_HEIGHT,
           top: height / 2 - ITEM_HEIGHT / 2,
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: colors.dark,
+    backgroundColor: colors.white,
   },
   paragraph: {
     margin: 24,
