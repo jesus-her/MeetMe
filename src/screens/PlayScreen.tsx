@@ -1,23 +1,31 @@
 import * as React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StatusBar, StyleSheet } from "react-native";
 import { SIZES } from "../constants";
-import HorizontalSwipe from "../components/playScreen/HorizontalSwipe";
-import LiquidSwipe from "../LiquidSwipe";
-import Chrome from "../Chrome";
-import Duolingo from "../Duolingo";
-import PhilzCoffee from "../PhilzCoffee";
-import Billboard from "../Billboard/Billboard";
+import HorizontalSwipe from "../components/PlayScreen/HorizontalSwipe/HorizontalSwipe";
+import LiquidSwipe from "../components/PlayScreen/LiquidSwipe";
+import Puzzle from "../components/PlayScreen/Puzzle";
+import Duolingo from "../components/PlayScreen/Duolingo";
+import PhilzCoffee from "../components/PlayScreen/PhilzCoffee";
+import Billboard from "../components/PlayScreen/Billboard/Billboard";
+import StackCarousel from "../components/PlayScreen/StackCarousel/StackCarousel";
 
-const PlayScreen = () => {
+const PlayScreen = ({ navigation }) => {
   return (
     <>
+      <StatusBar
+        hidden={true}
+        backgroundColor="#3A0CA3"
+        translucent={false}
+        barStyle="light-content"
+      />
       <ScrollView style={styles.scrollView} pagingEnabled={true}>
         <HorizontalSwipe />
-        <Chrome />
+        <Puzzle />
         <Duolingo />
         <PhilzCoffee />
         <LiquidSwipe />
         <Billboard />
+        <StackCarousel />
       </ScrollView>
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, Text, Image, FlatList, Animated } from "react-native";
+import { View, Text, Image, FlatList, Animated, StatusBar } from "react-native";
 import slides from "./slides";
 import { useNavigation } from "@react-navigation/native";
 import OnboardingItem from "./OnboardingItem";
@@ -29,7 +29,7 @@ export default Onboarding = () => {
     <View
       style={{
         width: SIZES.width,
-        height: SIZES.height,
+        height: SIZES.height - StatusBar.currentHeight,
         justifyContent: "center",
         alignItems: "center",
       }}

@@ -16,7 +16,7 @@ import {
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 import data from "./data";
-import { COLORS, FONTS } from "../constants";
+import { COLORS, FONTS, SIZES } from "../constants";
 
 const ICON_SIZE = 42;
 const ITEM_HEIGHT = ICON_SIZE * 2;
@@ -49,7 +49,7 @@ const ConnectWithText = React.memo(() => {
     <View
       style={{
         position: "absolute",
-        top: height / 2 - ITEM_HEIGHT * 2,
+        top: SIZES.heightPlayScreen / 2 - ITEM_HEIGHT * 2,
         width: width * 0.7,
         paddingHorizontal: 14,
       }}
@@ -73,7 +73,7 @@ const ConnectButton = React.memo(({ onPress }) => {
     <View
       style={{
         position: "absolute",
-        top: height / 2 + ITEM_HEIGHT / 2,
+        top: SIZES.heightPlayScreen / 3 + ITEM_HEIGHT,
         paddingHorizontal: 14,
       }}
     >
@@ -81,7 +81,7 @@ const ConnectButton = React.memo(({ onPress }) => {
         style={{
           height: ITEM_HEIGHT * 2,
           width: 4,
-          backgroundColor: COLORS.secondary,
+          backgroundColor: COLORS.primary,
         }}
       />
       <TouchableOpacity
@@ -89,7 +89,7 @@ const ConnectButton = React.memo(({ onPress }) => {
         style={{
           paddingVertical: 10,
           paddingHorizontal: 12,
-          backgroundColor: COLORS.secondary,
+          backgroundColor: COLORS.primary,
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -119,8 +119,12 @@ const List = React.memo(
           showsVerticalScrollIndicator={false}
           renderToHardwareTextureAndroid
           contentContainerStyle={{
-            paddingTop: showText ? 0 : height / 2 - ITEM_HEIGHT / 2,
-            paddingBottom: showText ? 0 : height / 2 - ITEM_HEIGHT / 2,
+            paddingTop: showText
+              ? 0
+              : SIZES.heightPlayScreen / 2 - ITEM_HEIGHT / 2,
+            paddingBottom: showText
+              ? 0
+              : SIZES.heightPlayScreen / 2 - ITEM_HEIGHT / 2,
             paddingHorizontal: 20,
           }}
           renderItem={({ item }) => {
@@ -166,11 +170,10 @@ export default function Picker() {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden={true} />
       <ConnectWithText />
       <List
         ref={yellowRef}
-        color={COLORS.secondary}
+        color={COLORS.primary2}
         style={StyleSheet.absoluteFillObject}
         onScroll={onScroll}
         onItemIndexChange={onItemIndexChange}
@@ -181,10 +184,10 @@ export default function Picker() {
         showText
         style={{
           position: "absolute",
-          backgroundColor: COLORS.secondary,
+          backgroundColor: COLORS.primary,
           width,
           height: ITEM_HEIGHT,
-          top: height / 2 - ITEM_HEIGHT / 2,
+          top: SIZES.heightPlayScreen / 2 - ITEM_HEIGHT / 2,
         }}
       />
       <ConnectButton onPress={onConnectPress} />
@@ -195,10 +198,9 @@ export default function Picker() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: SIZES.heightPlayScreen,
     justifyContent: "center",
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
   },
   paragraph: {
     margin: 24,
@@ -214,7 +216,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 26,
-    fontWeight: "800",
+    fontWeight: "bold",
     textTransform: "capitalize",
   },
 });

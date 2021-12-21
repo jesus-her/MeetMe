@@ -1,134 +1,97 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StatusBar,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, FONTS, SIZES } from "../constants";
 import CustomButton from "../components/CustomButton";
-import { LinearGradient } from "expo-linear-gradient";
-/*import meetmeService from "../services/MeetmeRequest";*/
 
 const HomeScreen = () => {
-  /*  const onButtonPress = async () => {
-            const response = await meetmeService.ListQuiz();
-            console.log(response);*/
   const navigation = useNavigation();
   return (
     <>
-      <LinearGradient
-        colors={["#ffffff", "#ffffff"]}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
-        locations={[0, 1]}
-        style={{
-          height: SIZES.height - 56,
-          width: SIZES.width,
-          justifyContent: "space-around",
-          alignItems: "center",
-          padding: SIZES.padding,
+      <ImageBackground
+        source={require("../../assets/HomeScreen/card1.png")}
+        style={styles.container}
+        imageStyle={{
+          opacity: 1,
         }}
+        blurRadius={3}
       >
-        <View
-          style={{
-            width: 150,
-            height: 150,
-            alignItems: "center",
-            backgroundColor: COLORS.black,
-            borderRadius: 35,
-          }}
-        >
+        <View>
           <Image
             source={require("../../assets/adaptive-icon_NO_background.png")}
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
+            style={styles.logo}
           />
-          <Text
-            style={{
-              ...FONTS.h2,
-              color: COLORS.secondary,
-              marginTop: 10,
-              textAlign: "center",
-            }}
-          >
-            MeetMe App
-          </Text>
+          <Text style={styles.appName}>App Name</Text>
         </View>
-        <View
-          style={{
-            width: "100%",
-            padding: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              ...FONTS.h1,
-              color: COLORS.primary3,
-              letterSpacing: 7,
-            }}
-          >
-            Let's Play!
-          </Text>
-          <Text
-            style={{
-              ...FONTS.h2,
-              color: COLORS.primary3,
-              letterSpacing: 5,
-              textAlign: "center",
-            }}
-          >
-            Invite your friends
-          </Text>
+        <View>
+          <Text style={styles.title}> Let's Play! </Text>
+          <Text style={styles.subtitle}> Invite your friends </Text>
         </View>
-        <View
-          style={{
-            justifyContent: "space-between",
-            height: 100,
-            width: "100%",
-          }}
-        >
+        <View style={styles.buttonContainer}>
           <CustomButton
-            colors={["#FE5A51", "#FA7044", "#F58537"]}
+            label="Play Now"
             onPress={() => {
               navigation.navigate("Play");
             }}
-            label="Play Now"
-            icon={require("../../assets/fire.png")}
-            iconStyle={{
-              tintColor: COLORS.white,
-            }}
-            contentContainerStyle={{
-              borderRadius: SIZES.radius,
-              height: 40,
-            }}
-            labelStyle={{
-              textAlign: "center",
-              color: COLORS.white,
-            }}
+            icon={require("../../assets/HomeScreen/fire.png")}
           />
           <CustomButton
-            colors={["#FE5A51", "#FA7044", "#F58537"]}
+            label="My Quiz"
             onPress={() => {
               navigation.navigate("Picker");
             }}
-            label="My Quiz"
-            icon={require("../../assets/forma-de-vineta.png")}
-            iconStyle={{
-              tintColor: COLORS.white,
-            }}
-            contentContainerStyle={{
-              borderRadius: SIZES.radius,
-              height: 40,
-            }}
-            labelStyle={{
-              textAlign: "center",
-              color: COLORS.white,
-            }}
+            icon={require("../../assets/HomeScreen/forma-de-vineta.png")}
           />
         </View>
-      </LinearGradient>
+      </ImageBackground>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: SIZES.height - SIZES.heightNav,
+    width: SIZES.width,
+    padding: SIZES.padding,
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  logo: {
+    resizeMode: "cover",
+    backgroundColor: COLORS.primary,
+    width: 150,
+    height: 150,
+    borderRadius: SIZES.radius,
+    overflow: "hidden",
+  },
+  appName: {
+    ...FONTS.h2,
+    color: COLORS.white,
+    textAlign: "center",
+  },
+  title: {
+    ...FONTS.h1,
+    color: COLORS.black,
+    letterSpacing: 7,
+    textAlign: "center",
+  },
+  subtitle: {
+    ...FONTS.h2,
+    color: COLORS.black,
+    letterSpacing: 5,
+    textAlign: "center",
+  },
+  buttonContainer: {
+    height: SIZES.height / 4,
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+});
 export default HomeScreen;
