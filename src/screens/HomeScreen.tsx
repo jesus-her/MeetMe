@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -10,9 +10,14 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, FONTS, SIZES } from "../constants";
 import CustomButton from "../components/CustomButton";
+import { MainContext } from "../context/Context";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+
+
+  const { mainState: { isLoggedIn } } = useContext(MainContext);
+  console.log(isLoggedIn)
   return (
     <>
       <ImageBackground
@@ -36,7 +41,7 @@ const HomeScreen = () => {
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton
-            label="Play Now"
+            label={`${isLoggedIn}`}
             onPress={() => {
               navigation.navigate("Play");
             }}
