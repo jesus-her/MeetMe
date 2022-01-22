@@ -66,7 +66,7 @@ export default NextButton = ({ percentage, scrollTo }) => {
           />
           <Circle
             ref={progressRef}
-            stroke="#4361EE"
+            stroke="#F72585"
             cx={center}
             cy={center}
             r={radius}

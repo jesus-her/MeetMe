@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { COLORS, FONTS, SIZES } from "../../../constants";
 import CheckButton from "../../CheckButton";
+import QuestionHeader from "../../QuestionHeader";
 const { width, height } = Dimensions.get("screen");
 
 // https://www.flaticon.com/packs/retro-wave
@@ -21,44 +22,28 @@ const DATA = [
     key: 1,
     title: " ¿Cuál es mi estación del año favorita?",
     image: "https://i.imgur.com/lPOv6iG.png",
-    buttonIcon: require("../../../../assets/PlayScreen/HorizontalSwipe_Seasons/rocket.png"),
   },
   {
     key: 2,
     title: "Primavera",
     image: "https://i.imgur.com/HHLqJlZ.png",
-    buttonIcon: require("../../../../assets/PlayScreen/HorizontalSwipe_Seasons/flower.png"),
   },
   {
     key: 3,
     title: "Verano",
     image: "https://i.imgur.com/DNvbWYV.png",
-    buttonIcon: require("../../../../assets/PlayScreen/HorizontalSwipe_Seasons/sun.png"),
   },
   {
     key: 4,
     title: "Otoño",
     image: "https://i.imgur.com/6smIjOA.png",
-    buttonIcon: require("../../../../assets/PlayScreen/HorizontalSwipe_Seasons/otono.png"),
   },
   {
     key: 5,
     title: "Invierno",
     image: "https://i.imgur.com/6MjHs19.png",
-    buttonIcon: require("../../../../assets/PlayScreen/HorizontalSwipe_Seasons/snowflake.png"),
   },
 ];
-const question = () => (
-  <Text
-    style={{
-      textAlign: "center",
-      paddingHorizontal: 20,
-      ...FONTS.h1,
-    }}
-  >
-    ¿Cuál es mi estación del año favorita?
-  </Text>
-);
 const Indicator = ({ scrollX }) => {
   return (
     <View
@@ -168,7 +153,7 @@ export default function HorizontalSwipe() {
               <View
                 style={{
                   width,
-                  height: SIZES.height - 35,
+                  height: SIZES.heightPlayScreen,
                   alignItems: "center",
                 }}
               >
@@ -179,11 +164,17 @@ export default function HorizontalSwipe() {
                     justifyContent: "center",
                   }}
                 >
-                  {item.key !== 1 && question()}
+                  {item.key !== 1 && (
+                    <QuestionHeader
+                      colors={[COLORS.secondary2, COLORS.primary]}
+                      textColor={COLORS.white}
+                      label="¿Cuál es mi estación del año favorita?"
+                    />
+                  )}
                   <Image
                     style={{
-                      width: 175,
-                      height: 175,
+                      width: SIZES.heightPlayScreen / 4,
+                      height: SIZES.heightPlayScreen / 4,
                       resizeMode: "contain",
                     }}
                     source={{ uri: item.image }}
@@ -192,22 +183,36 @@ export default function HorizontalSwipe() {
 
                 <View
                   style={{
-                    height: SIZES.heightPlayScreen / 3,
+                    height: SIZES.heightPlayScreen / 3.3,
                     marginTop: 70,
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
                 >
-                  <Text
+                  <View
                     style={{
-                      ...FONTS.h1,
-                      letterSpacing: 4,
-                      textAlign: "center",
-                      color: COLORS.black,
+                      elevation: 2,
+                      borderRadius: SIZES.radius,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      alignSelf: "center",
+                      marginBottom: SIZES.base,
+                      backgroundColor: "#FFFFFF",
+                      width: SIZES.width * 0.75,
                     }}
                   >
-                    {item.title}
-                  </Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        ...FONTS.h2,
+                        letterSpacing: 1,
+                        padding: 7,
+                        color: COLORS.black,
+                      }}
+                    >
+                      {item.title}
+                    </Text>
+                  </View>
                   {item.key !== 1 && <CheckButton />}
                 </View>
               </View>

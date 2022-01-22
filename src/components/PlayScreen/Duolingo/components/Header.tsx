@@ -6,6 +6,7 @@ import Heart from "./Heart";
 import Progress from "./Progress";
 import Character from "./Character";
 import { COLORS, FONTS, SIZES } from "../../../../constants";
+import QuestionHeader from "../../../QuestionHeader";
 
 const styles = StyleSheet.create({
   row: {
@@ -35,7 +36,12 @@ const Header = () => {
         <Progress />
         <Heart />
       </View>*/}
-      <Text style={styles.title}>Translate this sentence</Text>
+      <QuestionHeader
+        label="Translate this sentence"
+        colors={[COLORS.white, COLORS.white]}
+        textColor={COLORS.secondary}
+        containerStyle={{ elevation: 2 }}
+      />
       <Character />
     </View>
   );

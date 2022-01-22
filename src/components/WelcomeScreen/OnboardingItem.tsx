@@ -6,8 +6,10 @@ export default OnboardingItem = ({ item }) => {
   return (
     <View style={styles.container}>
       <Image source={item.image} style={styles.image} />
+
       <View style={{ flex: 0.3 }}>
         <Text style={styles.title}>{item.title}</Text>
+        <Image source={item.emoji} style={styles.emoji} />
         <Text style={styles.description}>{item.description}</Text>
       </View>
     </View>
@@ -22,14 +24,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    flex: 0.6,
+    flex: 0.45,
     resizeMode: "contain",
     justifyContent: "center",
+  },
+  emoji: {
+    width: 50,
+    height: 50,
+    alignSelf: "center",
+    borderColor: "red",
+    borderWidth: 1,
   },
   title: {
     ...FONTS.largeTitle,
     textAlign: "center",
-    color: COLORS.secondary,
+    color: COLORS.primary,
   },
   description: {
     ...FONTS.h3,

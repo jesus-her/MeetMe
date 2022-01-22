@@ -21,6 +21,7 @@ import Rating from "./Raiting";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS, FONTS, SIZES } from "../../../constants";
 import CheckButton from "../../CheckButton";
+import QuestionHeader from "../../QuestionHeader";
 
 const SPACING = 10;
 const ITEM_SIZE = Platform.OS === "ios" ? width * 0.72 : width * 0.74;
@@ -107,6 +108,11 @@ export default function Billboard() {
 
   return (
     <View style={styles.container}>
+      <QuestionHeader
+        label="¿Mi película favorita?"
+        colors={[COLORS.primary2, COLORS.secondary2]}
+        textColor={COLORS.white}
+      />
       <Backdrop movies={movies} scrollX={scrollX} />
       <Animated.FlatList
         showsHorizontalScrollIndicator={false}
@@ -138,7 +144,7 @@ export default function Billboard() {
 
           const translateY = scrollX.interpolate({
             inputRange,
-            outputRange: [100, 50, 100],
+            outputRange: [150, 75, 150],
             extrapolate: "clamp",
           });
 
@@ -147,11 +153,12 @@ export default function Billboard() {
               <Animated.View
                 style={{
                   marginHorizontal: SPACING,
-                  padding: SPACING * 2,
+                  padding: SPACING * 1.5,
                   alignItems: "center",
                   transform: [{ translateY }],
                   backgroundColor: "white",
                   borderRadius: 34,
+                  marginBottom: 150,
                 }}
               >
                 <Image
@@ -181,7 +188,7 @@ export default function Billboard() {
 
 const styles = StyleSheet.create({
   loadingContainer: {
-    height: SIZES.height,
+    height: SIZES.heightPlayScreen,
     width: SIZES.width,
     alignItems: "center",
     justifyContent: "center",
@@ -189,6 +196,7 @@ const styles = StyleSheet.create({
   container: {
     height: SIZES.heightPlayScreen,
     width: SIZES.width,
+    paddingTop: SIZES.padding,
   },
   paragraph: {
     margin: 24,
@@ -202,6 +210,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 24,
     margin: 0,
-    marginBottom: 10,
+    marginBottom: 5,
   },
 });

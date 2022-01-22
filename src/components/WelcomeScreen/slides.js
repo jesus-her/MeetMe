@@ -3,28 +3,32 @@ export default [
     id: "1",
     title: "" + "¡Bienvenido!",
     description:
-      "(Descripción de la aplicación) bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla.",
+      "Juega y responde los Quizzes de tus amigos o crea tu propio Quiz y ve qué tanto saben de ti tus amigos ;)",
     image: require("../../../assets/adaptive-icon_NO_background.png"),
+    emoji: require("../../../assets/WelcomeScreen/emoji_glad.gif"),
   },
   {
     id: "2",
-    title: '"Play"',
+    title: "¡Juega!",
     description:
-      "(Descripción de la pantalla PlayScreen) bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla.",
-    image: require("../../../assets/WelcomeScreen/rubik.png"),
+      "Encuentra el Quiz de un amigo con su QUIZ ID y prepárate para responder sus preguntas únicas sobre él o ella.",
+    image: require("../../../assets/WelcomeScreen/quizas.png"),
+    emoji: require("../../../assets/WelcomeScreen/emoji_happy.gif"),
   },
   {
     id: "3",
-    title: '"My Quiz"',
+    title: "¡Crea tu Quiz!",
     description:
-      "(Descripción de la pantalla MyQuiz) bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla.",
-    image: require("../../../assets/WelcomeScreen/difuminar.png"),
+      "Crea tu propio Quiz y consigue tu QUIZ ID para que tus amigos puedan responderlo y ver su puntuación.",
+    image: require("../../../assets/WelcomeScreen/list.png"),
+    emoji: require("../../../assets/WelcomeScreen/emoji_silly.gif"),
   },
   {
     id: "4",
-    title: "Title 4",
+    title: "¡Comparte!",
     description:
-      "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla.",
-    image: require("../../../assets/WelcomeScreen/rubik.png"),
+      "¡Comparte tus resultados en las redes sociales y reta a tus amigos a jugar!",
+    image: require("../../../assets/WelcomeScreen/share.png"),
+    emoji: require("../../../assets/WelcomeScreen/emoji_lovely.gif"),
   },
 ];

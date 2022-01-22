@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "season4",
+    "name": "Quizzed",
     "slug": "season4",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/TheQuizLogoWhiteBackground.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash_screen_Quizzed2_white.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,11 +19,23 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "package": "com.adaptive.quizapp",
+      "versionCode": 1
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "experiments": {
       "turboModules": true
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   }
 }

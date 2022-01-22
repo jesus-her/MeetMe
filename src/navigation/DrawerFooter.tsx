@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { SIZES } from "../constants";
 import DrawerIcon from "./DrawerIcon";
 import { useNavigation } from "@react-navigation/native";
+import { signOut } from "../utils/auth";
 
 const DrawerFooter = () => {
   const navigation = useNavigation();
@@ -16,13 +17,7 @@ const DrawerFooter = () => {
             navigation.navigate("Picker");
           }}
         />
-        <DrawerIcon
-          icon="exit-outline"
-          label="Exit"
-          onPress={() => {
-            console.log("Exit");
-          }}
-        />
+        <DrawerIcon icon="exit-outline" label="Exit" onPress={signOut} />
       </View>
     </>
   );

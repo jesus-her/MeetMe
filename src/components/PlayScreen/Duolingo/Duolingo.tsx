@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     width: SIZES.width,
     height: SIZES.heightPlayScreen,
     backgroundColor: "white",
+    paddingVertical: SIZES.padding,
   },
 });
 

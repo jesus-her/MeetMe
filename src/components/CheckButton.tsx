@@ -5,21 +5,24 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../constants";
 import { LinearGradient } from "expo-linear-gradient";
 
-const CheckButton = () => {
+const CheckButton = ({ handleOnPress = null }) => {
   const insets = useSafeAreaInsets();
   return (
     <LinearGradient
       colors={[COLORS.primary, COLORS.primary2]}
+      start={{ x: 0.1, y: 0.5 }}
+      end={{ x: 1, y: 1 }}
       style={{
         paddingBottom: insets.bottom,
         width: SIZES.width / 2,
         margin: 16,
         borderRadius: 16,
-        zIndex: 1,
+        zIndex: 0,
+        alignSelf: "center",
       }}
     >
       <View style={styles.shadow} />
-      <RectButton style={styles.button}>
+      <RectButton style={styles.button} onPress={handleOnPress}>
         <Text style={styles.label}>CHECK</Text>
       </RectButton>
     </LinearGradient>
@@ -31,10 +34,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    width: "100%",
+    width: "90%",
     height: 40,
     borderRadius: 16,
     justifyContent: "center",
+    alignSelf: "center",
   },
   label: {
     color: "white",
@@ -46,7 +50,7 @@ const styles = StyleSheet.create({
   shadow: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(29,29,29,0.3)",
-    zIndex: -1,
+    zIndex: -2,
     borderRadius: 16,
     height: 45,
   },

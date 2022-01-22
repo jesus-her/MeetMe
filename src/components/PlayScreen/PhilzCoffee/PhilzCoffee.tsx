@@ -10,8 +10,8 @@ import Animated, {
 import { products } from "./Model";
 import Card, { CARD_HEIGHT } from "./Card";
 import Products from "./Products";
-import Cards from "./components/Cards";
-import { SIZES } from "../../../constants";
+import { COLORS, SIZES } from "../../../constants";
+import QuestionHeader from "../../QuestionHeader";
 
 const { width } = Dimensions.get("window");
 
@@ -54,16 +54,11 @@ const PhilzCoffee = () => {
         decelerationRate="fast"
       >
         <View style={styles.slider}>
-          <Text
-            style={{
-              fontSize: SIZES.h1,
-              fontWeight: "bold",
-              textAlign: "center",
-              marginHorizontal: SIZES.padding,
-            }}
-          >
-            ¿Cuál es mi helado favorito?
-          </Text>
+          <QuestionHeader
+            label="¿Cuál es mi helado favorito?"
+            colors={[COLORS.secondary, COLORS.secondary]}
+            textColor={COLORS.white}
+          />
           <Animated.ScrollView
             onScroll={onScroll}
             scrollEventThrottle={16}

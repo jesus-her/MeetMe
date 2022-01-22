@@ -1,60 +1,73 @@
 import React, { useState } from "react";
 import Slider from "./Slider";
 import Slide from "./Slide";
-import { View } from "react-native";
-import { SIZES } from "../../../constants";
+import { Text, View } from "react-native";
+import { COLORS, FONTS, SIZES } from "../../../constants";
 /*import CustomButton from "../components/CustomButton";*/
 import CheckButton from "../../CheckButton";
+import { COL } from "../Puzzle/Config";
 
 const slides = [
   {
     id: 1,
-    color: "#4DB9FE",
+    color: "#4361EE",
     title: "",
     description: "",
     picture: require("../../../../assets/PlayScreen/LiquidSwipe/sun-2.png"),
   },
   {
     id: 2,
-    color: "#914FFF",
+    color: "#F72585",
     title: "¿Día o Noche?",
     description: "",
     picture: require("../../../../assets/PlayScreen/LiquidSwipe/day-and-night.png"),
   },
-  {
+
+  /*{
     id: 3,
     color: "#1f2248",
     title: "",
     description: "",
     picture: require("../../../../assets/PlayScreen/LiquidSwipe/eclipse.png"),
-  },
+  },*/
+
   /*{
-          color: "#FB3A4D",
-          title: "10000+ Recipes",
-          description:
-            "Browse thousands of curated recipes from top chefs, each with detailled cooking instructions",
-          picture: require("./assets/2.png"),
-        },
-        {
-          color: "#F2AD62",
-          title: "Video Tutorials",
-          description:
-            "Browse our best themed recipes, cooking tips, and how-to food video & photos",
-          picture: require("./assets/3.png"),
-        },
-        {
-          color: "#41e9ff",
-          title: "Video Tutorials",
-          description:
-            "Browse our best themed recipes, cooking tips, and how-to food video & photos",
-          picture: require("./assets/3.png"),
-        },*/
+                color: "#FB3A4D",
+                title: "10000+ Recipes",
+                description:
+                  "Browse thousands of curated recipes from top chefs, each with detailled cooking instructions",
+                picture: require("./assets/2.png"),
+              },
+              {
+                color: "#F2AD62",
+                title: "Video Tutorials",
+                description:
+                  "Browse our best themed recipes, cooking tips, and how-to food video & photos",
+                picture: require("./assets/3.png"),
+              },
+              {
+                color: "#41e9ff",
+                title: "Video Tutorials",
+                description:
+                  "Browse our best themed recipes, cooking tips, and how-to food video & photos",
+                picture: require("./assets/3.png"),
+              },*/
 ];
 
 export const assets = slides.map(({ picture }) => picture);
 
-const LiquidSwipe = () => {
-  const [index, setIndex] = useState(1);
+const LiquidSwipe = ({
+  question,
+  allOptions,
+  ListFooterComponent,
+  quizImage,
+  correctCount,
+  incorrectCount,
+  quizOwner,
+  quizImg,
+  quizTitle,
+}) => {
+  const [index, setIndex] = useState(0);
   const prev = slides[index - 1];
   const next = slides[index + 1];
   return (
@@ -67,16 +80,41 @@ const LiquidSwipe = () => {
           alignItems: "center",
         }}
       >
-        <View
-          style={{
-            width: "65%",
-            height: "90%",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(29,29,29,0)",
-            zIndex: 1,
-          }}
-        />
+        <>
+          <View
+            style={{
+              width: "100%",
+              height: "15%",
+              backgroundColor: "rgba(29,29,29,0)",
+              zIndex: 100,
+            }}
+          />
+          {index == 0 ? (
+            <View
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "85%",
+                height: "100%",
+                backgroundColor: "rgba(29,29,29,0)",
+                zIndex: 100,
+              }}
+            />
+          ) : (
+            <View
+              style={{
+                position: "absolute",
+                bottom: 0,
+                width: "100%",
+                height: "18%",
+                backgroundColor: "rgba(29,29,29,0)",
+                zIndex: 100,
+              }}
+            />
+          )}
+        </>
+
         <Slider
           key={index}
           index={index}
@@ -84,7 +122,18 @@ const LiquidSwipe = () => {
           prev={prev && <Slide slide={prev} />}
           next={next && <Slide slide={next} />}
         >
-          <Slide slide={slides[index]!} />
+          <Slide
+            slide={slides[index]!}
+            question={question}
+            allOptions={allOptions}
+            ListFooterComponent={ListFooterComponent}
+            quizImage={quizImage}
+            correctCount={correctCount}
+            incorrectCount={incorrectCount}
+            quizOwner={quizOwner}
+            quizImg={quizImg}
+            quizTitle={quizTitle}
+          />
         </Slider>
       </View>
     </>

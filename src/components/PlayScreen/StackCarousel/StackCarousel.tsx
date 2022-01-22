@@ -17,72 +17,109 @@ import {
 } from "react-native";
 
 const { width } = Dimensions.get("screen");
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import {
   FlingGestureHandler,
   Directions,
   State,
 } from "react-native-gesture-handler";
-import { SIZES } from "../../../constants";
+import { COLORS, SIZES } from "../../../constants";
 import CheckButton from "../../CheckButton";
+import QuestionHeader from "../../QuestionHeader";
+import { LinearGradient } from "expo-linear-gradient";
+import { COL } from "../Puzzle/Config";
 
 // https://www.creative-flyers.com
 const DATA = [
   {
-    title: "Afro vibes",
-    location: "Mumbai, India",
-    date: "Nov 17th, 2020",
-    poster:
-      "https://www.creative-flyers.com/wp-content/uploads/2020/07/Afro-vibes-flyer-template.jpg",
+    title: "Aries",
+    element: "Fuego",
+    iconElement: "water-outline",
+    date: "21 Marzo - 19 Abril",
+    poster: "https://i.imgur.com/WcH4hKh.png",
   },
   {
-    title: "Jungle Party",
-    location: "Unknown",
+    title: "Tauro",
+    element: "Unknown",
+    iconElement: "water-outline",
     date: "Sept 3rd, 2020",
-    poster:
-      "https://www.creative-flyers.com/wp-content/uploads/2019/11/Jungle-Party-Flyer-Template-1.jpg",
+    poster: "https://i.imgur.com/MTV1XtM.png",
   },
   {
-    title: "4th Of July",
-    location: "New York, USA",
+    title: "Géminis",
+    element: "New York, USA",
+    iconElement: "water-outline",
     date: "Oct 11th, 2020",
-    poster:
-      "https://www.creative-flyers.com/wp-content/uploads/2020/06/4th-Of-July-Invitation.jpg",
+    poster: "https://i.imgur.com/4qqK07a.png",
   },
   {
-    title: "Summer festival",
-    location: "Bucharest, Romania",
+    title: "Cáncer",
+    element: "Bucharest, Romania",
+    iconElement: "water-outline",
     date: "Aug 17th, 2020",
-    poster:
-      "https://www.creative-flyers.com/wp-content/uploads/2020/07/Summer-Music-Festival-Poster.jpg",
+    poster: "https://i.imgur.com/CEnoMMs.png",
   },
   {
-    title: "BBQ with friends",
-    location: "Prague, Czech Republic",
+    title: "Leo",
+    element: "Prague, Czech Republic",
+    iconElement: "water-outline",
     date: "Sept 11th, 2020",
-    poster:
-      "https://www.creative-flyers.com/wp-content/uploads/2020/06/BBQ-Flyer-Psd-Template.jpg",
+    poster: "https://i.imgur.com/iRNlveJ.png",
   },
   {
-    title: "Festival music",
-    location: "Berlin, Germany",
+    title: "Virgo",
+    element: "Berlin, Germany",
+    iconElement: "water-sharp",
     date: "Apr 21th, 2021",
-    poster:
-      "https://www.creative-flyers.com/wp-content/uploads/2020/06/Festival-Music-PSD-Template.jpg",
+    poster: "https://i.imgur.com/bigxRWA.png",
   },
   {
-    title: "Beach House",
-    location: "Liboa, Portugal",
+    title: "Libra",
+    element: "Liboa, Portugal",
+    iconElement: "water-sharp",
     date: "Aug 12th, 2020",
-    poster:
-      "https://www.creative-flyers.com/wp-content/uploads/2020/06/Summer-Beach-House-Flyer.jpg",
+    poster: "https://i.imgur.com/A51P2Pj.png",
+  },
+  {
+    title: "Escorpio",
+    element: "Liboa, Portugal",
+    iconElement: "water-sharp",
+    date: "Aug 12th, 2020",
+    poster: "https://i.imgur.com/PFelhXs.png",
+  },
+  {
+    title: "Sagitario",
+    element: "Prague, Czech Republic",
+    iconElement: "water-outline",
+    date: "Sept 11th, 2020",
+    poster: "https://i.imgur.com/q8E0LQW.png",
+  },
+  {
+    title: "Capricornio",
+    element: "Berlin, Germany",
+    iconElement: "water-sharp",
+    date: "Apr 21th, 2021",
+    poster: "https://i.imgur.com/dK5ngSu.png",
+  },
+  {
+    title: "Acuario",
+    element: "Liboa, Portugal",
+    iconElement: "water-sharp",
+    date: "Aug 12th, 2020",
+    poster: "https://i.imgur.com/hU2kzKV.png",
+  },
+  {
+    title: "Piscis",
+    element: "Liboa, Portugal",
+    iconElement: "water-sharp",
+    date: "Aug 12th, 2020",
+    poster: "https://i.imgur.com/TeKhMIj.png",
   },
 ];
 
 const OVERFLOW_HEIGHT = 70;
 const SPACING = 0;
-const ITEM_WIDTH = width * 0.76;
-const ITEM_HEIGHT = ITEM_WIDTH * 1.7;
+const ITEM_WIDTH = width * 0.7;
 const VISIBLE_ITEMS = 3;
 
 // @ts-ignore
@@ -103,13 +140,13 @@ const OverflowItems = ({ data, scrollXAnimated }) => {
               </Text>
               <View style={styles.itemContainerRow}>
                 <Text style={[styles.location]}>
-                  <EvilIcons
-                    name="location"
+                  Elemento: {item.element}
+                  <Ionicons
+                    name={item.iconElement}
                     size={16}
                     color="black"
                     style={{ marginRight: 5 }}
                   />
-                  {item.location}
                 </Text>
                 <Text style={[styles.date]}>{item.date}</Text>
               </View>
@@ -173,7 +210,13 @@ export default function StackCarousel() {
         }}
       >
         <SafeAreaView style={styles.container}>
+          <QuestionHeader
+            label="¿Qué signo soy?"
+            colors={[COLORS.primary, COLORS.secondary2]}
+            textColor="white"
+          />
           <OverflowItems data={data} scrollXAnimated={scrollXAnimated} />
+
           <FlatList
             data={data}
             keyExtractor={(_, index) => String(index)}
@@ -183,7 +226,6 @@ export default function StackCarousel() {
               flex: 1,
               justifyContent: "center",
               padding: SPACING * 2,
-              marginTop: 25,
             }}
             scrollEnabled={false}
             removeClippedSubviews={false}
@@ -220,7 +262,7 @@ export default function StackCarousel() {
                 <Animated.View
                   style={{
                     position: "absolute",
-                    left: -ITEM_WIDTH / 2.3,
+                    left: -ITEM_WIDTH / 2.5,
                     opacity,
                     transform: [
                       {
@@ -230,18 +272,30 @@ export default function StackCarousel() {
                     ],
                   }}
                 >
-                  <ImageBackground
-                    source={{ uri: item.poster }}
-                    imageStyle={{ borderRadius: 16 }}
+                  <LinearGradient
+                    colors={[COLORS.primary, COLORS.black]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
                     style={{
                       width: ITEM_WIDTH,
-                      height: ITEM_HEIGHT,
-                      justifyContent: "flex-end",
-                      alignItems: "center",
+                      height: SIZES.height / 1.6,
+                      borderRadius: SIZES.radius,
                     }}
                   >
-                    <CheckButton />
-                  </ImageBackground>
+                    <ImageBackground
+                      source={{ uri: item.poster }}
+                      resizeMode="contain"
+                      /*imageStyle={{ borderRadius: SIZES.radius }}*/
+                      style={{
+                        width: ITEM_WIDTH,
+                        height: SIZES.height / 1.65,
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                      }}
+                    >
+                      <CheckButton />
+                    </ImageBackground>
+                  </LinearGradient>
                 </Animated.View>
               );
             }}
@@ -256,10 +310,8 @@ const styles = StyleSheet.create({
   container: {
     width: SIZES.width,
     height: SIZES.heightPlayScreen,
-    justifyContent: "center",
     backgroundColor: "#fff",
-    paddingHorizontal: SIZES.padding,
-    paddingTop: 10,
+    padding: SIZES.padding,
   },
   title: {
     fontSize: 28,
@@ -285,5 +337,6 @@ const styles = StyleSheet.create({
   overflowContainer: {
     height: OVERFLOW_HEIGHT,
     overflow: "hidden",
+    marginTop: 5,
   },
 });

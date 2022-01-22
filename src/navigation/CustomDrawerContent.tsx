@@ -8,8 +8,12 @@ import {
 
 import { LinearGradient } from "expo-linear-gradient";
 import DrawerFooter from "./DrawerFooter";
+import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../firebase";
 
 const CustomDrawerContent = (props) => {
+  const navigation = useNavigation();
+  const user = auth.currentUser;
   return (
     <>
       <DrawerContentScrollView
@@ -17,19 +21,50 @@ const CustomDrawerContent = (props) => {
         contentContainerStyle={styles.container}
       >
         <LinearGradient
-          colors={[COLORS.secondary, COLORS.primary2]}
-          start={{ x: 0.1, y: 0.5 }}
+          colors={[COLORS.primary, COLORS.primary2]}
+          start={{ x: 1, y: 0.1 }}
           end={{ x: 1, y: 1 }}
           style={styles.containerGradient}
         >
-          <TouchableOpacity style={styles.containerProfile}>
-            <Image
-              source={require("../../assets/CustomDrawerNavigator/emoji.png")}
-              style={{ width: 45, height: 45 }}
-            />
-            <View style={{ marginLeft: 10 }}>
+          <TouchableOpacity
+            style={styles.containerProfile}
+            onPress={() => {
+              navigation.navigate("Profile");
+            }}
+          >
+            {user.photoURL === null ? (
+              <Image
+                source={{ uri: "https://i.imgur.com/IN5sYw6.png" }}
+                style={{
+                  width: 70,
+                  height: 70,
+                  borderRadius: 35,
+                  borderWidth: 1,
+                  borderColor: COLORS.white,
+                }}
+              />
+            ) : (
+              <Image
+                source={{ uri: user.photoURL }}
+                style={{
+                  width: 70,
+                  height: 70,
+                  borderRadius: 35,
+                  borderWidth: 1,
+                  borderColor: COLORS.white,
+                }}
+              />
+            )}
+            <View
+              style={{
+                marginLeft: 10,
+
+                flexDirection: "column",
+                maxWidth: SIZES.width / 2.25,
+              }}
+            >
               <Text style={{ color: COLORS.white, ...FONTS.h3 }}>
-                Awesome User
+                {user.displayName}
               </Text>
               <Text style={{ color: COLORS.white, ...FONTS.h5 }}>
                 View your profile
@@ -39,6 +74,19 @@ const CustomDrawerContent = (props) => {
         </LinearGradient>
         <View style={{ backgroundColor: COLORS.white, paddingTop: 10 }}>
           <DrawerItemList {...props} />
+        </View>
+        <View>
+          <Image
+            source={require("../../assets/TheQuizLogoWhiteBackground.png")}
+            resizeMode="contain"
+            style={{
+              width: SIZES.width / 2,
+              height: SIZES.width / 4,
+
+              alignSelf: "center",
+              marginTop: SIZES.padding,
+            }}
+          />
         </View>
       </DrawerContentScrollView>
 

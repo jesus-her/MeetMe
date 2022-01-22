@@ -5,6 +5,7 @@ import { COLORS, FONTS, SIZES } from "../../../constants";
 import { StyleSheet, Text, View } from "react-native";
 import CheckButton from "../../CheckButton";
 import { LinearGradient } from "expo-linear-gradient";
+import QuestionHeader from "../../QuestionHeader";
 
 const tiles = [
   {
@@ -32,21 +33,11 @@ const Puzzle = () => {
         paddingTop: SIZES.padding,
       }}
     >
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text
-          style={{
-            color: COLORS.white,
-            ...FONTS.h1,
-          }}
-        >
-          Resolve it!
-        </Text>
-      </View>
+      <QuestionHeader
+        colors={[COLORS.primary2, COLORS.primary3]}
+        textColor={COLORS.black}
+        label="¡Resuélvelo!"
+      />
       <SortableList
         editing={true}
         onDragEnd={(positions) =>

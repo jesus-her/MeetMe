@@ -6,17 +6,19 @@ import CustomDrawerContent from "./CustomDrawerContent";
 import { COLORS, FONTS, SIZES } from "../constants";
 import HomeScreen from "../screens/HomeScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import Picker from "../Picker/Picker";
 import { Ionicons } from "@expo/vector-icons";
+import CustomTab from "./CustomTab";
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
   return (
     <>
-      <View style={{ backgroundColor: "white", flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <Drawer.Navigator
-          initialRouteName="Home"
+          initialRouteName="BottomTab"
           drawerContent={(props) => <CustomDrawerContent {...props} />}
           screenOptions={{
             drawerActiveBackgroundColor: COLORS.secondary,
@@ -27,17 +29,29 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
               fontWeight: "bold",
             },
             headerStyle: {
-              backgroundColor: COLORS.secondary,
+              backgroundColor: COLORS.primary,
               height: SIZES.heightNav,
             },
             drawerType: "slide",
           }}
         >
-          <Drawer.Screen
+          {/*<Drawer.Screen
             name="Home"
             component={HomeScreen}
             options={{
+              title: "Inicio",
+              headerShown: true,
+              drawerIcon: ({ color }) => (
+                <Ionicons name="home-outline" size={22} color={color} />
+              ),
+            }}
+          />*/}
+          <Drawer.Screen
+            name="BottomTab"
+            component={CustomTab}
+            options={{
               title: "Home",
+              headerShown: false,
               drawerIcon: ({ color }) => (
                 <Ionicons name="home-outline" size={22} color={color} />
               ),

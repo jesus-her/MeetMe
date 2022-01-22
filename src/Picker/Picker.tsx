@@ -16,7 +16,8 @@ import {
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 import data from "./data";
-import { COLORS, FONTS, SIZES } from "../constants";
+import { COLORS, FONTS, icons, SIZES } from "../constants";
+import HeaderSection from "../components/shared/HeaderSection";
 
 const ICON_SIZE = 42;
 const ITEM_HEIGHT = ICON_SIZE * 2;
@@ -144,7 +145,7 @@ const List = React.memo(
     }
   )
 );
-export default function Picker() {
+export default function Picker(props) {
   const [index, setIndex] = React.useState(0);
   const onConnectPress = React.useCallback(() => {
     Alert.alert("Connect with:", data[index].name.toUpperCase());
@@ -168,31 +169,40 @@ export default function Picker() {
     });
   });
 
+  // @ts-ignore
   return (
-    <View style={styles.container}>
-      <ConnectWithText />
-      <List
-        ref={yellowRef}
-        color={COLORS.primary2}
-        style={StyleSheet.absoluteFillObject}
-        onScroll={onScroll}
-        onItemIndexChange={onItemIndexChange}
+    <>
+      <HeaderSection
+        title="Share"
+        onPress={() => props.navigation.goBack()}
+        icon={icons.back}
       />
-      <List
-        ref={darkRef}
-        color={colors.white}
-        showText
-        style={{
-          position: "absolute",
-          backgroundColor: COLORS.primary,
-          width,
-          height: ITEM_HEIGHT,
-          top: SIZES.heightPlayScreen / 2 - ITEM_HEIGHT / 2,
-        }}
-      />
-      <ConnectButton onPress={onConnectPress} />
-      <Item />
-    </View>
+
+      <View style={styles.container}>
+        <ConnectWithText />
+        <List
+          ref={yellowRef}
+          color={COLORS.primary2}
+          style={StyleSheet.absoluteFillObject}
+          onScroll={onScroll}
+          onItemIndexChange={onItemIndexChange}
+        />
+        <List
+          ref={darkRef}
+          color={colors.white}
+          showText
+          style={{
+            position: "absolute",
+            backgroundColor: COLORS.primary,
+            width,
+            height: ITEM_HEIGHT,
+            top: SIZES.heightPlayScreen / 2 - ITEM_HEIGHT / 2,
+          }}
+        />
+        <ConnectButton onPress={onConnectPress} />
+        <Item />
+      </View>
+    </>
   );
 }
 
