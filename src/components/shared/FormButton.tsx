@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { COLORS, FONTS, SIZES } from "../../constants";
 import { RectButton } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
@@ -8,6 +8,7 @@ const FormButton = ({
   labelText = "",
   handleOnPress = null,
   style,
+  icon,
   isPrimary = true,
   ...more
 }) => {
@@ -22,7 +23,6 @@ const FormButton = ({
       style={{
         margin: 16,
         borderRadius: 30,
-        zIndex: 0,
         alignSelf: "center",
         borderWidth: 1,
         borderColor: COLORS.primary,
@@ -33,6 +33,10 @@ const FormButton = ({
     >
       <View style={styles.shadow} />
       <RectButton style={styles.button} onPress={handleOnPress}>
+        {icon != null ? (
+          <Image source={icon} resizeMode="contain" style={styles.icon} />
+        ) : null}
+
         <Text
           style={{
             textAlign: "center",
@@ -80,8 +84,9 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignSelf: "center",
-
+    flexDirection: "row",
     borderRadius: 30,
+    alignItems: "center",
   },
   label: {
     color: "white",
@@ -97,6 +102,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     height: 45,
     width: "100%",
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    tintColor: COLORS.primary3,
+    marginRight: 10,
   },
 });
 

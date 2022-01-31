@@ -10,23 +10,58 @@ import { COLORS, FONTS, SIZES } from "../constants";
 import FormInput from "../components/shared/FormInput";
 import FormButton from "../components/shared/FormButton";
 import { signIn } from "../utils/auth";
-import { Formik } from "formik";
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState("");
+
+  //Validate Create QUIZ
+  const updateError = (error, stateUpdater) => {
+    stateUpdater(error);
+    setTimeout(() => {
+      stateUpdater("");
+    }, 4500);
+  };
+
+  //Validating email
+  const isValidEmail = (value) => {
+    const regx = /^([A-Za-z0-9_\-\.])+\@([[A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    return regx.test(value);
+  };
+
+  //Conditions for Sign In
+  const isValidForm = () => {
+    //Only if all of the fields have value
+    if (email == "" && password == "")
+      return updateError("Required all fields!", setError);
+    //Validating email
+    if (!isValidEmail(email))
+      return updateError("Invalid email address", setError);
+    //
+    if (password == "")
+      return updateError("Required a password field!", setError);
+    return true;
+  };
+
   const handleOnSubmit = () => {
-    if (email != "" && password != "") {
-      signIn(email, password);
+    if (isValidForm()) {
+      signIn(email, password, updateError, error);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Sign In</Text>
+      {error ? (
+        <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
+          {error}
+        </Text>
+      ) : null}
       {/* Email*/}
       <FormInput
+        autoCapitalize="none"
         labelText="Email"
         placeholderText="Enter your email"
         onChangeText={(value) => setEmail(value)}

@@ -6,6 +6,7 @@ import {
   Alert,
   Button,
   ToastAndroid,
+  KeyboardAvoidingView,
 } from "react-native";
 import FormButton from "../components/shared/FormButton";
 import FormInput from "../components/shared/FormInput";
@@ -83,7 +84,8 @@ const SignUpScreen = ({ navigation }) => {
   };*/
 
   return (
-    <SafeAreaView
+    <KeyboardAvoidingView
+      behavior="padding"
       style={{
         flex: 1,
         backgroundColor: COLORS.white,
@@ -165,7 +167,7 @@ const SignUpScreen = ({ navigation }) => {
           Sign in
         </Text>
       </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 

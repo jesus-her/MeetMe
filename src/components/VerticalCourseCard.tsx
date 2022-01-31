@@ -43,19 +43,35 @@ const VerticalCourseCard = ({
           borderRadius: SIZES.radius,
         }}
       >
-        <Image
-          source={{ uri: quizImage }}
-          resizeMode="cover"
-          style={{
-            height: 100,
-            width: 100,
-            alignSelf: "center",
+        {quizImage != "" ? (
+          <Image
+            source={{ uri: quizImage }}
+            resizeMode="cover"
+            style={{
+              height: 110,
+              width: 110,
+              alignSelf: "center",
+              borderWidth: 1,
+              borderColor: COLORS.gray20,
+              borderRadius: 60,
+            }}
+          />
+        ) : (
+          <Image
+            source={require("../../assets/icons/laughing.png")}
+            resizeMode="cover"
+            style={{
+              height: 110,
+              width: 110,
+              alignSelf: "center",
+              borderRadius: 60,
 
-            borderRadius: 50,
-            borderColor: COLORS.white,
-            borderWidth: 2,
-          }}
-        />
+              tintColor: COLORS.white,
+              borderWidth: 1,
+              borderColor: COLORS.gray20,
+            }}
+          />
+        )}
       </LinearGradient>
 
       {/* Details */}

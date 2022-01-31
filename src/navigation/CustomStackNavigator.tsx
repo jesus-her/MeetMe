@@ -14,6 +14,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import CustomTab from "./CustomTab";
+import ByQuizId from "../screens/ByQuizId";
 
 const Stack = createStackNavigator();
 

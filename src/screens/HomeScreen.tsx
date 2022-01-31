@@ -19,6 +19,8 @@ import { getQuizzes } from "../utils/database";
 import VerticalCourseCard from "../components/VerticalCourseCard";
 import HorizontalCourseCard from "../components/HorizontalCourseCard";
 import LineDivider from "../components/LineDivider";
+import { useScrollToTop } from "@react-navigation/native";
+import ModalFindByQuizId from "../components/shared/ModalFindByQuizId";
 
 const Section = ({ containerStyle, title, onPress, children }) => {
   return (
@@ -60,6 +62,10 @@ const Section = ({ containerStyle, title, onPress, children }) => {
 const HomeScreen = ({ navigation }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [modalFindByQuizIdVisible, setModalFindByQuizIdVisible] =
+    useState(false);
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
 
   /*const [currentQuizImage, setCurrentQuizImage] = useState(
       route.params.currentQuizImage
@@ -89,9 +95,9 @@ const HomeScreen = ({ navigation }) => {
         source={images.card}
         style={{
           alignItems: "flex-start",
-          paddingVertical: SIZES.padding,
+          paddingVertical: SIZES.base,
           marginTop: SIZES.padding,
-          marginHorizontal: SIZES.padding,
+          marginHorizontal: SIZES.radius,
         }}
         imageStyle={{
           borderRadius: SIZES.radius,
@@ -157,12 +163,24 @@ const HomeScreen = ({ navigation }) => {
 
           />*/}
         <CustomButton2
-          label="My Quiz"
+          label="Create your Quiz"
           colors={["#ff91b9", COLORS.secondary]}
           onPress={() => {
             navigation.navigate("TabCreateQuiz");
           }}
-          icon={require("../../assets/HomeScreen/forma-de-vineta.png")}
+          icon={require("../../assets/icons/writing.png")}
+        />
+        <ModalFindByQuizId
+          modalFindByQuizIdVisible={modalFindByQuizIdVisible}
+          setModalFindByQuizIdVisible={setModalFindByQuizIdVisible}
+        />
+        <CustomButton2
+          label="Find by Quiz ID"
+          colors={["#ff91b9", COLORS.secondary]}
+          onPress={() => {
+            navigation.navigate("FindByQuizId");
+          }}
+          icon={require("../../assets/icons/codigo-qr.png")}
         />
       </ImageBackground>
     );
@@ -172,6 +190,7 @@ const HomeScreen = ({ navigation }) => {
     return (
       <FlatList
         horizontal
+        ref={ref}
         showsHorizontalScrollIndicator={false}
         data={allQuizzes}
         onRefresh={getAllQuizzes}
@@ -256,6 +275,7 @@ const HomeScreen = ({ navigation }) => {
         style={styles.container}
       >
         <ScrollView
+          ref={ref}
           contentContainerStyle={{
             paddingBottom: 150,
           }}

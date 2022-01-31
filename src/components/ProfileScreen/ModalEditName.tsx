@@ -19,18 +19,29 @@ const ModalEditName = ({ modalNameVisible, setModalNameVisible, title }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newName, setNewName] = useState("");
   //Reauthenticate
-  reauthenticate = (currentPassword) => {
+  /* reauthenticate = (currentPassword) => {
     var user = auth.currentUser;
     var cred = firebase.auth.EmailAuthProvider.credential(
       user.email,
       currentPassword
     );
     return user.reauthenticateWithCredential(cred);
-  };
+  };*/
 
   //Set a new password
   const handleOnChangeName = () => {
-    this.reauthenticate(currentPassword).then(() => {
+    var user = auth.currentUser;
+    user
+      .updateProfile({ displayName: newName })
+      .then(() => {
+        ToastAndroid.show("New name saved!", ToastAndroid.LONG);
+        setNewName("");
+        setModalNameVisible(false);
+      })
+      .catch((error) => {
+        Alert.alert(error.message);
+      });
+    /*  this.reauthenticate(currentPassword).then(() => {
       var user = auth.currentUser;
       user
         .updateProfile({ displayName: newName })
@@ -43,9 +54,9 @@ const ModalEditName = ({ modalNameVisible, setModalNameVisible, title }) => {
         .catch((error) => {
           Alert.alert(error.message);
         });
-    });
+    });*/
   };
-
+  const user = auth.currentUser;
   return (
     <Modal
       animationType="fade"
@@ -86,18 +97,18 @@ const ModalEditName = ({ modalNameVisible, setModalNameVisible, title }) => {
               }}
             >
               {/*Authentication Password */}
-              <FormInput
+              {/* <FormInput
                 autoCapitalize="none"
                 labelText="Current Password"
                 placeholderText="Enter your current password"
                 secureTextEntry={true}
                 value={currentPassword}
                 onChangeText={(value) => setCurrentPassword(value)}
-              />
+              />*/}
               {/*Enter a new (password, email, etc)*/}
               <FormInput
-                labelText="New Name"
-                placeholderText="Enter your new name"
+                labelText="Name"
+                placeholderText={user.displayName}
                 secureTextEntry={false}
                 value={newName}
                 onChangeText={(value) => setNewName(value)}

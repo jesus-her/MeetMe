@@ -107,14 +107,25 @@ const Slide = ({
                 borderRadius: SIZES.heightNav,
               }}
             >
-              <Image
-                source={{ uri: quizImg }}
-                style={{
-                  width: SIZES.heightNav / 1.3,
-                  height: SIZES.heightNav / 1.3,
-                  borderRadius: SIZES.heightNav,
-                }}
-              />
+              {quizImage != "" ? (
+                <Image
+                  source={{ uri: quizImg }}
+                  style={{
+                    width: SIZES.heightNav / 1.3,
+                    height: SIZES.heightNav / 1.3,
+                    borderRadius: SIZES.heightNav,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={require("../../../../assets/icons/laughing.png")}
+                  style={{
+                    width: SIZES.heightNav / 1.3,
+                    height: SIZES.heightNav / 1.3,
+                    borderRadius: SIZES.heightNav,
+                  }}
+                />
+              )}
               <View style={{ maxWidth: SIZES.width / 2 }}>
                 {/* Title */}
                 <Text

@@ -65,8 +65,10 @@ const HorizontalCourseCard = ({
             height: 120,
             width: 120,
             borderRadius: 60,
-            borderWidth: 3,
-            borderColor: COLORS.primary,
+            /* borderWidth: 5,
+            borderColor: COLORS.primary2,*/
+            borderWidth: 1,
+            borderColor: COLORS.gray20,
           }}
         />
       ) : (
@@ -77,8 +79,8 @@ const HorizontalCourseCard = ({
             height: 120,
             width: 120,
             borderRadius: 60,
-            borderWidth: 3,
-            borderColor: COLORS.primary,
+            borderWidth: 1,
+            borderColor: COLORS.gray20,
           }}
         />
       )}
@@ -126,8 +128,8 @@ const HorizontalCourseCard = ({
           }}
         >
           <IconLabel
-            icon={icons.star}
-            label="holaaa"
+            icon={icons.solve}
+            label="14 veces jugado"
             containerStyle={{
               marginLeft: 0,
             }}
@@ -138,8 +140,8 @@ const HorizontalCourseCard = ({
             }}
             labelStyle={{
               marginLeft: 5,
-              color: COLORS.black,
-              fontWeight: "bold",
+              color: COLORS.primary2,
+              ...FONTS.h4,
             }}
           />
 

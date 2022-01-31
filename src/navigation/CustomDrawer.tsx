@@ -8,8 +8,9 @@ import HomeScreen from "../screens/HomeScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import Picker from "../Picker/Picker";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import CustomTab from "./CustomTab";
+import ByQuizId from "../screens/ByQuizId";
 
 const Drawer = createDrawerNavigator();
 
@@ -18,7 +19,7 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
     <>
       <View style={{ flex: 1 }}>
         <Drawer.Navigator
-          initialRouteName="BottomTab"
+          initialRouteName="Home"
           drawerContent={(props) => <CustomDrawerContent {...props} />}
           screenOptions={{
             drawerActiveBackgroundColor: COLORS.secondary,
@@ -54,6 +55,17 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
               headerShown: false,
               drawerIcon: ({ color }) => (
                 <Ionicons name="home-outline" size={22} color={color} />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="FindByQuizId"
+            component={ByQuizId}
+            options={{
+              title: "Quiz ID",
+              headerShown: false,
+              drawerIcon: ({ color }) => (
+                <FontAwesome name="qrcode" size={22} color={color} />
               ),
             }}
           />

@@ -5,6 +5,7 @@ export const createQuiz = (currentQuizId, title, quizImg, owner) => {
     title,
     quizImg,
     owner,
+    currentQuizId,
   });
 };
 

@@ -31,7 +31,7 @@ const sun = require("../../assets/icons/sun.png");
 const time = require("../../assets/icons/time_3.png");
 const web_design = require("../../assets/icons/web_design.png");
 const newQuiz = require("../../assets/icons/new.png");
-
+const solve = require("../../assets/icons/extension.png");
 export default {
   animation,
   back,
@@ -65,4 +65,5 @@ export default {
   time,
   web_design,
   newQuiz,
+  solve,
 };

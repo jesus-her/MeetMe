@@ -2,7 +2,7 @@ import { ToastAndroid } from "react-native";
 import { auth, updateProfile } from "../../firebase";
 import { useEffect, useState } from "react";
 
-export const signIn = (email, password) => {
+export const signIn = (email, password, setError, error) => {
   auth
     .signInWithEmailAndPassword(email, password)
     .then((userCredentials) => {
@@ -12,6 +12,12 @@ export const signIn = (email, password) => {
       console.log(user.displayName);
     })
     .catch((err) => {
+      // console.log(test.message);
+      setError("The password is invalid");
+      /*error = err.Error;*/
+      /*console.log(err.Error);*/
+      // console.log("hola", err[0]);
+      /* alert(err);*/
       console.log(err);
     });
 };

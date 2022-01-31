@@ -16,7 +16,7 @@ const CheckButton2 = ({ label, onPress, icon, colors }) => {
       style={styles.container}
     >
       <RectButton style={styles.button} onPress={onPress}>
-        <Image source={icon} resizeMode="contain" style={styles.icon} />
+        <Image source={icon} resizeMode="cover" style={styles.icon} />
         <Text style={styles.label}>{label}</Text>
       </RectButton>
       <View style={styles.shadow} />
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     height: SIZES.width / 12,
     backgroundColor: "white",
     alignSelf: "center",
+    marginBottom: SIZES.radius,
   },
   button: {
     width: "100%",
@@ -48,13 +49,14 @@ const styles = StyleSheet.create({
     height: SIZES.width / 12 + 5,
   },
   icon: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     tintColor: COLORS.white,
     marginRight: 10,
+    resizeMode: "cover",
   },
   label: {
-    ...FONTS.h2,
+    ...FONTS.h3,
     color: COLORS.white,
   },
 });

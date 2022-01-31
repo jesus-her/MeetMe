@@ -50,6 +50,7 @@ const CustomTab = () => {
         component={FindQuizScreen}
         options={{
           tabBarBadge: 5,
+
           tabBarBadgeStyle: { backgroundColor: COLORS.primary2 },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="search" color={color} size={SIZES.heightNav / 2} />

@@ -36,6 +36,7 @@ const CreateQuizScreen = ({ navigation }) => {
   const [quizImg, setQuizImg] = useState("");
   const [error, setError] = useState("");
   const owner = auth.currentUser.displayName;
+
   //Validate Create QUIZ
   const updateError = (error, stateUpdater) => {
     stateUpdater(error);
@@ -64,8 +65,10 @@ const CreateQuizScreen = ({ navigation }) => {
       navigation.navigate("MyQuizScreen", {
         currentQuizId: currentQuizId,
         currentQuizTitle: title,
-        currentQuizImage: imageUrl,
+        currentQuizImage: quizImg,
         quizOwner: owner,
+        currentImageUri: imageUri,
+        setCurrentQuizImage: setQuizImg,
       });
 
       ToastAndroid.show("Quiz Saved", ToastAndroid.SHORT);
@@ -132,8 +135,7 @@ const CreateQuizScreen = ({ navigation }) => {
             paddingTop: 30,
             borderRadius: SIZES.radius,
             paddingHorizontal: SIZES.radius,
-            marginBottom: SIZES.padding,
-            width: "100%",
+            margin: SIZES.padding,
             alignSelf: "center",
             alignItems: "center",
           }}
@@ -227,8 +229,7 @@ const CreateQuizScreen = ({ navigation }) => {
       <ScrollView
         style={{
           backgroundColor: COLORS.white,
-          padding: SIZES.padding,
-          flex: 1,
+          height: SIZES.heightPlayScreen,
         }}
       >
         {/*Render Header*/}
@@ -238,7 +239,7 @@ const CreateQuizScreen = ({ navigation }) => {
         {renderQuizCardPreview()}
         <View
           style={{
-            width: "95%",
+            width: SIZES.width - SIZES.padding * 2,
             backgroundColor: COLORS.white,
             elevation: 5,
             borderRadius: SIZES.radius,
@@ -298,12 +299,13 @@ const CreateQuizScreen = ({ navigation }) => {
           )}
         </View>
         {/*Save Quiz*/}
-
-        <FormButton
-          labelText="Save Quiz"
-          handleOnPress={handleQuizSave}
-          style={{ marginTop: SIZES.padding }}
-        />
+        <View style={{ margin: SIZES.padding }}>
+          <FormButton
+            labelText="Save Quiz"
+            handleOnPress={handleQuizSave}
+            style={{ marginTop: SIZES.padding }}
+          />
+        </View>
       </ScrollView>
     </>
   );

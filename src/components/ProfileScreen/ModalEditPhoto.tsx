@@ -24,6 +24,7 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
   const [photoURL, setPhotoURL] = useState("https://i.imgur.com/IN5sYw6.png");
   const [imageUri, setImageUri] = useState("https://i.imgur.com/IN5sYw6.png");
   //Reauthenticate
+  /*
   reauthenticate = (currentPassword) => {
     var user = auth.currentUser;
     var cred = firebase.auth.EmailAuthProvider.credential(
@@ -32,32 +33,39 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
     );
     return user.reauthenticateWithCredential(cred);
   };
+*/
 
   const handleOnChangePhoto = () => {
-    if (photoURL != "https://i.imgur.com/IN5sYw6.png") {
-      // Load PhotoURL to Firebase  SignUp
-      this.reauthenticate(currentPassword)
-        .then(() => {
-          var user = auth.currentUser;
-          user
-            .updateProfile({ photoURL: photoURL })
-            .then(() => {
-              ToastAndroid.show("New photo saved!", ToastAndroid.LONG);
-              setCurrentPassword("");
-              setModalPhotoVisible(false);
-            })
-            .catch((error) => {
-              Alert.alert(error.message);
-            });
-        })
-        .catch((error) => {
-          Alert.alert(error.message);
-        });
-    } else {
-      ToastAndroid.show("No photo selected", ToastAndroid.LONG);
-      setCurrentPassword("");
-      setModalPhotoVisible(false);
-    }
+    var user = auth.currentUser;
+    user
+      .updateProfile({ photoURL: photoURL })
+      .then(() => {
+        ToastAndroid.show("New photo saved!", ToastAndroid.LONG);
+        setModalPhotoVisible(false);
+        setImageUri("https://i.imgur.com/IN5sYw6.png");
+      })
+      .catch((error) => {
+        Alert.alert(error.message);
+      });
+
+    // Load PhotoURL to Firebase  SignUp
+    // this.reauthenticate(currentPassword)
+    //   .then(() => {
+    //     var user = auth.currentUser;
+    //     user
+    //       .updateProfile({ photoURL: photoURL })
+    //       .then(() => {
+    //         ToastAndroid.show("New photo saved!", ToastAndroid.LONG);
+    //         setCurrentPassword("");
+    //         setModalPhotoVisible(false);
+    //       })
+    //       .catch((error) => {
+    //         Alert.alert(error.message);
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     Alert.alert(error.message);
+    //   });
   };
 
   const selectImage = async () => {
@@ -135,14 +143,14 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
               />
             </View>
             <View style={styles.textInputContainer}>
-              <FormInput
+              {/*<FormInput
                 autoCapitalize="none"
                 labelText="Current Password"
                 placeholderText="Enter your current password"
                 secureTextEntry={true}
                 value={currentPassword}
                 onChangeText={(value) => setCurrentPassword(value)}
-              />
+              />*/}
               <View
                 style={{
                   width: "100%",
@@ -163,8 +171,8 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
                   }}
                   onPress={selectImage}
                 >
-                  {user.photoURL === null ? (
-                    <Image
+                  {/*  {user.photoURL === null ? (*/}
+                  {/* <Image
                       source={{ uri: photoURL }}
                       resizeMode="cover"
                       style={{
@@ -174,21 +182,21 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
                         borderWidth: 2,
                         borderColor: COLORS.white,
                       }}
-                    />
-                  ) : (
-                    <Image
-                      source={{
-                        uri: imageUri,
-                      }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: 50,
-                        borderWidth: 2,
-                        borderColor: COLORS.white,
-                      }}
-                    />
-                  )}
+                    />*/}
+
+                  <Image
+                    source={{
+                      uri: imageUri,
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: 50,
+                      borderWidth: 2,
+                      borderColor: COLORS.white,
+                    }}
+                  />
+
                   <View
                     style={{
                       position: "absolute",

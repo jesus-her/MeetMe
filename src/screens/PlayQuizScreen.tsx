@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FlatList,
   Image,
@@ -19,6 +19,8 @@ import HorizontalSwipeFirebase from "../components/PlayScreen/HorizontalSwipe/Ho
 import CheckButton from "../components/CheckButton";
 import LiquidSwipe from "../components/PlayScreen/LiquidSwipe";
 import { IconButton } from "../components/ProfileScreen";
+import { useScrollToTop } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const PlayQuizScreen = ({ navigation, route }) => {
   const [currentQuizId, setCurrentQuizId] = useState(route.params.quizId);
@@ -30,6 +32,16 @@ const PlayQuizScreen = ({ navigation, route }) => {
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [isResultModalVisible, setIsResultModalVisible] = useState(false);
+
+  /*  const ref = React.useRef<FlatList>(null);
+  const [indexx, setIndexx] = useState(-1);
+
+  useEffect(() => {
+    ref.current?.scrollToIndex({
+      indexx,
+      animated: false,
+    });
+  }, []);*/
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -59,7 +71,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
 
       //Create 1 option only
       /* question.optionOne = shuffleArray([question.correct_answer]);
-      await tempQuestions.push(question);*/
+            await tempQuestions.push(question);*/
 
       // Create Single array of all options and shuffle it
       question.allOptions = shuffleArray([
@@ -143,14 +155,27 @@ const PlayQuizScreen = ({ navigation, route }) => {
             flexDirection: "row",
           }}
         >
-          <Image
-            source={{ uri: quizImg }}
-            style={{
-              width: SIZES.heightNav / 1.5,
-              height: SIZES.heightNav / 1.5,
-              borderRadius: SIZES.heightNav,
-            }}
-          />
+          {quizImg != "" ? (
+            <Image
+              source={{ uri: quizImg }}
+              style={{
+                width: SIZES.heightNav / 1.5,
+                height: SIZES.heightNav / 1.5,
+                borderRadius: SIZES.heightNav,
+              }}
+            />
+          ) : (
+            <Image
+              source={require("../../assets/icons/laughing.png")}
+              style={{
+                width: SIZES.heightNav / 1.5,
+                height: SIZES.heightNav / 1.5,
+                borderRadius: SIZES.heightNav,
+                tintColor: COLORS.black,
+              }}
+            />
+          )}
+
           <View>
             {/* Title */}
             <Text style={{ ...FONTS.h3, marginLeft: 10 }}>{title}</Text>
@@ -240,6 +265,26 @@ const PlayQuizScreen = ({ navigation, route }) => {
               backgroundColor: COLORS.white,
             }}
           >
+            {/* Result Modal */}
+            <ResultModal
+              isModalVisible={isResultModalVisible}
+              correctCount={correctCount}
+              incorrectCount={incorrectCount}
+              totalCount={questions.length}
+              handleOnClose={() => {
+                setIsResultModalVisible(false);
+              }}
+              handleRetry={() => {
+                setCorrectCount(0);
+                setIncorrectCount(0);
+                getQuizAndQuestionDetails();
+                setIsResultModalVisible(false);
+              }}
+              handleHome={() => {
+                navigation.goBack();
+                setIsResultModalVisible(false);
+              }}
+            />
             <LiquidSwipe
               question={item.question}
               quizImage={quizImg}
@@ -249,72 +294,85 @@ const PlayQuizScreen = ({ navigation, route }) => {
               quizImg={quizImg}
               quizTitle={title}
               /*ListFooterComponent={
-                <CheckButton
-                  handleOnPress={() => {
-                    setIsResultModalVisible(true);
-                  }}
-                />
-              }*/
+                              <CheckButton
+                                handleOnPress={() => {
+                                  setIsResultModalVisible(true);
+                                }}
+                              />
+                            }*/
 
               allOptions={item.allOptions.map((option, optionIndex) => {
                 return (
-                  <TouchableOpacity
-                    key={optionIndex}
-                    style={{
-                      paddingVertical: SIZES.radius,
-                      paddingHorizontal: SIZES.padding,
-                      borderRadius: SIZES.radius,
-                      /*borderWidth: 2,
-                      borderColor: COLORS.black,*/
-                      backgroundColor: getOptionBgColor(item, option),
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                      width: "100%",
-                    }}
-                    onPress={() => {
-                      if (item.selectedOption) {
-                        return null;
-                      }
-                      // Increase correct/incorrect count
-                      if (option == item.correct_answer) {
-                        setCorrectCount(correctCount + 1);
-                      } else {
-                        setIncorrectCount(incorrectCount + 1);
-                      }
-                      if (option == null) {
-                        return "no";
-                      }
+                  <>
+                    {
+                      option != null ? (
+                        <TouchableOpacity
+                          key={optionIndex}
+                          style={{
+                            paddingVertical: SIZES.radius,
+                            paddingHorizontal: SIZES.padding,
+                            borderRadius: SIZES.radius,
+                            /*borderWidth: 2,
+                                borderColor: COLORS.black,*/
+                            backgroundColor: getOptionBgColor(item, option),
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "flex-start",
+                            width: "100%",
+                          }}
+                          onPress={() => {
+                            if (item.selectedOption) {
+                              return null;
+                            }
+                            // Increase correct/incorrect count
+                            if (option == item.correct_answer) {
+                              setCorrectCount(correctCount + 1);
+                            } else {
+                              setIncorrectCount(incorrectCount + 1);
+                            }
 
-                      let tempQuestions = [...questions];
-                      tempQuestions[index].selectedOption = option;
-                      setQuestions([...tempQuestions]);
-                    }}
-                  >
-                    <Text
-                      style={{
-                        width: 25,
-                        height: 25,
-                        borderWidth: 3,
-                        borderColor: COLORS.black,
-                        textAlign: "center",
-                        marginRight: SIZES.radius,
-                        borderRadius: 25,
-                        color: getOptionTextColor(item, option),
-                        ...FONTS.h3,
-                      }}
-                    >
-                      {optionIndex + 1}
-                    </Text>
-                    <Text
-                      style={{
-                        ...FONTS.h3,
-                        color: getOptionTextColor(item, option),
-                      }}
-                    >
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
+                            let tempQuestions = [...questions];
+                            tempQuestions[index].selectedOption = option;
+                            setQuestions([...tempQuestions]);
+                          }}
+                        >
+                          <LinearGradient
+                            colors={[
+                              COLORS.primary,
+                              COLORS.primary2,
+                              COLORS.primary3,
+                            ]}
+                            style={{
+                              width: 25,
+                              height: 25,
+                              borderWidth: 3,
+                              borderColor: COLORS.black,
+                              marginRight: SIZES.padding,
+
+                              borderRadius: 25,
+                              backgroundColor: getOptionTextColor(item, option),
+                            }}
+                          />
+
+                          <Text
+                            style={{
+                              ...FONTS.h3,
+                              color: getOptionTextColor(item, option),
+                            }}
+                          >
+                            {option}
+                          </Text>
+                        </TouchableOpacity>
+                      ) : null
+                      /*<View
+                        style={{
+                          width: "100%",
+                          height: 15,
+                          backgroundColor: COLORS.white,
+                        }}
+                      />*/
+                    }
+                  </>
                 );
               })}
             />
@@ -395,7 +453,10 @@ const PlayQuizScreen = ({ navigation, route }) => {
           </View>
         )}
         ListFooterComponent={() => (
-          <View
+          <LinearGradient
+            colors={["#ff91b9", COLORS.secondary]}
+            start={{ x: 1, y: 0.1 }}
+            end={{ x: 0.1, y: 0.75 }}
             style={{
               height: SIZES.heightPlayScreen,
               alignItems: "center",
@@ -407,29 +468,8 @@ const PlayQuizScreen = ({ navigation, route }) => {
                 setIsResultModalVisible(true);
               }}
             />
-          </View>
+          </LinearGradient>
         )}
-      />
-
-      {/* Result Modal */}
-      <ResultModal
-        isModalVisible={isResultModalVisible}
-        correctCount={correctCount}
-        incorrectCount={incorrectCount}
-        totalCount={questions.length}
-        handleOnClose={() => {
-          setIsResultModalVisible(false);
-        }}
-        handleRetry={() => {
-          setCorrectCount(0);
-          setIncorrectCount(0);
-          getQuizAndQuestionDetails();
-          setIsResultModalVisible(false);
-        }}
-        handleHome={() => {
-          navigation.goBack();
-          setIsResultModalVisible(false);
-        }}
       />
     </SafeAreaView>
   );

@@ -4,7 +4,7 @@ import { COLORS, FONTS, icons, SIZES } from "../../constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { auth } from "../../../firebase";
 
-const QuizCard = ({ currentQuizImage, currentQuizTitle, owner }) => {
+const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
   const user = auth.currentUser;
   return (
     <>
@@ -25,10 +25,12 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner }) => {
         }}
       >
         {/*Profile Image*/}
-        <TouchableOpacity
+        <View
           style={{
-            width: 90,
-            height: 90,
+            width: 100,
+            height: 100,
+            alignSelf: "center",
+            justifyContent: "center",
           }}
         >
           {currentQuizImage != "" ? (
@@ -39,9 +41,10 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner }) => {
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 45,
+                borderRadius: 50,
                 borderWidth: 2,
                 borderColor: COLORS.white,
+                alignSelf: "center",
               }}
             />
           ) : (
@@ -51,10 +54,9 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner }) => {
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 45,
+                borderRadius: 50,
                 borderWidth: 2,
-                borderColor: COLORS.black,
-                tintColor: COLORS.white,
+                borderColor: COLORS.white,
                 alignSelf: "center",
               }}
             />
@@ -91,7 +93,7 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner }) => {
               />
             </View>
           </View>*/}
-        </TouchableOpacity>
+        </View>
         {/* Details */}
         <View
           style={{
@@ -128,6 +130,19 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner }) => {
             }}
           >
             {owner}
+          </Text>
+          <Text
+            style={{
+              ...FONTS.h4,
+              color: COLORS.primary,
+              textAlign: "center",
+              backgroundColor: COLORS.white,
+              borderRadius: SIZES.radius,
+              paddingHorizontal: SIZES.base,
+              marginTop: SIZES.base,
+            }}
+          >
+            Quiz ID: {QuizID}
           </Text>
         </View>
       </LinearGradient>

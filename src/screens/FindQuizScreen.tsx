@@ -8,24 +8,33 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Button,
+  TouchableHighlight,
 } from "react-native";
 import FormButton from "../components/shared/FormButton";
 import { getQuizzes } from "../utils/database";
 import { COLORS, FONTS, SIZES } from "../constants";
 import QuizCard from "../components/shared/QuizCard";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import HeaderSection from "../components/shared/HeaderSection";
 import { BlurView } from "expo-blur";
 import images from "../constants/images";
 import { IconButton } from "../components/ProfileScreen";
 import icons from "../constants/icons";
+import { useNavigation, useScrollToTop } from "@react-navigation/native";
+import SearchBar from "react-native-searchbar";
+import { Searchbar } from "react-native-paper";
 
 const FindQuizScreen = ({ navigation, route }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
   const [filterData, setFilterData] = useState("");
+  const [searchBar, setSearchBar] = useState(false);
+
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
 
   /*const [currentQuizImage, setCurrentQuizImage] = useState(
       route.params.currentQuizImage
@@ -67,6 +76,39 @@ const FindQuizScreen = ({ navigation, route }) => {
       setSearch(text);
     }
   };
+
+  //Use
+  /* useEffect(() => {
+    navigation.setOptions({
+      headerLargeTitle: true,
+      headerTitle: "Finddd",
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Stack")}
+          style={{
+            backgroundColor: "purple",
+            width: 30,
+            height: 30,
+            borderRadius: 10,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: "center",
+              color: "white",
+            }}
+          >
+            +
+          </Text>
+        </TouchableOpacity>
+      ),
+      headerSearchBarOptions: {
+        placeholder: "Friends",
+      },
+    });
+  }, [navigation]);*/
   return (
     <SafeAreaView
       style={{
@@ -76,6 +118,41 @@ const FindQuizScreen = ({ navigation, route }) => {
       }}
     >
       <StatusBar backgroundColor={COLORS.primary} barStyle={"light-content"} />
+      {/*Find by Quiz Id*/}
+      <TouchableHighlight
+        style={{
+          borderRadius: 50,
+          backgroundColor: COLORS.secondary,
+          width: 55,
+          height: 55,
+          position: "absolute",
+          bottom: SIZES.radius,
+          left: SIZES.radius,
+          zIndex: 10,
+          elevation: 20,
+        }}
+        onPress={() => {
+          navigation.navigate("FindByQuizId");
+        }}
+      >
+        <LinearGradient
+          colors={["#ff91b9", COLORS.secondary]}
+          start={{ x: 1, y: 0.1 }}
+          end={{ x: 1, y: 0.75 }}
+          style={{
+            width: 55,
+            height: 55,
+            borderRadius: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            position: "relative",
+          }}
+        >
+          <FontAwesome name="qrcode" size={30} color={COLORS.white} />
+        </LinearGradient>
+      </TouchableHighlight>
+
       {/*Header*/}
       <LinearGradient
         colors={[COLORS.primary, COLORS.primary2]}
@@ -102,36 +179,53 @@ const FindQuizScreen = ({ navigation, route }) => {
           onPress={() => navigation.openDrawer()}
         />
 
-        <TextInput
+        {/*Search Bar*/}
+        <Searchbar
           style={{
-            marginLeft: SIZES.base,
+            marginHorizontal: SIZES.base,
             ...FONTS.h3,
             fontWeight: "bold",
-            padding: 10,
-            borderColor: COLORS.gray20,
-            borderBottomWidth: 1,
-            width: "80%",
-            borderRadius: 5,
+            paddingHorizontal: 10,
+            width: "90%",
+            height: "55%",
+            borderRadius: 50,
             color: COLORS.white,
           }}
           value={search}
           placeholder="Search here"
-          placeholderTextColor={COLORS.gray10}
+          placeholderTextColor={COLORS.gray50}
           onChangeText={(text) => searchFilter(text)}
         />
-        <Image
+
+        {/*<Image
           source={icons.search}
           style={{
             width: 25,
             height: 25,
             tintColor: COLORS.gray10,
           }}
-        />
+        />*/}
       </LinearGradient>
+
+      {/* <View style={{ width: 500, height: 50 }}>
+        <SearchBar
+          data={allQuizzes}
+          placeholder="holaaa"
+          handleCahngeText={(text) => searchFilter(text)}
+          heightAdjust={5}
+        />
+      </View>
+      <Button
+        title="shw"
+        onPress={() => {
+          setSearchBar(false);
+        }}
+      />*/}
 
       {/* Quiz list */}
       <FlatList
         data={filterData}
+        ref={ref}
         onRefresh={getAllQuizzes}
         refreshing={refreshing}
         keyExtractor={(item, index) => index.toString()}
@@ -157,14 +251,14 @@ const FindQuizScreen = ({ navigation, route }) => {
               currentQuizTitle={quiz.title}
               currentQuizImage={quiz.quizImg}
               owner={quiz.owner}
+              QuizID={quiz.currentQuizId}
             />
             {/* {quiz.description != "" ? (
                 <Text style={{ opacity: 0.5 }}>{quiz.description}</Text>
               ) : null}*/}
-            <TouchableOpacity
+            <TouchableHighlight
               style={{
                 borderRadius: 50,
-                backgroundColor: COLORS.secondary,
                 width: "100%",
               }}
               onPress={() => {
@@ -178,7 +272,7 @@ const FindQuizScreen = ({ navigation, route }) => {
               }}
             >
               <LinearGradient
-                colors={["#ff91b9", COLORS.secondary]}
+                colors={["#fff", COLORS.white]}
                 start={{ x: 1, y: 0.1 }}
                 end={{ x: 1, y: 0.75 }}
                 style={{
@@ -193,7 +287,11 @@ const FindQuizScreen = ({ navigation, route }) => {
                 }}
               >
                 <Text
-                  style={{ color: COLORS.white, ...FONTS.h2, letterSpacing: 5 }}
+                  style={{
+                    color: COLORS.primary,
+                    ...FONTS.h2,
+                    letterSpacing: 5,
+                  }}
                 >
                   Play
                 </Text>
@@ -202,13 +300,13 @@ const FindQuizScreen = ({ navigation, route }) => {
                   size={22}
                   style={{
                     alignSelf: "center",
-                    color: COLORS.white,
+                    color: COLORS.secondary,
                     position: "absolute",
                     right: SIZES.padding,
                   }}
                 />
               </LinearGradient>
-            </TouchableOpacity>
+            </TouchableHighlight>
           </View>
         )}
       />

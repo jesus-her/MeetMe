@@ -7,7 +7,7 @@ import { auth } from "../../../firebase";
 import images from "../../constants/images";
 import { LinearGradient } from "expo-linear-gradient";
 
-const HeaderSection = ({ title, onPress, icon, source }) => {
+const HeaderSection = ({ title, onPress, icon, source, style }) => {
   const user = auth.currentUser;
   return (
     <>
@@ -37,6 +37,7 @@ const HeaderSection = ({ title, onPress, icon, source }) => {
           backgroundColor: COLORS.white,
           elevation: 7,
           width: "100%",
+          ...style,
         }}
       >
         <IconButton

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Slider from "./Slider";
 import Slide from "./Slide";
-import { Text, View } from "react-native";
+import { Button, Text, TouchableOpacity, View } from "react-native";
 import { COLORS, FONTS, SIZES } from "../../../constants";
 /*import CustomButton from "../components/CustomButton";*/
 import CheckButton from "../../CheckButton";
@@ -66,6 +66,9 @@ const LiquidSwipe = ({
   quizOwner,
   quizImg,
   quizTitle,
+  indexx,
+  setIndexx,
+  data,
 }) => {
   const [index, setIndex] = useState(0);
   const prev = slides[index - 1];
@@ -89,6 +92,23 @@ const LiquidSwipe = ({
               zIndex: 100,
             }}
           />
+          {/*<TouchableOpacity
+            onPress={() => {
+              if (indexx === data.length - 1) {
+                return;
+              }
+              setIndexx(indexx + 1);
+            }}
+            style={{
+              width: 20,
+              height: 20,
+              position: "absolute",
+              zIndex: 1000,
+              bottom: 10,
+              alignSelf: "center",
+              backgroundColor: "red",
+            }}
+          />*/}
           {index == 0 ? (
             <View
               style={{

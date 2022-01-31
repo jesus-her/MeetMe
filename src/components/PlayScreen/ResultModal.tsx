@@ -3,6 +3,9 @@ import { View, Text, Modal, TouchableOpacity, Image } from "react-native";
 import { COLORS, FONTS, SIZES } from "../../constants";
 import { Ionicons } from "@expo/vector-icons";
 import LiquidProgressFill from "../LiquidProgressFill";
+import { Form } from "formik";
+import FormButton from "../shared/FormButton";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ResultModal = ({
   isModalVisible,
@@ -23,7 +26,7 @@ const ResultModal = ({
       <View
         style={{
           flex: 1,
-          backgroundColor: COLORS.black + "90",
+          backgroundColor: COLORS.black + "50",
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -115,59 +118,103 @@ const ResultModal = ({
 
           {/* Try again */}
 
-          <TouchableOpacity
+          <LinearGradient
+            colors={[COLORS.primary, COLORS.primary2]}
+            start={{ x: 0.1, y: 0.5 }}
+            end={{ x: 1, y: 1 }}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingVertical: 7,
+              margin: 16,
+              borderRadius: 30,
+              alignSelf: "center",
+              borderWidth: 1,
+              borderColor: COLORS.primary,
               width: "100%",
-              backgroundColor: COLORS.primary,
-              marginTop: 20,
-              borderRadius: 50,
+              height: 40,
             }}
-            onPress={handleRetry}
           >
-            <Ionicons
-              name="md-return-up-back"
-              size={25}
-              style={{ color: COLORS.white }}
-            />
-            <Text
+            <TouchableOpacity
               style={{
-                textAlign: "center",
-                color: COLORS.white,
-                marginLeft: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+
+                borderRadius: 30,
+                height: 40,
               }}
+              onPress={handleRetry}
             >
-              Try Again
-            </Text>
-          </TouchableOpacity>
+              <Image
+                source={require("../../../assets/icons/reload.png")}
+                resizeMode="contain"
+                style={{
+                  width: 20,
+                  height: 20,
+                  tintColor: COLORS.white,
+                  marginRight: 10,
+                }}
+              />
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: COLORS.white,
+                  ...FONTS.h3,
+                }}
+              >
+                Try Again
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
           {/* Go Home */}
-          <TouchableOpacity
+          {/* Try again */}
+
+          <LinearGradient
+            colors={[COLORS.primary + "20", COLORS.primary2 + "20"]}
+            start={{ x: 0.1, y: 0.5 }}
+            end={{ x: 1, y: 1 }}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingVertical: 7,
+              margin: 16,
+              borderRadius: 30,
+              alignSelf: "center",
+              borderWidth: 1,
+              borderColor: COLORS.primary,
               width: "100%",
-              backgroundColor: COLORS.primary + "20",
-              marginTop: 20,
-              borderRadius: 50,
+              height: 40,
             }}
-            onPress={handleHome}
           >
-            <Ionicons name="home" size={25} style={{ color: COLORS.primary }} />
-            <Text
+            <TouchableOpacity
               style={{
-                textAlign: "center",
-                color: COLORS.primary,
-                marginLeft: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+
+                borderRadius: 30,
+                height: 40,
               }}
+              onPress={handleHome}
             >
-              Go Home
-            </Text>
-          </TouchableOpacity>
+              <Image
+                source={require("../../../assets/icons/home.png")}
+                resizeMode="contain"
+                style={{
+                  width: 20,
+                  height: 20,
+                  tintColor: COLORS.primary,
+                  marginRight: 10,
+                }}
+              />
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: COLORS.primary,
+                  ...FONTS.h3,
+                }}
+              >
+                Go Home
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
       </View>
     </Modal>

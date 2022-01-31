@@ -2,7 +2,7 @@ import { Dimensions } from "react-native";
 import { StatusBar } from "react-native";
 /*console.log('statusBarHeight: ', StatusBar.currentHeight);*/
 const { width, height } = Dimensions.get("window");
-const heightNavigator = 60;
+const heightNavigator = height / 15;
 
 //https://color.adobe.com/create/color-wheel
 //https://coolors.co/gradient-palette/fc5a51-d7cf07?number=7

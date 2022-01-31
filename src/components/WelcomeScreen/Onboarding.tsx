@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, Animated, StatusBar } from "react-native";
 import slides from "./slides";
 import { useNavigation } from "@react-navigation/native";
 import OnboardingItem from "./OnboardingItem";
-import { SIZES } from "../../constants";
+import { COLORS, SIZES } from "../../constants";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
 
@@ -29,12 +29,13 @@ export default Onboarding = () => {
     <View
       style={{
         width: SIZES.width,
-        height: SIZES.height - StatusBar.currentHeight,
+        height: SIZES.height,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: COLORS.white,
       }}
     >
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 0.75 }}>
         <FlatList
           data={slides}
           horizontal
@@ -55,7 +56,7 @@ export default Onboarding = () => {
       </View>
       <View
         style={{
-          height: SIZES.height / 3,
+          flex: 0.25,
           width: SIZES.width,
           justifyContent: "space-between",
           padding: SIZES.padding,

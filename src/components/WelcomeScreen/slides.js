@@ -4,7 +4,7 @@ export default [
     title: "" + "¡Bienvenido!",
     description:
       "Juega y responde los Quizzes de tus amigos o crea tu propio Quiz y ve qué tanto saben de ti tus amigos ;)",
-    image: require("../../../assets/adaptive-icon_NO_background.png"),
+    image: require("../../../assets/logo/TheQuizLogo.png"),
     emoji: require("../../../assets/WelcomeScreen/emoji_glad.gif"),
   },
   {
