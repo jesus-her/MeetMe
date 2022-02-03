@@ -12,6 +12,7 @@ const VerticalCourseCard = ({
   quizImage,
   owner,
   quizId,
+  quizAttempts,
 }) => {
   const navigation = useNavigation();
   return (
@@ -89,8 +90,36 @@ const VerticalCourseCard = ({
             justifyContent: "center",
             borderRadius: 25,
             backgroundColor: COLORS.secondary,
+            position: "relative",
           }}
         >
+          <View
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <View
+              style={{
+                marginBottom: -10,
+                width: 20,
+                height: 20,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: COLORS.primary2,
+                borderRadius: 15,
+              }}
+            >
+              {/* Camera Icon*/}
+              <Text style={{ ...FONTS.h5, color: COLORS.white }}>
+                {quizAttempts}
+              </Text>
+            </View>
+          </View>
+
           <Image
             source={icons.play}
             resizeMode="contain"

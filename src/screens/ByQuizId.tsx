@@ -30,6 +30,7 @@ import icons from "../constants/icons";
 import { useNavigation, useScrollToTop } from "@react-navigation/native";
 import SearchBar from "react-native-searchbar";
 import { Searchbar } from "react-native-paper";
+import IconLabel from "../components/IconLabel";
 
 const ByQuizId = ({ navigation, route }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
@@ -117,7 +118,7 @@ const ByQuizId = ({ navigation, route }) => {
       behavior="padding"
       style={{
         flex: 1,
-        backgroundColor: COLORS.white,
+
         position: "relative",
       }}
     >
@@ -157,12 +158,8 @@ const ByQuizId = ({ navigation, route }) => {
           }}
         />*/}
       </LinearGradient>
-      <LinearGradient
-        colors={[COLORS.primary2, COLORS.primary]}
-        start={{ x: 1, y: 0.1 }}
-        end={{ x: 1, y: 1 }}
+      <View
         style={{
-          backgroundColor: "red",
           justifyContent: "space-around",
           alignItems: "center",
           height: SIZES.heightPlayScreen,
@@ -172,7 +169,7 @@ const ByQuizId = ({ navigation, route }) => {
           icon={() => <FontAwesome name="qrcode" size={30} color="white" />}
           selectionColor={COLORS.primary3}
           keyboardType="number-pad"
-          theme={{ colors: { text: COLORS.white, accent: "yellow" } }}
+          theme={{ colors: { text: COLORS.white } }}
           style={{
             backgroundColor: COLORS.primary,
             marginHorizontal: SIZES.base,
@@ -189,7 +186,7 @@ const ByQuizId = ({ navigation, route }) => {
           }}
           value={search}
           placeholder="Search by Quiz ID"
-          placeholderTextColor={COLORS.gray20}
+          placeholderTextColor={COLORS.gray10}
           onChangeText={(text) => searchFilter(text)}
         />
 
@@ -205,13 +202,12 @@ const ByQuizId = ({ navigation, route }) => {
             renderItem={({ item: quiz }) => (
               <View
                 style={{
-                  borderRadius: SIZES.radius,
                   marginVertical: 10,
                   padding: SIZES.radius,
                   alignItems: "center",
                   justifyContent: "space-between",
-                  backgroundColor: "transparent",
-                  elevation: 0,
+                  backgroundColor: "white",
+                  elevation: 5,
                   width: SIZES.width,
                   alignSelf: "center",
                   marginBottom: SIZES.padding,
@@ -243,7 +239,7 @@ const ByQuizId = ({ navigation, route }) => {
                   }}
                 >
                   <LinearGradient
-                    colors={["#fff", COLORS.white]}
+                    colors={[COLORS.primary, COLORS.primary]}
                     start={{ x: 1, y: 0.1 }}
                     end={{ x: 1, y: 0.75 }}
                     style={{
@@ -257,9 +253,27 @@ const ByQuizId = ({ navigation, route }) => {
                       position: "relative",
                     }}
                   >
+                    <IconLabel
+                      icon={icons.solve}
+                      label={quiz.attemptCounter}
+                      containerStyle={{
+                        position: "absolute",
+                        left: SIZES.padding,
+                      }}
+                      iconStyle={{
+                        width: 15,
+                        height: 15,
+                        tintColor: COLORS.white,
+                      }}
+                      labelStyle={{
+                        marginLeft: 5,
+                        color: COLORS.white,
+                        ...FONTS.h4,
+                      }}
+                    />
                     <Text
                       style={{
-                        color: COLORS.primary,
+                        color: COLORS.white,
                         ...FONTS.h2,
                         letterSpacing: 5,
                       }}
@@ -271,7 +285,7 @@ const ByQuizId = ({ navigation, route }) => {
                       size={22}
                       style={{
                         alignSelf: "center",
-                        color: COLORS.secondary,
+                        color: COLORS.white,
                         position: "absolute",
                         right: SIZES.padding,
                       }}
@@ -299,7 +313,7 @@ const ByQuizId = ({ navigation, route }) => {
             <Text
               style={{
                 ...FONTS.h1,
-                color: COLORS.white,
+                color: COLORS.primary,
                 fontStyle: "italic",
                 textAlign: "center",
               }}
@@ -313,7 +327,7 @@ const ByQuizId = ({ navigation, route }) => {
                 height: SIZES.heightPlayScreen / 5,
                 tintColor: COLORS.black,
               }}
-              source={require("../../assets/icons/codigo-qr.png")}
+              source={require("../../assets/icons/lens.png")}
             />
             {/* <LinearGradient
               colors={[COLORS.primary, COLORS.primary2]}
@@ -450,7 +464,7 @@ const ByQuizId = ({ navigation, route }) => {
             </TouchableWithoutFeedback>*/}
           </View>
         )}
-      </LinearGradient>
+      </View>
     </KeyboardAvoidingView>
   );
 };

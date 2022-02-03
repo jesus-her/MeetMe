@@ -1,11 +1,20 @@
 import { firestore } from "../../firebase";
 
-export const createQuiz = (currentQuizId, title, quizImg, owner) => {
+export const createQuiz = (
+  currentQuizId,
+  title,
+  quizImg,
+  owner,
+  userId,
+  attemptCounter
+) => {
   return firestore.collection("Quizzes").doc(currentQuizId).set({
     title,
     quizImg,
     owner,
+    userId,
     currentQuizId,
+    attemptCounter,
   });
 };
 
@@ -22,6 +31,10 @@ export const createQuestion = (currentQuizId, currentQuestionId, question) => {
 // Get All Quizzes
 export const getQuizzes = () => {
   return firestore.collection("Quizzes").get();
+};
+
+export const getUserQuizzes = (userId) => {
+  return firestore.collection("Quizzes").where("userId", "==", userId).get();
 };
 
 // Get Quiz Details by id

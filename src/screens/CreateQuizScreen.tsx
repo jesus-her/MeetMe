@@ -35,7 +35,10 @@ const CreateQuizScreen = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [quizImg, setQuizImg] = useState("");
   const [error, setError] = useState("");
+  const [attemptCounter, setAttemptCounter] = useState(0);
   const owner = auth.currentUser.displayName;
+  const userId = auth.currentUser.uid;
+  console.log(userId);
 
   //Validate Create QUIZ
   const updateError = (error, stateUpdater) => {
@@ -59,7 +62,14 @@ const CreateQuizScreen = ({ navigation }) => {
       const currentQuizId = Math.floor(
         100000 + Math.random() * 9000
       ).toString();
-      await createQuiz(currentQuizId, title, quizImg, owner);
+      await createQuiz(
+        currentQuizId,
+        title,
+        quizImg,
+        owner,
+        userId,
+        attemptCounter
+      );
 
       // Navigate to Add Question string
       navigation.navigate("MyQuizScreen", {

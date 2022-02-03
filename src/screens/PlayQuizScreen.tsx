@@ -21,6 +21,7 @@ import LiquidSwipe from "../components/PlayScreen/LiquidSwipe";
 import { IconButton } from "../components/ProfileScreen";
 import { useScrollToTop } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { auth, firestore, firebase_db } from "../../firebase";
 
 const PlayQuizScreen = ({ navigation, route }) => {
   const [currentQuizId, setCurrentQuizId] = useState(route.params.quizId);
@@ -33,15 +34,15 @@ const PlayQuizScreen = ({ navigation, route }) => {
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [isResultModalVisible, setIsResultModalVisible] = useState(false);
 
-  /*  const ref = React.useRef<FlatList>(null);
-  const [indexx, setIndexx] = useState(-1);
-
-  useEffect(() => {
-    ref.current?.scrollToIndex({
-      indexx,
-      animated: false,
-    });
-  }, []);*/
+  //Attempts counter
+  const attempts = async (currentQuizId) => {
+    await firestore
+      .collection("Quizzes")
+      .doc(currentQuizId)
+      .update({
+        attemptCounter: firebase_db.firestore.FieldValue.increment(1),
+      });
+  };
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -466,6 +467,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
             <CheckButton
               handleOnPress={() => {
                 setIsResultModalVisible(true);
+                attempts(currentQuizId);
               }}
             />
           </LinearGradient>

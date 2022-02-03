@@ -25,7 +25,7 @@ const CheckButton2 = ({ label, onPress, icon, colors }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    width: "75%",
+    width: "85%",
     borderRadius: 50,
     height: SIZES.width / 12,
     backgroundColor: "white",

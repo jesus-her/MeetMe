@@ -19,6 +19,7 @@ const HorizontalCourseCard = ({
   quizTitle,
   owner,
   quizId,
+  quizAttempts,
 }) => {
   const navigation = useNavigation();
   return (
@@ -66,7 +67,7 @@ const HorizontalCourseCard = ({
             width: 120,
             borderRadius: 60,
             /* borderWidth: 5,
-            borderColor: COLORS.primary2,*/
+                        borderColor: COLORS.primary2,*/
             borderWidth: 1,
             borderColor: COLORS.gray20,
           }}
@@ -129,7 +130,7 @@ const HorizontalCourseCard = ({
         >
           <IconLabel
             icon={icons.solve}
-            label="14 veces jugado"
+            label={"Attempted times: " + quizAttempts}
             containerStyle={{
               marginLeft: 0,
             }}

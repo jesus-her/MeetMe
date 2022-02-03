@@ -27,8 +27,8 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
         {/*Profile Image*/}
         <View
           style={{
-            width: 100,
-            height: 100,
+            width: SIZES.width / 3.5,
+            height: SIZES.width / 3.5,
             alignSelf: "center",
             justifyContent: "center",
           }}
@@ -41,7 +41,7 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 50,
+                borderRadius: 100,
                 borderWidth: 2,
                 borderColor: COLORS.white,
                 alignSelf: "center",
@@ -54,10 +54,11 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 50,
+                borderRadius: 100,
                 borderWidth: 2,
                 borderColor: COLORS.white,
                 alignSelf: "center",
+                tintColor: COLORS.white,
               }}
             />
           )}

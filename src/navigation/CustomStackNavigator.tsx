@@ -5,7 +5,7 @@ import SignInScreen from "../screens/SignInScreen";
 import CustomDrawer from "./CustomDrawer";
 import PlayScreen from "../screens/PlayScreen";
 import Picker from "../Picker/Picker";
-import MyQuiz from "../screens/MyQuiz";
+import MyQuiz from "../screens/MyQuizzesScreen";
 import CreateQuizScreen from "../screens/CreateQuizScreen";
 import MyQuizScreen from "../screens/MyQuizScreen";
 import FindQuizScreen from "../screens/FindQuizScreen";

@@ -170,17 +170,17 @@ const HomeScreen = ({ navigation }) => {
           }}
           icon={require("../../assets/icons/writing.png")}
         />
-        <ModalFindByQuizId
+        {/*<ModalFindByQuizId
           modalFindByQuizIdVisible={modalFindByQuizIdVisible}
           setModalFindByQuizIdVisible={setModalFindByQuizIdVisible}
-        />
+        />*/}
         <CustomButton2
           label="Find by Quiz ID"
           colors={["#ff91b9", COLORS.secondary]}
           onPress={() => {
             navigation.navigate("FindByQuizId");
           }}
-          icon={require("../../assets/icons/codigo-qr.png")}
+          icon={require("../../assets/icons/lens.png")}
         />
       </ImageBackground>
     );
@@ -208,6 +208,7 @@ const HomeScreen = ({ navigation }) => {
               marginRight: index === allQuizzes.length - 1 ? SIZES.padding : 0,
             }}
             /*course={item}*/
+            quizAttempts={quiz.attemptCounter}
             quizTitle={quiz.title}
             quizId={quiz.id}
             quizImage={quiz.quizImg}
@@ -237,6 +238,7 @@ const HomeScreen = ({ navigation }) => {
           }}
           renderItem={({ item: quiz, index }) => (
             <HorizontalCourseCard
+              quizAttempts={quiz.attemptCounter}
               quizTitle={quiz.title}
               quizImage={quiz.quizImg}
               quizId={quiz.id}
