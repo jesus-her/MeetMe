@@ -1,6 +1,7 @@
 import { ToastAndroid } from "react-native";
 import { auth, updateProfile } from "../../firebase";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export const signIn = (email, password, setError, error) => {
   auth
@@ -36,6 +37,19 @@ export const signUp = (email, password, displayName) => {
     })
     .catch((err) => {
       console.log(err);
+    });
+};
+export const passwordReset = (email) => {
+  auth
+    .sendPasswordResetEmail(email)
+    .then(() => {
+      ToastAndroid.show("Password reset email sent!", ToastAndroid.LONG);
+    })
+    .catch((error) => {
+      /*var errorCode = error.code;
+        var errorMessage = error.message;*/
+      console.log(error.message);
+      // ..
     });
 };
 

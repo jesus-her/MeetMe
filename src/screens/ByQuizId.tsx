@@ -31,6 +31,7 @@ import { useNavigation, useScrollToTop } from "@react-navigation/native";
 import SearchBar from "react-native-searchbar";
 import { Searchbar } from "react-native-paper";
 import IconLabel from "../components/IconLabel";
+import CustomButton2 from "../components/CustomButton2";
 
 const ByQuizId = ({ navigation, route }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
@@ -79,6 +80,48 @@ const ByQuizId = ({ navigation, route }) => {
       setFilterData(allQuizzes);
       setSearch(text);
     }
+  };
+
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          width: SIZES.width,
+          height: SIZES.heightPlayScreen,
+          padding: SIZES.padding,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          style={{
+            marginVertical: SIZES.padding,
+            width: SIZES.heightPlayScreen / 5,
+            height: SIZES.heightPlayScreen / 5,
+            tintColor: COLORS.gray20,
+            alignSelf: "center",
+          }}
+          source={require("../../assets/icons/no-results.png")}
+        />
+        <Text
+          style={{ ...FONTS.h1, color: COLORS.primary, textAlign: "center" }}
+        >
+          No Result Found
+        </Text>
+
+        <Text
+          style={{
+            color: COLORS.gray50,
+            ...FONTS.h3,
+            fontWeight: "bold",
+            marginVertical: SIZES.padding,
+            textAlign: "center",
+          }}
+        >
+          We can't find any Quiz with that Quiz ID.
+        </Text>
+      </View>
+    );
   };
 
   //Use
@@ -196,6 +239,7 @@ const ByQuizId = ({ navigation, route }) => {
             pagingEnabled={true}
             ref={ref}
             horizontal
+            ListEmptyComponent={EmptyListMessage}
             onRefresh={getAllQuizzes}
             refreshing={refreshing}
             keyExtractor={(item, index) => index.toString()}
@@ -310,6 +354,15 @@ const ByQuizId = ({ navigation, route }) => {
               marginBottom: SIZES.padding,
             }}
           >
+            <Image
+              style={{
+                marginBottom: SIZES.padding,
+                width: SIZES.heightPlayScreen / 5,
+                height: SIZES.heightPlayScreen / 5,
+                tintColor: COLORS.gray20,
+              }}
+              source={require("../../assets/icons/lens.png")}
+            />
             <Text
               style={{
                 ...FONTS.h1,
@@ -320,15 +373,7 @@ const ByQuizId = ({ navigation, route }) => {
             >
               Enter a Quiz ID to find any Quiz
             </Text>
-            <Image
-              style={{
-                marginTop: SIZES.padding,
-                width: SIZES.heightPlayScreen / 5,
-                height: SIZES.heightPlayScreen / 5,
-                tintColor: COLORS.black,
-              }}
-              source={require("../../assets/icons/lens.png")}
-            />
+
             {/* <LinearGradient
               colors={[COLORS.primary, COLORS.primary2]}
               start={{ x: 0.1, y: 0.5 }}

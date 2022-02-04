@@ -21,6 +21,7 @@ import HorizontalCourseCard from "../components/HorizontalCourseCard";
 import LineDivider from "../components/LineDivider";
 import { useScrollToTop } from "@react-navigation/native";
 import ModalFindByQuizId from "../components/shared/ModalFindByQuizId";
+import { firestore } from "../../firebase";
 
 const Section = ({ containerStyle, title, onPress, children }) => {
   return (
@@ -61,6 +62,7 @@ const Section = ({ containerStyle, title, onPress, children }) => {
 // @ts-ignore
 const HomeScreen = ({ navigation }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
+  const [allPopularQuizzes, setAllPopularQuizzes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [modalFindByQuizIdVisible, setModalFindByQuizIdVisible] =
     useState(false);
@@ -83,10 +85,29 @@ const HomeScreen = ({ navigation }) => {
     await setAllQuizzes([...tempQuizzes]);
 
     setRefreshing(false);
+    return () => quizzes();
   };
 
   useEffect(() => {
     getAllQuizzes();
+  }, []);
+
+  useEffect(() => {
+    const userQuizzes = firestore
+      .collection("Quizzes")
+      .where("attemptCounter", ">", 3)
+      .onSnapshot((querySnapshot) => {
+        const quizzes = [];
+        querySnapshot.forEach((quiz) => {
+          quizzes.push({
+            ...quiz.data(),
+            id: quiz.id,
+          });
+          /*console.log(quiz.id);*/
+        });
+        setAllPopularQuizzes(quizzes.reverse());
+      });
+    return () => userQuizzes();
   }, []);
 
   function renderStartCreating() {
@@ -228,7 +249,7 @@ const HomeScreen = ({ navigation }) => {
         }}
       >
         <FlatList
-          data={allQuizzes}
+          data={allPopularQuizzes}
           listKey="PopularQuizzes"
           scrollEnabled={false}
           keyExtractor={(item) => `PopularQuizzes-${item.id}`}

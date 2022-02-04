@@ -6639,6 +6639,13 @@ expo-gl@~10.2.0:
     expo-gl-cpp "~10.1.0"
     invariant "^2.2.4"
 
+expo-google-sign-in@^10.1.1:
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/expo-google-sign-in/-/expo-google-sign-in-10.1.1.tgz#f0959ecca65f62abf5dbcb370de2a2effc118e88"
+  integrity sha512-BXbGP/QL6k7UoMW9mrfLOOfsRlp4SrRZ7v9TKBSfLSWE+/A4e4s2mavXANZZx5+OqO7TOdHSCWaZmyEgMnn4tQ==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-image-picker@~10.1.4:
   version "10.1.4"
   resolved "https://registry.npmjs.org/expo-image-picker/-/expo-image-picker-10.1.4.tgz"

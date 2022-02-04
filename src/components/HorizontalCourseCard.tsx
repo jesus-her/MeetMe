@@ -33,18 +33,20 @@ const HorizontalCourseCard = ({
         ...containerStyle,
       }}
     >
+      {/*Favourite button*/}
       <TouchableOpacity
         style={{
           position: "absolute",
-          top: 10,
-          right: 10,
-          width: 30,
-          height: 30,
+          top: 7,
+          left: 7,
+          width: 35,
+          height: 35,
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 5,
           backgroundColor: COLORS.white,
           elevation: 3,
+          zIndex: 10,
         }}
       >
         <Image
@@ -54,7 +56,6 @@ const HorizontalCourseCard = ({
             width: 20,
             height: 20,
             borderRadius: 60,
-            tintColor: COLORS.secondary,
           }}
         />
       </TouchableOpacity>
@@ -65,25 +66,33 @@ const HorizontalCourseCard = ({
           style={{
             height: 120,
             width: 120,
-            borderRadius: 60,
-            /* borderWidth: 5,
-                        borderColor: COLORS.primary2,*/
+            borderRadius: SIZES.radius,
             borderWidth: 1,
             borderColor: COLORS.gray20,
           }}
         />
       ) : (
-        <Image
-          source={require("../../assets/icons/laughing.png")}
-          resizeMode="cover"
+        <View
           style={{
             height: 120,
             width: 120,
-            borderRadius: 60,
+            borderRadius: SIZES.radius,
             borderWidth: 1,
             borderColor: COLORS.gray20,
+            alignItems: "center",
+            justifyContent: "center",
           }}
-        />
+        >
+          <Image
+            source={require("../../assets/icons/laughing.png")}
+            resizeMode="contain"
+            style={{
+              height: "95%",
+              width: "95%",
+              borderRadius: 60,
+            }}
+          />
+        </View>
       )}
 
       {/*Details*/}
@@ -120,7 +129,7 @@ const HorizontalCourseCard = ({
           </Text>
         </View>
 
-        {/*Ratings and Duration*/}
+        {/*Attempts*/}
         <View
           style={{
             flexDirection: "row",

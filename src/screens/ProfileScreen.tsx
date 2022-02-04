@@ -6,26 +6,20 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Button,
-  TouchableWithoutFeedback,
   StatusBar,
-  Modal,
-  ToastAndroid,
-  Alert,
 } from "react-native";
 
-import { firestore, auth } from "../../firebase";
+import { auth } from "../../firebase";
 
-import { COLORS, FONTS, SIZES, icons, images } from "../constants";
+import { COLORS, FONTS, SIZES, icons } from "../constants";
 import {
-  IconButton,
   LineDivider,
   ProfileRadioButton,
   ProfileValue,
 } from "../components/ProfileScreen";
 import HeaderSection from "../components/shared/HeaderSection";
 import ModalEditPassword from "../components/ProfileScreen/ModalEditPassword";
-import * as firebase from "firebase";
+
 import ModalEditEmail from "../components/ProfileScreen/ModalEditEmail";
 import ModalEditName from "../components/ProfileScreen/ModalEditName";
 import ModalEditPhoto from "../components/ProfileScreen/ModalEditPhoto";

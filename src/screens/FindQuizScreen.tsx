@@ -10,6 +10,7 @@ import {
   TextInput,
   Button,
   TouchableHighlight,
+  KeyboardAvoidingView,
 } from "react-native";
 import FormButton from "../components/shared/FormButton";
 import { getQuizzes, getUserQuizzes } from "../utils/database";
@@ -75,11 +76,51 @@ const FindQuizScreen = ({ navigation, route }) => {
     }
   };
 
+  const EmptyListMessage = () => {
+    return (
+      <KeyboardAvoidingView
+        style={{
+          width: SIZES.width,
+          padding: SIZES.padding,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          style={{
+            marginVertical: SIZES.padding,
+            width: SIZES.heightPlayScreen / 5,
+            height: SIZES.heightPlayScreen / 5,
+            tintColor: COLORS.gray20,
+            alignSelf: "center",
+          }}
+          source={require("../../assets/icons/no-results.png")}
+        />
+        <Text
+          style={{ ...FONTS.h1, color: COLORS.primary, textAlign: "center" }}
+        >
+          No Result Found
+        </Text>
+
+        <Text
+          style={{
+            color: COLORS.gray50,
+            ...FONTS.h3,
+            fontWeight: "bold",
+            marginVertical: SIZES.padding,
+            textAlign: "center",
+          }}
+        >
+          We can't find any Quiz with that Quiz name.
+        </Text>
+      </KeyboardAvoidingView>
+    );
+  };
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-
         position: "relative",
       }}
     >
@@ -95,7 +136,7 @@ const FindQuizScreen = ({ navigation, route }) => {
           bottom: SIZES.radius,
           left: SIZES.radius,
           zIndex: 10,
-          elevation: 20,
+          elevation: 3,
         }}
         onPress={() => {
           navigation.navigate("FindByQuizId");
@@ -177,6 +218,7 @@ const FindQuizScreen = ({ navigation, route }) => {
       <FlatList
         data={filterData}
         ref={ref}
+        ListEmptyComponent={EmptyListMessage}
         onRefresh={getAllQuizzes}
         refreshing={refreshing}
         keyExtractor={(item, index) => index.toString()}

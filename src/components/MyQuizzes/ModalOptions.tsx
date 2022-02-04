@@ -56,7 +56,15 @@ const ModalOptions = ({
         setModalOptionsOpen(false);
       }}
     >
-      <View style={styles.centeredView}>
+      <View
+        onStartShouldSetResponder={() => {
+          setModalOptionsOpen(!modalOptionsOpen);
+        }}
+        /*onPress={() => {
+          setModalOptionsOpen(!modalOptionsOpen);
+        }}*/
+        style={styles.centeredView}
+      >
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
             <Ionicons

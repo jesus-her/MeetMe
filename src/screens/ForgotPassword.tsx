@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { COLORS, FONTS, SIZES } from "../constants";
+import { COLORS, FONTS, icons, SIZES } from "../constants";
 import FormInput from "../components/shared/FormInput";
 import FormButton from "../components/shared/FormButton";
-import { signIn } from "../utils/auth";
+import { passwordReset, signIn } from "../utils/auth";
+import { IconButton } from "../components/ProfileScreen";
 
-const SignInScreen = ({ navigation }) => {
+const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [confirmEmail, setConfirmEmail] = useState("");
   const [error, setError] = useState("");
 
   //Validate Create QUIZ
@@ -31,29 +31,52 @@ const SignInScreen = ({ navigation }) => {
     return regx.test(value);
   };
 
-  //Conditions for Sign In
+  //Conditions an error messages
   const isValidForm = () => {
     //Only if all of the fields have value
-    if (email == "" && password == "")
+    if (email == "" && confirmEmail == "")
       return updateError("Required all fields!", setError);
     //Validating email
     if (!isValidEmail(email))
       return updateError("Invalid email address", setError);
-    //
-    if (password == "")
-      return updateError("Required a password field!", setError);
+    //Match emails
+    if (email !== confirmEmail)
+      return updateError("Emails does not match!", setError);
     return true;
   };
 
-  const handleOnSubmit = () => {
+  /*handlePasswordReset = async (value, actions) => {
+        const { email } = values
+
+        try {
+            await this.props.firebase.passwordReset(email)
+            console.log('Password reset email sent successfully')
+            this.props.navigation.navigate('Login')
+        } catch (error) {
+            actions.setFieldError('general', error.message)
+        }
+    }*/
+
+  const handlePasswordReset = () => {
     if (isValidForm()) {
-      signIn(email, password, setError, error);
+      passwordReset(email);
+      navigation.navigate("SignInScreen");
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Sign In</Text>
+      {/*Header*/}
+      <IconButton
+        icon={icons.back}
+        iconStyle={{
+          tintColor: COLORS.black,
+        }}
+        containerStyle={{ alignSelf: "flex-start" }}
+        onPress={() => navigation.goBack()}
+      />
+
+      <Text style={styles.header}>Forgot Password?</Text>
       {error ? (
         <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
           {error}
@@ -68,51 +91,22 @@ const SignInScreen = ({ navigation }) => {
         value={email}
         keyboardType={"email-address"}
       />
-      {/* Password*/}
-
+      {/*Confirm email*/}
       <FormInput
-        labelText="Password"
-        placeholderText="Enter your password"
-        onChangeText={(value) => setPassword(value)}
-        value={password}
-        secureTextEntry={true}
+        autoCapitalize="none"
+        labelText="Confirm Email"
+        placeholderText="Confirm your email address"
+        onChangeText={(value) => setConfirmEmail(value)}
+        value={confirmEmail}
+        keyboardType={"email-address"}
       />
-
-      {/*Forgot password*/}
-      <TouchableOpacity style={{ width: "100%", marginBottom: SIZES.padding }}>
-        <Text
-          style={{
-            marginLeft: 4,
-            color: COLORS.primary,
-            fontWeight: "bold",
-            alignSelf: "flex-end",
-          }}
-          onPress={() => navigation.navigate("ForgotPassword")}
-        >
-          Forgot password?
-        </Text>
-      </TouchableOpacity>
 
       {/* Submit button*/}
       <FormButton
-        labelText="Submit"
-        handleOnPress={handleOnSubmit}
+        labelText="Send Email"
+        handleOnPress={handlePasswordReset}
         style={{ width: "100%" }}
       />
-      {/* Footer*/}
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 20 }}
-      >
-        <Text>Don't have an account?</Text>
-        <TouchableOpacity>
-          <Text
-            style={{ marginLeft: 4, color: COLORS.primary, fontWeight: "900" }}
-            onPress={() => navigation.navigate("SignUpScreen")}
-          >
-            Create account
-          </Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
@@ -130,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default ForgotPassword;
