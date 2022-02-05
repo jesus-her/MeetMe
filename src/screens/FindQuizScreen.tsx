@@ -26,7 +26,7 @@ import icons from "../constants/icons";
 import { useNavigation, useScrollToTop } from "@react-navigation/native";
 import SearchBar from "react-native-searchbar";
 import { Searchbar } from "react-native-paper";
-import { auth } from "../../firebase";
+import { auth, firestore } from "../../firebase";
 import IconLabel from "../components/IconLabel";
 
 const FindQuizScreen = ({ navigation, route }) => {
@@ -39,7 +39,7 @@ const FindQuizScreen = ({ navigation, route }) => {
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
-  const getAllQuizzes = async () => {
+  /*const getAllQuizzes = async () => {
     setRefreshing(true);
     const quizzes = await getQuizzes();
 
@@ -56,6 +56,24 @@ const FindQuizScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     getAllQuizzes();
+  }, []);*/
+
+  useEffect(() => {
+    const getAllQuizzes = firestore
+      .collection("Quizzes")
+      .onSnapshot((querySnapshot) => {
+        const quizzes = [];
+        querySnapshot.forEach((quiz) => {
+          quizzes.push({
+            ...quiz.data(),
+            id: quiz.id,
+          });
+          /*console.log(quiz.id);*/
+        });
+        setAllQuizzes(quizzes);
+        setFilterData(quizzes);
+      });
+    return () => getAllQuizzes();
   }, []);
 
   //Search filter
@@ -219,7 +237,7 @@ const FindQuizScreen = ({ navigation, route }) => {
         data={filterData}
         ref={ref}
         ListEmptyComponent={EmptyListMessage}
-        onRefresh={getAllQuizzes}
+        /*onRefresh={getAllQuizzes}*/
         refreshing={refreshing}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item: quiz }) => (

@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacity,
   Text,
   ImageBackground,
   View,
   Image,
+  ToastAndroid,
 } from "react-native";
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 import IconLabel from "./IconLabel";
 import CustomButton2 from "./CustomButton2";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { firestore } from "../../firebase";
 
 const HorizontalCourseCard = ({
   course,
@@ -20,8 +22,11 @@ const HorizontalCourseCard = ({
   owner,
   quizId,
   quizAttempts,
+  favorite,
 }) => {
   const navigation = useNavigation();
+  const [isFavorite, setIsFavorite] = useState(false);
+
   return (
     <View
       style={{
@@ -35,6 +40,19 @@ const HorizontalCourseCard = ({
     >
       {/*Favourite button*/}
       <TouchableOpacity
+        onPress={() => {
+          firestore
+            .collection("Quizzes")
+            .doc(quizId)
+            .update({ isFavorite: true })
+            .then(() => {
+              ToastAndroid.show(
+                "Added to your favorites successfully!",
+                ToastAndroid.SHORT
+              );
+            })
+            .catch((e) => console.log("error", e));
+        }}
         style={{
           position: "absolute",
           top: 7,
@@ -56,6 +74,7 @@ const HorizontalCourseCard = ({
             width: 20,
             height: 20,
             borderRadius: 60,
+            tintColor: favorite ? COLORS.secondary : COLORS.additionalColor4,
           }}
         />
       </TouchableOpacity>

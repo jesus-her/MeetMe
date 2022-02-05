@@ -32,6 +32,7 @@ import SearchBar from "react-native-searchbar";
 import { Searchbar } from "react-native-paper";
 import IconLabel from "../components/IconLabel";
 import CustomButton2 from "../components/CustomButton2";
+import { firestore } from "../../firebase";
 
 const ByQuizId = ({ navigation, route }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
@@ -47,23 +48,22 @@ const ByQuizId = ({ navigation, route }) => {
         route.params.currentQuizImage
       );*/
 
-  const getAllQuizzes = async () => {
-    setRefreshing(true);
-    const quizzes = await getQuizzes();
-
-    // Transform quiz data
-    let tempQuizzes = [];
-    await quizzes.docs.forEach(async (quiz) => {
-      await tempQuizzes.push({ id: quiz.id, ...quiz.data() });
-    });
-    await setAllQuizzes([...tempQuizzes]);
-    setFilterData([...tempQuizzes]);
-
-    setRefreshing(false);
-  };
-
   useEffect(() => {
-    getAllQuizzes();
+    const getAllQuizzes = firestore
+      .collection("Quizzes")
+      .onSnapshot((querySnapshot) => {
+        const quizzes = [];
+        querySnapshot.forEach((quiz) => {
+          quizzes.push({
+            ...quiz.data(),
+            id: quiz.id,
+          });
+          /*console.log(quiz.id);*/
+        });
+        setAllQuizzes(quizzes);
+        setFilterData(quizzes);
+      });
+    return () => getAllQuizzes();
   }, []);
 
   //Search filter
@@ -240,7 +240,6 @@ const ByQuizId = ({ navigation, route }) => {
             ref={ref}
             horizontal
             ListEmptyComponent={EmptyListMessage}
-            onRefresh={getAllQuizzes}
             refreshing={refreshing}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item: quiz }) => (

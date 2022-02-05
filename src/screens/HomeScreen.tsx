@@ -69,31 +69,27 @@ const HomeScreen = ({ navigation }) => {
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
-  /*const [currentQuizImage, setCurrentQuizImage] = useState(
-      route.params.currentQuizImage
-    );*/
-
-  const getAllQuizzes = async () => {
-    setRefreshing(true);
-    const quizzes = await getQuizzes();
-
-    // Transform quiz data
-    let tempQuizzes = [];
-    await quizzes.docs.forEach(async (quiz) => {
-      await tempQuizzes.push({ id: quiz.id, ...quiz.data() });
-    });
-    await setAllQuizzes([...tempQuizzes]);
-
-    setRefreshing(false);
-    return () => quizzes();
-  };
-
+  //Get Quizzes for vertical cards
   useEffect(() => {
-    getAllQuizzes();
+    const getAllQuizzes = firestore
+      .collection("Quizzes")
+      .onSnapshot((querySnapshot) => {
+        const quizzes = [];
+        querySnapshot.forEach((quiz) => {
+          quizzes.push({
+            ...quiz.data(),
+            id: quiz.id,
+          });
+          /*console.log(quiz.id);*/
+        });
+        setAllQuizzes(quizzes);
+      });
+    return () => getAllQuizzes();
   }, []);
 
+  //Filter for Popular Quizzes
   useEffect(() => {
-    const userQuizzes = firestore
+    const popularQuizzes = firestore
       .collection("Quizzes")
       .where("attemptCounter", ">", 3)
       .onSnapshot((querySnapshot) => {
@@ -107,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
         });
         setAllPopularQuizzes(quizzes.reverse());
       });
-    return () => userQuizzes();
+    return () => popularQuizzes();
   }, []);
 
   function renderStartCreating() {
@@ -214,7 +210,7 @@ const HomeScreen = ({ navigation }) => {
         ref={ref}
         showsHorizontalScrollIndicator={false}
         data={allQuizzes}
-        onRefresh={getAllQuizzes}
+        /*onRefresh={getAllQuizzes}*/
         refreshing={refreshing}
         listKey="Courses"
         keyExtractor={(item) => `Courses-${item.id}`}
@@ -264,6 +260,7 @@ const HomeScreen = ({ navigation }) => {
               quizImage={quiz.quizImg}
               quizId={quiz.id}
               owner={quiz.owner}
+              favorite={quiz.isFavorite}
               containerStyle={{
                 marginTop: index === 0 ? SIZES.radius : SIZES.padding,
                 marginVertical: SIZES.padding,

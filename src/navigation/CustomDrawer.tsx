@@ -12,10 +12,12 @@ import {
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import CustomTab from "./CustomTab";
 import ByQuizId from "../screens/ByQuizId";
 import MyQuizzes from "../screens/MyQuizzesScreen";
+import Favorites from "../screens/Favorites";
 
 const Drawer = createDrawerNavigator();
 
@@ -86,6 +88,18 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
                   size={22}
                   color={color}
                 />
+              ),
+            }}
+          />
+
+          <Drawer.Screen
+            name="Favorites"
+            component={Favorites}
+            options={{
+              title: "Favorites",
+              headerShown: false,
+              drawerIcon: ({ color }) => (
+                <MaterialIcons name="favorite" size={22} color={color} />
               ),
             }}
           />

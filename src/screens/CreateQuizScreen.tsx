@@ -32,7 +32,8 @@ const CreateQuizScreen = ({ navigation }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [post, setPost] = useState(null);
   const [transferred, setTransferred] = useState(0);
-  const [uploading, setUploading] = useState(false);
+  /*const [uploading, setUploading] = useState(false);*/
+  const [isFavorite, setIsFavorite] = useState(false);
   const [quizImg, setQuizImg] = useState("");
   const [error, setError] = useState("");
   const [attemptCounter, setAttemptCounter] = useState(0);
@@ -68,7 +69,8 @@ const CreateQuizScreen = ({ navigation }) => {
         quizImg,
         owner,
         userId,
-        attemptCounter
+        attemptCounter,
+        isFavorite
       );
 
       // Navigate to Add Question string
