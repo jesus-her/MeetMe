@@ -75,7 +75,7 @@ const CustomDrawerContent = (props) => {
         <View style={{ backgroundColor: COLORS.white, paddingTop: 10 }}>
           <DrawerItemList {...props} />
         </View>
-        <View>
+        {/* <View>
           <Image
             source={require("../../assets/TheQuizLogoWhiteBackground.png")}
             resizeMode="contain"
@@ -87,7 +87,7 @@ const CustomDrawerContent = (props) => {
               marginTop: SIZES.padding,
             }}
           />
-        </View>
+        </View>*/}
       </DrawerContentScrollView>
 
       <DrawerFooter />

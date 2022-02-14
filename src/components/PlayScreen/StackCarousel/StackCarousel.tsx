@@ -14,6 +14,8 @@ import {
   StyleSheet,
   SafeAreaView,
   ImageBackground,
+  TouchableHighlight,
+  TouchableOpacity,
 } from "react-native";
 
 const { width } = Dimensions.get("screen");
@@ -23,11 +25,19 @@ import {
   Directions,
   State,
 } from "react-native-gesture-handler";
-import { COLORS, SIZES } from "../../../constants";
+import { COLORS, FONTS, icons, SIZES } from "../../../constants";
 import CheckButton from "../../CheckButton";
 import QuestionHeader from "../../QuestionHeader";
 import { LinearGradient } from "expo-linear-gradient";
 import { COL } from "../Puzzle/Config";
+import images from "../../../constants/images";
+import HeaderSection from "../../shared/HeaderSection";
+import { useEffect, useState } from "react";
+import { firestore, storage } from "../../../../firebase";
+import IconLabel from "../../IconLabel";
+import PlayButton from "../../shared/PlayButton";
+import { Audio } from "expo-av";
+import CustomButton2 from "../../CustomButton2";
 
 // https://www.creative-flyers.com
 const DATA = [
@@ -124,31 +134,57 @@ const VISIBLE_ITEMS = 3;
 
 // @ts-ignore
 const OverflowItems = ({ data, scrollXAnimated }) => {
+  const [allPopularQuizzes, setAllPopularQuizzes] = useState([]);
   const inputRange = [-1, 0, 1];
   const translateY = scrollXAnimated.interpolate({
     inputRange,
     outputRange: [OVERFLOW_HEIGHT, 0, -OVERFLOW_HEIGHT],
   });
+
+  //Filter for Popular Quizzes
+  React.useEffect(() => {
+    const popularQuizzes = firestore
+      .collection("Quizzes")
+      .where("attemptCounter", ">", 3)
+      .onSnapshot((querySnapshot) => {
+        const quizzes = [];
+        querySnapshot.forEach((quiz) => {
+          quizzes.push({
+            ...quiz.data(),
+            id: quiz.id,
+          });
+          /*console.log(quiz.id);*/
+        });
+        setAllPopularQuizzes(quizzes.reverse());
+      });
+    return () => popularQuizzes();
+  }, []);
   return (
     <View style={styles.overflowContainer}>
       <Animated.View style={{ transform: [{ translateY }] }}>
-        {data.map((item, index) => {
+        {allPopularQuizzes.map((item, index) => {
           return (
             <View key={index} style={styles.itemContainer}>
               <Text style={[styles.title]} numberOfLines={1}>
                 {item.title}
               </Text>
+
               <View style={styles.itemContainerRow}>
-                <Text style={[styles.location]}>
-                  Elemento: {item.element}
-                  <Ionicons
-                    name={item.iconElement}
-                    size={16}
-                    color="black"
-                    style={{ marginRight: 5 }}
-                  />
-                </Text>
-                <Text style={[styles.date]}>{item.date}</Text>
+                <IconLabel
+                  icon={icons.profile}
+                  label={item.owner}
+                  labelStyle={{ color: COLORS.primary2, ...FONTS.h3 }}
+                  iconStyle={{
+                    width: 20,
+                    height: 20,
+                    tintColor: COLORS.primary2,
+                  }}
+                  containerStyle={{
+                    marginTop: SIZES.base,
+                  }}
+                />
+
+                <Text style={[styles.date]}>Quiz ID: {item.id}</Text>
               </View>
             </View>
           );
@@ -158,11 +194,13 @@ const OverflowItems = ({ data, scrollXAnimated }) => {
   );
 };
 
-export default function StackCarousel() {
+export default function StackCarousel({ navigation }) {
   const [data, setData] = React.useState(DATA);
   const scrollXIndex = React.useRef(new Animated.Value(0)).current;
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
+  const [allPopularQuizzes, setAllPopularQuizzes] = useState([]);
+
   const setActiveIndex = React.useCallback((activeIndex) => {
     scrollXIndex.setValue(activeIndex);
     setIndex(activeIndex);
@@ -183,6 +221,84 @@ export default function StackCarousel() {
       useNativeDriver: true,
     }).start();
   });
+
+  //Filter for Popular Quizzes
+  React.useEffect(() => {
+    const popularQuizzes = firestore
+      .collection("Quizzes")
+      .where("attemptCounter", ">", 3)
+      .onSnapshot((querySnapshot) => {
+        const quizzes = [];
+        querySnapshot.forEach((quiz) => {
+          quizzes.push({
+            ...quiz.data(),
+            id: quiz.id,
+          });
+          /*console.log(quiz.id);*/
+        });
+        setAllPopularQuizzes(quizzes.reverse());
+      });
+    return () => popularQuizzes();
+  }, []);
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          width: SIZES.width,
+
+          padding: SIZES.padding,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          style={{
+            marginVertical: SIZES.padding,
+            width: SIZES.heightPlayScreen / 5,
+            height: SIZES.heightPlayScreen / 5,
+            tintColor: COLORS.gray20,
+            alignSelf: "center",
+            transform: [{ rotateY: "180deg" }],
+          }}
+          source={require("../../../../assets/icons/no-fire.png")}
+        />
+        <Text
+          style={{
+            ...FONTS.h1,
+            color: COLORS.primary,
+            textAlign: "center",
+            transform: [{ rotateY: "180deg" }],
+          }}
+        >
+          There are no popular Quizzes yet!
+        </Text>
+
+        <Text
+          style={{
+            color: COLORS.gray50,
+            ...FONTS.h3,
+            fontWeight: "bold",
+            marginVertical: SIZES.padding,
+            textAlign: "center",
+            transform: [{ rotateY: "180deg" }],
+          }}
+        >
+          Explore the quizzes and play your favorites to view them here!
+        </Text>
+
+        <CustomButton2
+          label="Search Quizzes"
+          labelStyle={{ transform: [{ rotateY: "180deg" }] }}
+          colors={["#ff91b9", COLORS.secondary]}
+          onPress={() => {
+            navigation.navigate("NewFindScreen");
+          }}
+          icon={require("../../../../assets/icons/search.png")}
+        />
+        {/*   </ImageBackground>*/}
+      </View>
+    );
+  };
 
   return (
     <FlingGestureHandler
@@ -210,16 +326,18 @@ export default function StackCarousel() {
         }}
       >
         <SafeAreaView style={styles.container}>
-          <QuestionHeader
-            label="¿Qué signo soy?"
-            colors={[COLORS.primary, COLORS.secondary2]}
-            textColor="white"
+          <HeaderSection
+            title="Popular Quizzes"
+            onPress={() => navigation.openDrawer()}
+            icon={images.drawer}
           />
           <OverflowItems data={data} scrollXAnimated={scrollXAnimated} />
 
           <FlatList
-            data={data}
-            keyExtractor={(_, index) => String(index)}
+            data={allPopularQuizzes}
+            ListEmptyComponent={EmptyListMessage}
+            keyExtractor={(item) => `PopularQuizzes-${item.id}`}
+            /*keyExtractor={(_, index) => String(index)}*/
             horizontal
             inverted
             contentContainerStyle={{
@@ -237,14 +355,16 @@ export default function StackCarousel() {
               ...props
             }) => {
               const newStyle = [style, { zIndex: data.length - index }];
+
               return (
                 <View style={newStyle} index={index} {...props}>
                   {children}
                 </View>
               );
             }}
-            renderItem={({ item, index }) => {
+            renderItem={({ item: quiz, index }) => {
               const inputRange = [index - 1, index, index + 1];
+
               const translateX = scrollXAnimated.interpolate({
                 inputRange,
                 outputRange: [50, 0, -100],
@@ -278,23 +398,75 @@ export default function StackCarousel() {
                     end={{ x: 1, y: 1 }}
                     style={{
                       width: ITEM_WIDTH,
-                      height: SIZES.height / 1.6,
+                      height: SIZES.height / 1.5,
                       borderRadius: SIZES.radius,
+                      alignItems: "center",
+                      justifyContent: "space-around",
                     }}
                   >
-                    <ImageBackground
-                      source={{ uri: item.poster }}
-                      resizeMode="contain"
-                      /*imageStyle={{ borderRadius: SIZES.radius }}*/
-                      style={{
-                        width: ITEM_WIDTH,
-                        height: SIZES.height / 1.65,
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                      }}
-                    >
-                      <CheckButton />
-                    </ImageBackground>
+                    {quiz.quizImg != "" ? (
+                      <Image
+                        source={{ uri: quiz.quizImg }}
+                        resizeMode="cover"
+                        /*imageStyle={{ borderRadius: SIZES.radius }}*/
+                        style={{
+                          width: ITEM_WIDTH - SIZES.padding,
+                          height: ITEM_WIDTH - SIZES.padding,
+                          justifyContent: "flex-end",
+                          alignItems: "center",
+                          borderRadius: 500,
+                          borderWidth: 5,
+                          borderColor: COLORS.white,
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        source={require("../../../../assets/icons/laughing.png")}
+                        resizeMode="cover"
+                        /*imageStyle={{ borderRadius: SIZES.radius }}*/
+                        style={{
+                          width: ITEM_WIDTH - SIZES.padding,
+                          height: ITEM_WIDTH - SIZES.padding,
+                          justifyContent: "flex-end",
+                          alignItems: "center",
+                          borderRadius: 500,
+                          borderWidth: 5,
+                          borderColor: COLORS.white,
+                          tintColor: COLORS.white,
+                        }}
+                      />
+                    )}
+                    <View style={{ width: "85%" }}>
+                      <PlayButton
+                        label="Play"
+                        handleOnPress={() => {
+                          navigation.navigate("PlayQuiz", {
+                            quizId: quiz.id,
+                            quizImg: quiz.quizImg,
+                            quizOwner: quiz.owner,
+                          });
+                        }}
+                      />
+                      {/*Attempts*/}
+                      <IconLabel
+                        icon={icons.solve}
+                        label={"Attempted times: " + quiz.attemptCounter}
+                        containerStyle={{
+                          marginLeft: 0,
+                          alignSelf: "center",
+                        }}
+                        iconStyle={{
+                          width: 15,
+                          height: 15,
+                          tintColor: COLORS.primary3,
+                        }}
+                        labelStyle={{
+                          marginLeft: 5,
+                          color: COLORS.white,
+                          ...FONTS.h4,
+                        }}
+                      />
+                    </View>
                   </LinearGradient>
                 </Animated.View>
               );
@@ -311,11 +483,9 @@ const styles = StyleSheet.create({
     width: SIZES.width,
     height: SIZES.heightPlayScreen,
     backgroundColor: "#fff",
-    padding: SIZES.padding,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "900",
+    ...FONTS.h1,
     textTransform: "uppercase",
     letterSpacing: -1,
   },
@@ -323,11 +493,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   date: {
-    fontSize: 12,
+    ...FONTS.h3,
   },
   itemContainer: {
     height: OVERFLOW_HEIGHT,
-    padding: SPACING * 2,
+    paddingVertical: SPACING * 2,
+    paddingHorizontal: SIZES.padding,
   },
   itemContainerRow: {
     flexDirection: "row",
@@ -337,6 +508,6 @@ const styles = StyleSheet.create({
   overflowContainer: {
     height: OVERFLOW_HEIGHT,
     overflow: "hidden",
-    marginTop: 5,
+    marginBottom: SIZES.padding,
   },
 });

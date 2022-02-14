@@ -26,6 +26,9 @@ const MyQuizScreen = ({ navigation, route }) => {
   const [currentQuizId, setCurrentQuizId] = useState(
     route.params.currentQuizId
   );
+  const [currentAudioId, setCurrentAudioId] = useState(
+    route.params.currentAudioId
+  );
   const [currentQuizTitle, setCurrentQuizTitle] = useState(
     route.params.currentQuizTitle
   );
@@ -133,6 +136,7 @@ const MyQuizScreen = ({ navigation, route }) => {
               currentQuizTitle={currentQuizTitle}
               owner={quizOwner}
               QuizID={currentQuizId}
+              currentAudioId={currentAudioId}
             />
             {error ? (
               <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>

@@ -7,7 +7,9 @@ export const createQuiz = (
   owner,
   userId,
   attemptCounter,
-  isFavorite
+  isFavorite,
+  sound,
+  currentAudioId
 ) => {
   return firestore.collection("Quizzes").doc(currentQuizId).set({
     title,
@@ -17,6 +19,8 @@ export const createQuiz = (
     currentQuizId,
     attemptCounter,
     isFavorite,
+    sound,
+    currentAudioId,
   });
 };
 

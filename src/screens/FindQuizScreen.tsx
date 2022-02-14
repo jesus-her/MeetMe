@@ -13,7 +13,12 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import FormButton from "../components/shared/FormButton";
-import { getQuizzes, getUserQuizzes } from "../utils/database";
+import {
+  getQuestionsByQuizId,
+  getQuizById,
+  getQuizzes,
+  getUserQuizzes,
+} from "../utils/database";
 import { COLORS, FONTS, SIZES } from "../constants";
 import QuizCard from "../components/shared/QuizCard";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -26,37 +31,40 @@ import icons from "../constants/icons";
 import { useNavigation, useScrollToTop } from "@react-navigation/native";
 import SearchBar from "react-native-searchbar";
 import { Searchbar } from "react-native-paper";
-import { auth, firestore } from "../../firebase";
+import { auth, firestore, storage } from "../../firebase";
 import IconLabel from "../components/IconLabel";
+import { Audio } from "expo-av";
 
 const FindQuizScreen = ({ navigation, route }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
   const [filterData, setFilterData] = useState("");
-  const [searchBar, setSearchBar] = useState(false);
-  const userId = auth.currentUser.uid;
+
+  /*  const [sound, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const userId = auth.currentUser.uid;*/
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
   /*const getAllQuizzes = async () => {
-    setRefreshing(true);
-    const quizzes = await getQuizzes();
+      setRefreshing(true);
+      const quizzes = await getQuizzes();
 
-    // Transform quiz data
-    let tempQuizzes = [];
-    await quizzes.docs.forEach(async (quiz) => {
-      await tempQuizzes.push({ id: quiz.id, ...quiz.data() });
-    });
-    await setAllQuizzes([...tempQuizzes]);
-    setFilterData([...tempQuizzes]);
+      // Transform quiz data
+      let tempQuizzes = [];
+      await quizzes.docs.forEach(async (quiz) => {
+        await tempQuizzes.push({ id: quiz.id, ...quiz.data() });
+      });
+      await setAllQuizzes([...tempQuizzes]);
+      setFilterData([...tempQuizzes]);
 
-    setRefreshing(false);
-  };
+      setRefreshing(false);
+    };
 
-  useEffect(() => {
-    getAllQuizzes();
-  }, []);*/
+    useEffect(() => {
+      getAllQuizzes();
+    }, []);*/
 
   useEffect(() => {
     const getAllQuizzes = firestore
@@ -152,7 +160,7 @@ const FindQuizScreen = ({ navigation, route }) => {
           height: 55,
           position: "absolute",
           bottom: SIZES.radius,
-          left: SIZES.radius,
+          right: SIZES.radius,
           zIndex: 10,
           elevation: 3,
         }}
@@ -237,6 +245,7 @@ const FindQuizScreen = ({ navigation, route }) => {
         data={filterData}
         ref={ref}
         ListEmptyComponent={EmptyListMessage}
+        showsVerticalScrollIndicator={false}
         /*onRefresh={getAllQuizzes}*/
         refreshing={refreshing}
         keyExtractor={(item, index) => index.toString()}
@@ -255,6 +264,8 @@ const FindQuizScreen = ({ navigation, route }) => {
             }}
           >
             <QuizCard
+              sound={quiz.sound}
+              currentAudioId={quiz.currentAudioId}
               currentQuizTitle={quiz.title}
               currentQuizImage={quiz.quizImg}
               owner={quiz.owner}
@@ -293,24 +304,31 @@ const FindQuizScreen = ({ navigation, route }) => {
                   position: "relative",
                 }}
               >
-                <IconLabel
-                  icon={icons.solve}
-                  label={quiz.attemptCounter}
-                  containerStyle={{
+                <View
+                  style={{
+                    width: "30%",
+                    height: "100%",
+                    flexDirection: "row",
                     position: "absolute",
                     left: SIZES.padding,
                   }}
-                  iconStyle={{
-                    width: 15,
-                    height: 15,
-                    tintColor: COLORS.white,
-                  }}
-                  labelStyle={{
-                    marginLeft: 5,
-                    color: COLORS.white,
-                    ...FONTS.h4,
-                  }}
-                />
+                >
+                  <IconLabel
+                    icon={icons.solve}
+                    label={quiz.attemptCounter}
+                    iconStyle={{
+                      width: 15,
+                      height: 15,
+                      tintColor: COLORS.white,
+                    }}
+                    labelStyle={{
+                      marginLeft: 5,
+                      color: COLORS.white,
+                      ...FONTS.h4,
+                    }}
+                  />
+                </View>
+
                 <Text
                   style={{
                     color: COLORS.white,
@@ -320,6 +338,7 @@ const FindQuizScreen = ({ navigation, route }) => {
                 >
                   Play
                 </Text>
+
                 <Ionicons
                   name="play"
                   size={22}

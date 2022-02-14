@@ -69,6 +69,7 @@ const LiquidSwipe = ({
   indexx,
   setIndexx,
   data,
+  allQuestionsLength,
 }) => {
   const [index, setIndex] = useState(0);
   const prev = slides[index - 1];
@@ -143,6 +144,7 @@ const LiquidSwipe = ({
           next={next && <Slide slide={next} />}
         >
           <Slide
+            allQuestionsLength={allQuestionsLength}
             slide={slides[index]!}
             question={question}
             allOptions={allOptions}

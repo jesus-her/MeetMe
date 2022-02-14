@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FlatList,
   Image,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -12,27 +11,30 @@ import {
 } from "react-native";
 import { COLORS, FONTS, icons, SIZES } from "../constants";
 import { getQuizById, getQuestionsByQuizId } from "../utils/database";
-import { Ionicons } from "@expo/vector-icons";
-import FormButton from "../components/shared/FormButton";
 import ResultModal from "../components/PlayScreen/ResultModal";
-import HorizontalSwipeFirebase from "../components/PlayScreen/HorizontalSwipe/HorizontalSwipeFirebase";
 import CheckButton from "../components/CheckButton";
 import LiquidSwipe from "../components/PlayScreen/LiquidSwipe";
 import { IconButton } from "../components/ProfileScreen";
-import { useScrollToTop } from "@react-navigation/native";
+
 import { LinearGradient } from "expo-linear-gradient";
-import { auth, firestore, firebase_db } from "../../firebase";
+import { firestore, firebase_db } from "../../firebase";
+import PlayButton from "../components/shared/PlayButton";
+import { Ionicons } from "@expo/vector-icons";
+import Quiz from "../components/MyQuiz/Quiz";
 
 const PlayQuizScreen = ({ navigation, route }) => {
   const [currentQuizId, setCurrentQuizId] = useState(route.params.quizId);
   const [quizImg, setQuizImg] = useState(route.params.quizImg);
   const [quizOwner, setQuizOwner] = useState(route.params.quizOwner);
+  const [quizAudioId, setQuizAudioId] = useState(route.params.quizAudioId);
   const [title, setTitle] = useState("");
+
   const [questions, setQuestions] = useState([]);
 
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [isResultModalVisible, setIsResultModalVisible] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(false);
 
   //Attempts counter
   const attempts = async (currentQuizId) => {
@@ -83,6 +85,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
     });
 
     setQuestions([...tempQuestions]);
+    setQuestionsLength([...tempQuestions]);
   };
 
   useEffect(() => {
@@ -136,7 +139,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
           alignItems: "center",
           justifyContent: "space-between",
           paddingVertical: 10,
-          paddingHorizontal: 20,
+          paddingHorizontal: SIZES.radius,
           backgroundColor: COLORS.white,
           elevation: 4,
           height: SIZES.heightNav,
@@ -180,6 +183,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
           <View>
             {/* Title */}
             <Text style={{ ...FONTS.h3, marginLeft: 10 }}>{title}</Text>
+
             {/* Quiz by: */}
             <Text
               style={{
@@ -194,15 +198,16 @@ const PlayQuizScreen = ({ navigation, route }) => {
           </View>
         </View>
 
-        {/* Correct and incorrect count */}
+        {/* Correct and incorrect count*/}
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
+            position: "relative",
           }}
         >
-          {/* Correct */}
+          {/*Correct*/}
           <View
             style={{
               backgroundColor: COLORS.primary2,
@@ -227,7 +232,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
             </Text>
           </View>
 
-          {/* Incorrect */}
+          {/*Incorrect*/}
           <View
             style={{
               backgroundColor: COLORS.secondary,
@@ -254,9 +259,9 @@ const PlayQuizScreen = ({ navigation, route }) => {
       <FlatList
         data={questions}
         pagingEnabled={true}
+        scrollEnabled={scrollEnabled}
         style={{
           flex: 1,
-          backgroundColor: COLORS.white,
         }}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.question}
@@ -286,7 +291,8 @@ const PlayQuizScreen = ({ navigation, route }) => {
                 setIsResultModalVisible(false);
               }}
             />
-            <LiquidSwipe
+            {/*<LiquidSwipe
+              allQuestionsLength={questions.length}
               question={item.question}
               quizImage={quizImg}
               correctCount={correctCount}
@@ -294,14 +300,6 @@ const PlayQuizScreen = ({ navigation, route }) => {
               quizOwner={quizOwner}
               quizImg={quizImg}
               quizTitle={title}
-              /*ListFooterComponent={
-                              <CheckButton
-                                handleOnPress={() => {
-                                  setIsResultModalVisible(true);
-                                }}
-                              />
-                            }*/
-
               allOptions={item.allOptions.map((option, optionIndex) => {
                 return (
                   <>
@@ -313,8 +311,6 @@ const PlayQuizScreen = ({ navigation, route }) => {
                             paddingVertical: SIZES.radius,
                             paddingHorizontal: SIZES.padding,
                             borderRadius: SIZES.radius,
-                            /*borderWidth: 2,
-                                borderColor: COLORS.black,*/
                             backgroundColor: getOptionBgColor(item, option),
                             flexDirection: "row",
                             alignItems: "center",
@@ -365,99 +361,34 @@ const PlayQuizScreen = ({ navigation, route }) => {
                           </Text>
                         </TouchableOpacity>
                       ) : null
-                      /*<View
-                        style={{
-                          width: "100%",
-                          height: 15,
-                          backgroundColor: COLORS.white,
-                        }}
-                      />*/
                     }
                   </>
                 );
               })}
+            />*/}
+            <Quiz
+              quizId={currentQuizId}
+              allQuestions={questions}
+              shuffle={getQuizAndQuestionDetails}
+              attempts={attempts}
+              /* correctOption={item.correct_option}
+              setQuestions={setQuestions}
+              allQuestionsLength={questions.length}
+              question={item.question}
+              quizImage={quizImg}
+              correctCount={correctCount}
+              incorrectCount={incorrectCount}
+              setIncorrectCount={setIncorrectCount}
+              quizOwner={quizOwner}
+              quizImg={quizImg}
+              quizTitle={title}
+              selectedOption={item.selectedOption}
+              allOptions={item.allOptions}*/
             />
-
-            {/*<View style={{ padding: 20 }}>
-              <Text style={{ fontSize: 16 }}>
-                {index + 1}. {item.question}
-              </Text>*/}
-            {/*{item.imageUrl != "" ? (
-                <Image
-                  source={{
-                    uri: item.imageUrl,
-                  }}
-                  resizeMode={"contain"}
-                  style={{
-                    width: "80%",
-                    height: 150,
-                    marginTop: 20,
-                    marginLeft: "10%",
-                    borderRadius: 5,
-                  }}
-                />
-              ) : null}*/}
-            {/* </View>*/}
-
-            {/* Options */}
-            {/*  {item.allOptions.map((option, optionIndex) => {
-              return (
-                <TouchableOpacity
-                  key={optionIndex}
-                  style={{
-                    paddingVertical: 14,
-                    paddingHorizontal: 20,
-                    borderTopWidth: 1,
-                    borderColor: COLORS.primary,
-                    backgroundColor: getOptionBgColor(item, option),
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                  onPress={() => {
-                    if (item.selectedOption) {
-                      return null;
-                    }
-                    // Increase correct/incorrect count
-                    if (option == item.correct_answer) {
-                      setCorrectCount(correctCount + 1);
-                    } else {
-                      setIncorrectCount(incorrectCount + 1);
-                    }
-
-                    let tempQuestions = [...questions];
-                    tempQuestions[index].selectedOption = option;
-                    setQuestions([...tempQuestions]);
-                  }}
-                >
-                  <Text
-                    style={{
-                      width: 25,
-                      height: 25,
-                      padding: 2,
-                      borderWidth: 1,
-                      borderColor: COLORS.secondary,
-                      textAlign: "center",
-                      marginRight: 16,
-                      borderRadius: 25,
-                      color: getOptionTextColor(item, option),
-                    }}
-                  >
-                    {optionIndex + 1}
-                  </Text>
-                  <Text style={{ color: getOptionTextColor(item, option) }}>
-                    {option}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}*/}
           </View>
         )}
-        ListFooterComponent={() => (
-          <LinearGradient
-            colors={["#ff91b9", COLORS.secondary]}
-            start={{ x: 1, y: 0.1 }}
-            end={{ x: 0.1, y: 0.75 }}
+        /*ListFooterComponent={() => (
+          <View
             style={{
               height: SIZES.heightPlayScreen,
               alignItems: "center",
@@ -470,8 +401,8 @@ const PlayQuizScreen = ({ navigation, route }) => {
                 attempts(currentQuizId);
               }}
             />
-          </LinearGradient>
-        )}
+          </View>
+        )}*/
       />
     </SafeAreaView>
   );

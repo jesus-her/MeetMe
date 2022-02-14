@@ -106,6 +106,58 @@ const HomeScreen = ({ navigation }) => {
     return () => popularQuizzes();
   }, []);
 
+  const EmptyListMessage = () => {
+    return (
+      <View
+        style={{
+          width: SIZES.width,
+
+          padding: SIZES.padding,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          style={{
+            marginVertical: SIZES.padding,
+            width: SIZES.heightPlayScreen / 5,
+            height: SIZES.heightPlayScreen / 5,
+            tintColor: COLORS.gray20,
+            alignSelf: "center",
+          }}
+          source={require("../../assets/icons/no-fire.png")}
+        />
+        <Text
+          style={{ ...FONTS.h1, color: COLORS.primary, textAlign: "center" }}
+        >
+          There are no popular Quizzes yet!
+        </Text>
+
+        <Text
+          style={{
+            color: COLORS.gray50,
+            ...FONTS.h3,
+            fontWeight: "bold",
+            marginVertical: SIZES.padding,
+            textAlign: "center",
+          }}
+        >
+          Explore the quizzes and play your favorites to view them here!
+        </Text>
+
+        {/*<CustomButton2
+          label="Go home"
+          colors={["#ff91b9", COLORS.secondary]}
+          onPress={() => {
+            navigation.navigate("NewFindScreen");
+          }}
+          icon={require("../../assets/icons/lens.png")}
+        />*/}
+        {/*   </ImageBackground>*/}
+      </View>
+    );
+  };
+
   function renderStartCreating() {
     return (
       <ImageBackground
@@ -197,7 +249,7 @@ const HomeScreen = ({ navigation }) => {
           onPress={() => {
             navigation.navigate("FindByQuizId");
           }}
-          icon={require("../../assets/icons/lens.png")}
+          icon={require("../../assets/icons/search.png")}
         />
       </ImageBackground>
     );
@@ -246,12 +298,12 @@ const HomeScreen = ({ navigation }) => {
       >
         <FlatList
           data={allPopularQuizzes}
+          ListEmptyComponent={EmptyListMessage}
           listKey="PopularQuizzes"
           scrollEnabled={false}
           keyExtractor={(item) => `PopularQuizzes-${item.id}`}
           contentContainerStyle={{
             marginTop: SIZES.radius,
-            paddingHorizontal: SIZES.padding,
           }}
           renderItem={({ item: quiz, index }) => (
             <HorizontalCourseCard
@@ -297,9 +349,10 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView
           ref={ref}
           contentContainerStyle={{
-            paddingBottom: 150,
+            paddingBottom: 75,
           }}
           showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
           {/*Start Creating*/}
           {renderStartCreating()}

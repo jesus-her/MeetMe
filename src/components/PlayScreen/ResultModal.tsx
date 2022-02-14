@@ -95,7 +95,6 @@ const ResultModal = ({
           >
             <LiquidProgressFill
               correctCount={correctCount}
-              incorrectCount={incorrectCount}
               /* questionsLength={allQuestions.length}*/
               totalCount={totalCount}
             />

@@ -1,11 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { COLORS, FONTS, icons, SIZES } from "../../constants";
 import { LinearGradient } from "expo-linear-gradient";
-import { auth } from "../../../firebase";
+import { auth, storage } from "../../../firebase";
+import { Audio } from "expo-av";
+import FormButton from "./FormButton";
+import IconLabel from "../IconLabel";
 
-const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
+const QuizCard = ({
+  currentQuizImage,
+  currentQuizTitle,
+  owner,
+  QuizID,
+  currentAudioId,
+}) => {
   const user = auth.currentUser;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState(null);
+
+  //Download audio
+  const downloadAudio = async () => {
+    const uri = await storage
+      .ref(`/audio/quizzes/${currentAudioId}.m4a`)
+      .getDownloadURL();
+
+    console.log("uril:", uri);
+
+    // The rest of this plays the audio
+    const soundObject = new Audio.Sound();
+    try {
+      await soundObject.loadAsync({ uri });
+      await soundObject.playAsync();
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
   return (
     <>
       <LinearGradient
@@ -62,38 +92,6 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
               }}
             />
           )}
-
-          {/*<View
-            style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
-            <View
-              style={{
-                marginBottom: -15,
-                width: 30,
-                height: 30,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: COLORS.secondary,
-                borderRadius: 15,
-              }}
-            >
-              Camera Icon
-              <Image
-                source={icons.camera}
-                resizeMode="contain"
-                style={{
-                  width: 17,
-                  height: 17,
-                }}
-              />
-            </View>
-          </View>*/}
         </View>
         {/* Details */}
         <View
@@ -110,8 +108,9 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
               color: COLORS.white,
               textAlign: "center",
               backgroundColor: COLORS.primary,
-              borderRadius: SIZES.radius,
-              paddingHorizontal: SIZES.base,
+              borderRadius: 50,
+              paddingHorizontal: SIZES.radius,
+              paddingVertical: 5,
             }}
           >
             {currentQuizTitle} Quiz
@@ -145,6 +144,13 @@ const QuizCard = ({ currentQuizImage, currentQuizTitle, owner, QuizID }) => {
           >
             Quiz ID: {QuizID}
           </Text>
+          {/*Total questions*/}
+
+          {/*<FormButton
+            labelText="Audio"
+            handleOnPress={downloadAudio}
+            style={{ marginTop: SIZES.padding }}
+          />*/}
         </View>
       </LinearGradient>
     </>

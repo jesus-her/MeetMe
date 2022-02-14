@@ -17,6 +17,7 @@ const VerticalCourseCard = ({
   const navigation = useNavigation();
   return (
     <TouchableOpacity
+      activeOpacity={0.7}
       style={{
         backgroundColor: COLORS.white,
         width: 270,
@@ -152,6 +153,11 @@ const VerticalCourseCard = ({
           <IconLabel
             icon={icons.profile}
             label={owner}
+            iconStyle={{
+              width: 25,
+              height: 25,
+              tintColor: COLORS.additionalColor4,
+            }}
             containerStyle={{
               marginTop: SIZES.base,
             }}

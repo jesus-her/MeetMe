@@ -6,9 +6,10 @@ const LineDivider = ({ lineStyle }) => {
   return (
     <View
       style={{
-        width: "100%",
+        width: "90%",
         height: 2,
         backgroundColor: COLORS.gray20,
+        alignSelf: "center",
         ...lineStyle,
       }}
     />

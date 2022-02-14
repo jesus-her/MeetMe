@@ -13,19 +13,21 @@ import {
   StatusBar,
   Button,
 } from "react-native";
-import { COLORS, FONTS, icons, SIZES } from "../constants";
+import { COLORS, FONTS, SIZES } from "../constants";
 import FormButton from "../components/shared/FormButton";
 import FormInput from "../components/shared/FormInput";
-import { createQuestion, createQuiz } from "../utils/database";
+import { createQuiz } from "../utils/database";
 import * as ImagePicker from "expo-image-picker";
 import { storage } from "../../firebase";
-import { firestore } from "../../firebase";
+
 import { LinearGradient } from "expo-linear-gradient";
 import HeaderSection from "../components/shared/HeaderSection";
-import { err } from "react-native-svg/lib/typescript/xml";
+
 import { auth } from "../../firebase";
 import images from "../constants/images";
-
+import AudioRecorder from "./AudioRecorder";
+import { Audio } from "expo-av";
+import * as FileSystem from "expo-file-system";
 const CreateQuizScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [imageUri, setImageUri] = useState("");
@@ -37,9 +39,17 @@ const CreateQuizScreen = ({ navigation }) => {
   const [quizImg, setQuizImg] = useState("");
   const [error, setError] = useState("");
   const [attemptCounter, setAttemptCounter] = useState(0);
+  /*const currentAudioId = Math.floor(100000 + Math.random() * 9000).toString();*/
+  const [recording, setRecording] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState(null);
+  const [keyTimer, setKeyTimer] = useState(0);
+  const [audioUpload, setAudioUpload] = useState(false);
   const owner = auth.currentUser.displayName;
+
+  const [currentAudioId, setCurrentAudioId] = useState("");
   const userId = auth.currentUser.uid;
-  console.log(userId);
 
   //Validate Create QUIZ
   const updateError = (error, stateUpdater) => {
@@ -55,6 +65,12 @@ const CreateQuizScreen = ({ navigation }) => {
     //If title have 3 or more characters
     if (!title.trim() || title.length < 3)
       return updateError("Title must have at least 3 characters", setError);
+    //If title have 3 or more characters
+    if (!title.trim() || title.length > 21)
+      return updateError("Title is too long!", setError);
+    if (sound != null && audioUpload == false) {
+      return updateError("Save your current audio recorder first!", setError);
+    }
     return true;
   };
 
@@ -63,6 +79,12 @@ const CreateQuizScreen = ({ navigation }) => {
       const currentQuizId = Math.floor(
         100000 + Math.random() * 9000
       ).toString();
+      /* if (recording != null) {
+        await uploadAudio();
+      } else {
+        () => {};
+      }*/
+
       await createQuiz(
         currentQuizId,
         title,
@@ -70,7 +92,9 @@ const CreateQuizScreen = ({ navigation }) => {
         owner,
         userId,
         attemptCounter,
-        isFavorite
+        isFavorite,
+        sound,
+        currentAudioId
       );
 
       // Navigate to Add Question string
@@ -81,12 +105,20 @@ const CreateQuizScreen = ({ navigation }) => {
         quizOwner: owner,
         currentImageUri: imageUri,
         setCurrentQuizImage: setQuizImg,
+        sound: sound,
+        currentAudioId: currentAudioId,
       });
 
       ToastAndroid.show("Quiz Saved", ToastAndroid.SHORT);
       // Reset
       setTitle("");
       setImageUri("");
+      setSound(null);
+      setRecording(null);
+      setKeyTimer((prevKey) => prevKey + 1);
+      setAudioUpload(false);
+      setCurrentAudioId("");
+      /*setIsRecording(false);*/
     }
   };
   const selectImage = async () => {
@@ -133,6 +165,104 @@ const CreateQuizScreen = ({ navigation }) => {
       return null;
     }
   };
+
+  /*//Stop recording
+  const stopRecording = async () => {
+    try {
+      await recording.stopAndUnloadAsync();
+      setIsRecording(false);
+    } catch (error) {
+      // Do nothing -- we are already unloaded.
+    }
+    const info = await FileSystem.getInfoAsync(recording.getURI());
+    console.log(`FILE INFO: ${JSON.stringify(info)}`);
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+      playThroughEarpieceAndroid: false,
+      staysActiveInBackground: true,
+    });
+    const { sound: _sound, status } = await recording.createNewLoadedSoundAsync(
+      {
+        isLooping: true,
+        isMuted: false,
+        volume: 1.0,
+        rate: 1.0,
+        shouldCorrectPitch: true,
+      }
+    );
+    setSound(_sound);
+    setCurrentAudioId(Math.floor(100000 + Math.random() * 9000).toString());
+    /!*console.log(_sound);*!/
+    setIsRecording(false);
+  };*/
+
+  //Upload audio
+  /*const uploadAudio = async () => {
+    const uri = recording.getURI();
+    try {
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          try {
+            resolve(xhr.response);
+          } catch (error) {
+            console.log("error:", error);
+          }
+        };
+        xhr.onerror = (e) => {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", uri, true);
+        xhr.send(null);
+      });
+      if (blob != null) {
+        const uriParts = uri.split(".");
+        const fileType = uriParts[uriParts.length - 1];
+        storage
+          .ref()
+          .child(`/audio/quizzes/${currentAudioId}.${fileType}`)
+          .put(blob, {
+            contentType: `audio/${fileType}`,
+          })
+          .then(() => {
+            console.log("Sent!");
+            this.downloadAudio(uri);
+            /!*ToastAndroid.show("Audio saved!", ToastAndroid.SHORT);*!/
+          })
+          .catch((e) => console.log("error:", e));
+      } else {
+        console.log("erroor with blob");
+      }
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+  downloadAudio = async () => {
+    const uri = await storage
+      .ref(`/audio/quizzes/${currentAudioId}.m4a`)
+      .getDownloadURL();
+
+    console.log("uril:", uri);
+
+    setSound(uri);
+    /!*console.log(sound);*!/
+
+    // The rest of this plays the audio
+    const soundObject = new Audio.Sound();
+    try {
+      await soundObject.loadAsync({ uri });
+      /!* await soundObject.playAsync();*!/
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };*/
 
   function renderQuizCardPreview() {
     return (
@@ -270,6 +400,29 @@ const CreateQuizScreen = ({ navigation }) => {
             onChangeText={(val) => setTitle(val)}
             value={title}
           />
+          {/*Record An Audio*/}
+          {/*   <Text style={{ ...FONTS.h3, color: COLORS.primary }}>
+            Audio (Optional)
+          </Text>*/}
+          {/* <AudioRecorder
+            currentAudioId={currentAudioId}
+            recording={recording}
+            setRecording={setRecording}
+            sound={sound}
+            setSound={setSound}
+            stopRecording={stopRecording}
+            isRecording={isRecording}
+            setIsRecording={setIsRecording}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            keyTimer={keyTimer}
+            setKeyTimer={setKeyTimer}
+            audioUpload={audioUpload}
+            setAudioUpload={setAudioUpload}
+            setError={setError}
+            updateError={updateError}
+          />*/}
+
           {/* Image upload */}
           <Text style={{ ...FONTS.h3, color: COLORS.primary }}>
             Image (Optional)

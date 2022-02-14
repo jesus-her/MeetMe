@@ -66,17 +66,6 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
             }}
           />
           <Drawer.Screen
-            name="FindByQuizId"
-            component={ByQuizId}
-            options={{
-              title: "Quiz ID",
-              headerShown: false,
-              drawerIcon: ({ color }) => (
-                <FontAwesome name="qrcode" size={22} color={color} />
-              ),
-            }}
-          />
-          <Drawer.Screen
             name="MyQuizzes"
             component={MyQuizzes}
             options={{
@@ -91,6 +80,17 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
               ),
             }}
           />
+          <Drawer.Screen
+            name="FindByQuizId"
+            component={ByQuizId}
+            options={{
+              title: "Quiz ID",
+              headerShown: false,
+              drawerIcon: ({ color }) => (
+                <FontAwesome name="qrcode" size={22} color={color} />
+              ),
+            }}
+          />
 
           <Drawer.Screen
             name="Favorites"
@@ -100,17 +100,6 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
               headerShown: false,
               drawerIcon: ({ color }) => (
                 <MaterialIcons name="favorite" size={22} color={color} />
-              ),
-            }}
-          />
-          <Drawer.Screen
-            name="Welcome"
-            component={WelcomeScreen}
-            options={{
-              title: "Welcome",
-              headerShown: false,
-              drawerIcon: ({ color }) => (
-                <Ionicons name="albums-outline" size={22} color={color} />
               ),
             }}
           />

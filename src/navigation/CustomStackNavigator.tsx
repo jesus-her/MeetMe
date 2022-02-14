@@ -1,20 +1,20 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { COLORS, SIZES } from "../constants";
-import SignInScreen from "../screens/SignInScreen";
 import CustomDrawer from "./CustomDrawer";
 import PlayScreen from "../screens/PlayScreen";
 import Picker from "../Picker/Picker";
-import MyQuiz from "../screens/MyQuizzesScreen";
+
 import CreateQuizScreen from "../screens/CreateQuizScreen";
 import MyQuizScreen from "../screens/MyQuizScreen";
 import FindQuizScreen from "../screens/FindQuizScreen";
 import PlayQuizScreen from "../screens/PlayQuizScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import { Ionicons } from "@expo/vector-icons";
+
 import EditProfileScreen from "../screens/EditProfileScreen";
-import CustomTab from "./CustomTab";
-import ByQuizId from "../screens/ByQuizId";
+import WelcomeScreen from "../screens/WelcomeScreen";
+import { Ionicons } from "@expo/vector-icons";
+import Quiz from "../screens/Quiz";
 
 const Stack = createStackNavigator();
 
@@ -106,6 +106,14 @@ export default function CustomStackNavigator() {
         component={Picker}
         options={{
           title: "Social",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{
+          title: "Welcome",
           headerShown: false,
         }}
       />

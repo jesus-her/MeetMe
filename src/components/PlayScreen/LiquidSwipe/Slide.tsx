@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     padding: 85,
     paddingTop: 50,
     alignItems: "center",
+    justifyContent: "center",
   },
   image: {
     position: "absolute",
@@ -68,8 +69,9 @@ const Slide = ({
   quizOwner,
   quizImg,
   quizTitle,
+  allQuestionsLength,
 }: SlideProps) => {
-  const lighterColor = Color(color).lighten(0.45).toString();
+  const lighterColor = Color(color).lighten(0.1).toString();
 
   return (
     <>
@@ -92,135 +94,24 @@ const Slide = ({
       <View style={styles.container}>
         {id == 1 && (
           <>
-            {/* Top Bar Inside */}
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                backgroundColor: "rgba(255,255,255,0.85)",
-                elevation: 0,
-                height: SIZES.heightNav,
-                width: SIZES.width - SIZES.padding,
-                borderRadius: SIZES.heightNav,
-              }}
-            >
-              {quizImage != "" ? (
-                <Image
-                  source={{ uri: quizImg }}
-                  style={{
-                    width: SIZES.heightNav / 1.3,
-                    height: SIZES.heightNav / 1.3,
-                    borderRadius: SIZES.heightNav,
-                  }}
-                />
-              ) : (
-                <Image
-                  source={require("../../../../assets/icons/laughing.png")}
-                  style={{
-                    width: SIZES.heightNav / 1.3,
-                    height: SIZES.heightNav / 1.3,
-                    borderRadius: SIZES.heightNav,
-                  }}
-                />
-              )}
-              <View style={{ maxWidth: SIZES.width / 2 }}>
-                {/* Title */}
-                <Text
-                  style={{
-                    ...FONTS.h3,
-                    marginHorizontal: 10,
-                    textAlign: "center",
-                  }}
-                >
-                  {quizTitle} Quiz
-                </Text>
-                {/* Quiz by: */}
-                <Text
-                  style={{
-                    ...FONTS.h5,
-                    marginHorizontal: 10,
-                    color: COLORS.primary,
-                    textAlign: "center",
-                  }}
-                >
-                  Quiz by: {quizOwner}
-                </Text>
-              </View>
-
-              {/* Correct and incorrect count */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {/* Correct */}
-                <View
-                  style={{
-                    backgroundColor: COLORS.primary2,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingHorizontal: 10,
-                    paddingVertical: 4,
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
-                    borderWidth: 2,
-                    borderColor: COLORS.black,
-                  }}
-                >
-                  <Ionicons
-                    name="checkmark"
-                    size={14}
-                    style={{ color: COLORS.white }}
-                  />
-                  <Text
-                    style={{ color: COLORS.white, marginLeft: 6, ...FONTS.h4 }}
-                  >
-                    {correctCount}
-                  </Text>
-                </View>
-
-                {/* Incorrect */}
-                <View
-                  style={{
-                    backgroundColor: COLORS.secondary,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingHorizontal: 10,
-                    paddingVertical: 4,
-                    borderTopRightRadius: 10,
-                    borderBottomRightRadius: 10,
-                    borderWidth: 2,
-                    borderColor: COLORS.black,
-                  }}
-                >
-                  <Ionicons
-                    name="close"
-                    size={14}
-                    style={{ color: COLORS.white }}
-                  />
-                  <Text
-                    style={{ color: COLORS.white, marginLeft: 6, ...FONTS.h4 }}
-                  >
-                    {incorrectCount}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <QuestionHeader
+            {/* <QuestionHeader
               label={question}
-              colors={[COLORS.primary, COLORS.primary2]}
-              textColor={COLORS.white}
+              colors={[COLORS.white, COLORS.white]}
+              textColor={COLORS.black}
               containerStyle={{
                 elevation: 0,
               }}
-            />
+            />*/}
+            <Text
+              style={{
+                ...FONTS.largeTitle,
+                color: COLORS.white,
+                marginVertical: SIZES.base,
+              }}
+            >
+              {question}
+            </Text>
+
             {/*<Image style={styles.image} source={{ uri: quizImage }} />*/}
           </>
         )}

@@ -5,7 +5,7 @@ import { RectButton } from "react-native-gesture-handler";
 import { COLORS, FONTS, SIZES } from "../constants";
 import { LinearGradient } from "expo-linear-gradient";
 
-const CheckButton2 = ({ label, onPress, icon, colors }) => {
+const CheckButton2 = ({ label, onPress, icon, colors, labelStyle }) => {
   return (
     <LinearGradient
       colors={colors}
@@ -17,7 +17,9 @@ const CheckButton2 = ({ label, onPress, icon, colors }) => {
     >
       <RectButton style={styles.button} onPress={onPress}>
         <Image source={icon} resizeMode="cover" style={styles.icon} />
-        <Text style={styles.label}>{label}</Text>
+        <Text style={{ ...FONTS.h3, color: COLORS.white, ...labelStyle }}>
+          {label}
+        </Text>
       </RectButton>
       <View style={styles.shadow} />
     </LinearGradient>
@@ -54,10 +56,6 @@ const styles = StyleSheet.create({
     tintColor: COLORS.white,
     marginRight: 10,
     resizeMode: "cover",
-  },
-  label: {
-    ...FONTS.h3,
-    color: COLORS.white,
   },
 });
 

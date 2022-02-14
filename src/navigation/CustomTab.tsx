@@ -3,9 +3,11 @@ import React from "react";
 import HomeScreen from "../screens/HomeScreen";
 import FindQuizScreen from "../screens/FindQuizScreen";
 import { COLORS, SIZES } from "../constants";
-import { COL } from "../components/PlayScreen/Puzzle/Config";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import CreateQuizScreen from "../screens/CreateQuizScreen";
+
+import StackCarousel from "../components/PlayScreen/StackCarousel/StackCarousel";
+import Quiz from "../components/MyQuiz/Quiz";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,6 +56,21 @@ const CustomTab = () => {
           tabBarBadgeStyle: { backgroundColor: COLORS.primary2 },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="search" color={color} size={SIZES.heightNav / 2} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="StackPopular"
+        component={StackCarousel}
+        options={{
+          tabBarBadgeStyle: { backgroundColor: COLORS.primary2 },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="local-fire-department"
+              color={color}
+              size={SIZES.heightNav / 2}
+            />
           ),
         }}
       />

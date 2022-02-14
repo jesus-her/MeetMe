@@ -11859,6 +11859,15 @@ prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.6.0, prop-types@^15.6.2,
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+prop-types@^15.5.8:
+  version "15.8.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
+
 protobufjs@^6.10.0, protobufjs@^6.8.6:
   version "6.11.2"
   resolved "https://registry.npmjs.org/protobufjs/-/protobufjs-6.11.2.tgz"
@@ -12161,7 +12170,7 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-2.0.4.tgz"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
+react-is@^16.12.0, react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -12170,6 +12179,20 @@ react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-native-countdown-circle-timer@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-countdown-circle-timer/-/react-native-countdown-circle-timer-3.0.8.tgz#4d33b4c343f0b50c173f6ccbae249ec67b7ba13f"
+  integrity sha512-HmuASeSlT8+eIVf5dRK402iCon/xQXYUAhzgFXgQWljYFoR28gyDHUcR0kQBG309yZivHPS6W+NiRm3NRdT/VQ==
+
+react-native-countdown-component@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-countdown-component/-/react-native-countdown-component-2.7.1.tgz#d1e1278d792b0bb6b1bf58972e8a3ad758926a86"
+  integrity sha512-H7D/YvMjY1hCJf9xFrNh5CsIwkcel/Suno2gYR6ulWwoa2xnUgmltFWoMyEIODsUy7lIK1KCPm+Zn26QajbRaw==
+  dependencies:
+    lodash "^4.17.13"
+    prop-types "^15.5.8"
+    sprintf-js "^1.1.1"
 
 react-native-elements@^1.2.7:
   version "1.2.7"
@@ -12303,6 +12326,16 @@ react-native-slider@^0.11.0:
   dependencies:
     prop-types "^15.5.6"
 
+react-native-sound-player@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/react-native-sound-player/-/react-native-sound-player-0.11.2.tgz#ca6e8f4e5fd5ea0dd00ce687a63fda2f93db5218"
+  integrity sha512-e5aFwJGOwSkHTO4nYR7Q//SDB22SB5a7eP23s8qgdlWyPvX1tyXdilGS1c8ah6LsV/+D9d7fQAp+Jpu6Be8PXg==
+
+react-native-sound@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.2.tgz#e542dc5b9e16ab4b3ac7e6eaddb1fc8d98da9038"
+  integrity sha512-LmGc8lgOK3qecYMVQpyHvww/C+wgT6sWeMpVbOe4NCRGC2yKd4fo4U0KBUo9PO7AqKESO3I/2GZg1/C0+bwiiA==
+
 react-native-status-bar-height@^2.2.0:
   version "2.6.0"
   resolved "https://registry.npmjs.org/react-native-status-bar-height/-/react-native-status-bar-height-2.6.0.tgz"
@@ -12324,6 +12357,11 @@ react-native-swipeout@^2.3.6:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
     react-tween-state "^0.1.5"
+
+react-native-track-player@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-2.1.2.tgz#34d387b8c1b2e6895f569d35137d2bc6524a9f85"
+  integrity sha512-tZw9/4Ft7EtKtWDZuregBEXjXv++7WT7BvaXDk+lKCL/e3FQI5zyiwECfM18sk6raeMs7ItBxNsDKryCf9mMUA==
 
 react-native-vector-icons@^4.4.2:
   version "4.6.0"
@@ -12365,7 +12403,7 @@ react-native-web@~0.13.12:
 
 react-native-webview@11.2.3:
   version "11.2.3"
-  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.2.3.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.2.3.tgz#1b82685ab60645d4161f2e25e98286493cdffa5d"
   integrity sha512-r/K+Lf/O5aij72gRndMX2qsyQ/WLtDPiO75SS57y6JjqSKxedGASVL9Jwl1TM7fCXqUq8dgiwik/LuBHbJXAEg==
   dependencies:
     escape-string-regexp "2.0.0"
@@ -13471,7 +13509,7 @@ split@1.0.1, split@^1.0.1:
   dependencies:
     through "2"
 
-sprintf-js@^1.0.3:
+sprintf-js@^1.0.3, sprintf-js@^1.1.1:
   version "1.1.2"
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.1.2.tgz"
   integrity sha512-VE0SOVEHCk7Qc8ulkWw3ntAzXuqf7S2lvwQaDLRnUeIEaKNQJzV6BwmLKhOqT61aGhfUMrXeaBk+oDGCzvhcug==

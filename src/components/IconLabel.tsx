@@ -16,7 +16,6 @@ const IconLabel = ({ containerStyle, icon, iconStyle, label, labelStyle }) => {
         style={{
           width: 20,
           height: 20,
-          tintColor: COLORS.gray30,
           ...iconStyle,
         }}
       />

@@ -27,6 +27,21 @@ const HorizontalCourseCard = ({
   const navigation = useNavigation();
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const updateFavorite = () => {
+    setIsFavorite(!isFavorite);
+    firestore
+      .collection("Quizzes")
+      .doc(quizId)
+      .update({ isFavorite: isFavorite })
+      .then(() => {
+        ToastAndroid.show(
+          "Added to your favorites successfully!",
+          ToastAndroid.SHORT
+        );
+      })
+      .catch((e) => console.log("error", e));
+  };
+
   return (
     <View
       style={{
@@ -35,24 +50,14 @@ const HorizontalCourseCard = ({
         borderRadius: SIZES.radius,
         padding: SIZES.radius,
         elevation: 3,
+        marginHorizontal: SIZES.padding,
         ...containerStyle,
       }}
     >
       {/*Favourite button*/}
       <TouchableOpacity
-        onPress={() => {
-          firestore
-            .collection("Quizzes")
-            .doc(quizId)
-            .update({ isFavorite: true })
-            .then(() => {
-              ToastAndroid.show(
-                "Added to your favorites successfully!",
-                ToastAndroid.SHORT
-              );
-            })
-            .catch((e) => console.log("error", e));
-        }}
+        activeOpacity={0.8}
+        onPress={updateFavorite}
         style={{
           position: "absolute",
           top: 7,
@@ -192,6 +197,7 @@ const HorizontalCourseCard = ({
         </View>
         {/*Button*/}
         <TouchableOpacity
+          activeOpacity={0.8}
           style={{
             paddingVertical: 5,
             paddingHorizontal: 30,

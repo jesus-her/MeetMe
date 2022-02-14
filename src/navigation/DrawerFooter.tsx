@@ -11,6 +11,13 @@ const DrawerFooter = () => {
     <>
       <View style={styles.footer}>
         <DrawerIcon
+          icon="information-circle-outline"
+          label="Info"
+          onPress={() => {
+            navigation.navigate("Welcome");
+          }}
+        />
+        <DrawerIcon
           icon="share-social-outline"
           label="Social"
           onPress={() => {

@@ -3,13 +3,7 @@ import { StyleSheet, Text, View, Animated } from "react-native";
 import LiquidProgress from "react-native-liquid-progress";
 import { COLORS, FONTS, SIZES } from "../constants";
 
-export default function LiquidProgressFill({
-  score,
-  questionsLength,
-  correctCount,
-  incorrectCount,
-  totalCount,
-}) {
+export default function LiquidProgressFill({ correctCount, totalCount }) {
   const [value, setValue] = useState(correctCount / totalCount + 0.005);
   return (
     <View style={styles.container}>
