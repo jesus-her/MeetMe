@@ -1,4 +1,5 @@
-import { firestore } from "../../firebase";
+import { db, firestore } from "../../firebase";
+import { ToastAndroid } from "react-native";
 
 export const createQuiz = (
   currentQuizId,
@@ -9,7 +10,8 @@ export const createQuiz = (
   attemptCounter,
   isFavorite,
   sound,
-  currentAudioId
+  currentAudioId,
+  ownerPhotoURL
 ) => {
   return firestore.collection("Quizzes").doc(currentQuizId).set({
     title,
@@ -21,6 +23,7 @@ export const createQuiz = (
     isFavorite,
     sound,
     currentAudioId,
+    ownerPhotoURL,
   });
 };
 
@@ -39,8 +42,17 @@ export const getQuizzes = () => {
   return firestore.collection("Quizzes").get();
 };
 
-export const getUserQuizzes = (userId) => {
-  return firestore.collection("Quizzes").where("userId", "==", userId).get();
+export const updatePhotoInQuiz = async (photoURL, uid) => {
+  return firestore
+    .collection("Quizzes")
+    .where("userId", "==", uid)
+    .set({ ownerPhotoURL: photoURL })
+    .then(() => {
+      console.log("it works");
+    });
+  /*  const dbRef = db.collection("Quizzes").where("userId", "==", uid);
+  await dbRef
+    .set({ ownerPhotoURL: photoURL })*/
 };
 
 // Get Quiz Details by id

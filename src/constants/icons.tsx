@@ -42,6 +42,7 @@ const muted = require("../../assets/icons/mute.png");
 const unmute = require("../../assets/icons/speaker-filled-audio-tool.png");
 const rec = require("../../assets/icons/rec.png");
 const music = require("../../assets/icons/music.png");
+const remove = require("../../assets/icons/close.png");
 export default {
   animation,
   back,
@@ -86,4 +87,5 @@ export default {
   unmute,
   rec,
   music,
+  remove,
 };

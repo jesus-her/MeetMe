@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
+  StyleSheet,
 } from "react-native";
-import { COLORS, FONTS, SIZES } from "../../constants";
+import { COLORS, FONTS, icons, SIZES } from "../../constants";
 import data from "./data";
 import { Ionicons } from "@expo/vector-icons";
 import LiquidProgressFill from "../LiquidProgressFill";
@@ -15,6 +16,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import LineDivider from "../LineDivider";
 import { Line } from "react-native-svg";
+import FormButton from "../shared/FormButton";
+import { RectButton } from "react-native-gesture-handler";
 
 const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
   /*const allQuestions = data;*/
@@ -128,10 +131,10 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
   /* const renderOptions = () => {
     return <View></View>;
   };*/
-  const renderNextButton = () => {
+  const renderNextButton = (isPrimary = true) => {
     if (showNextButton) {
       return (
-        <TouchableOpacity
+        /*<TouchableOpacity
           onPress={handleNext}
           style={{
             width: "75%",
@@ -165,7 +168,45 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
               Next
             </Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity>*/
+        <LinearGradient
+          colors={[
+            isPrimary ? COLORS.secondary : COLORS.white,
+            isPrimary ? "#FA6EAE" : COLORS.white,
+          ]}
+          start={{ x: 0.1, y: 0.5 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            margin: 16,
+            borderRadius: 30,
+            alignSelf: "center",
+            borderWidth: 1,
+            borderColor: COLORS.primary,
+            width: "100%",
+            height: 40,
+            position: "absolute",
+            bottom: 0,
+          }}
+        >
+          <View style={styles.shadow} />
+          <RectButton style={styles.button} onPress={handleNext}>
+            <Text
+              style={{
+                textAlign: "center",
+                ...FONTS.h2,
+                color: isPrimary ? COLORS.white : COLORS.primary,
+                marginRight: 12,
+              }}
+            >
+              Next
+            </Text>
+            <Image
+              source={icons.right_arrow}
+              resizeMode="contain"
+              style={styles.icon}
+            />
+          </RectButton>
+        </LinearGradient>
       );
     } else {
       return null;
@@ -628,5 +669,41 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
     </LinearGradient>
   );
 };
+
+const styles = StyleSheet.create({
+  containerGradient: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    width: "90%",
+    height: 40,
+    justifyContent: "center",
+    alignSelf: "center",
+    flexDirection: "row",
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  label: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
+    letterSpacing: 5,
+    textAlign: "center",
+  },
+  shadow: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(29,29,29,0.3)",
+    zIndex: -2,
+    borderRadius: 30,
+    height: 45,
+    width: "100%",
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    tintColor: COLORS.white,
+  },
+});
 
 export default Quiz;

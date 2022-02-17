@@ -127,6 +127,7 @@ const QuizCard = ({
             style={{
               color: COLORS.white,
               ...FONTS.h2,
+              textAlign: "center",
             }}
           >
             {owner}

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Quiz from "../components/MyQuiz/Quiz";
+
 import {
   Alert,
   FlatList,
@@ -13,23 +13,20 @@ import {
 } from "react-native";
 import { firestore, auth } from "../../firebase";
 import { COLORS, FONTS, icons, SIZES } from "../constants";
-import QuizCard from "../components/shared/QuizCard";
-import { LinearGradient } from "expo-linear-gradient";
 import Swipeout from "react-native-swipeout";
 import {
   Ionicons,
   MaterialCommunityIcons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { getQuizzes } from "../utils/database";
+
 import HeaderSection from "../components/shared/HeaderSection";
-import { COL } from "../components/PlayScreen/Puzzle/Config";
-import images from "../constants/images";
 import CustomButton2 from "../components/CustomButton2";
-import ModalFindByQuizId from "../components/shared/ModalFindByQuizId";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import ModalOptions from "../components/MyQuizzes/ModalOptions";
 import IconLabel from "../components/IconLabel";
+import QuizLoader from "../components/QuizLoader";
+import QuizDelete from "../components/QuizDelete.";
 
 const MyQuizzes = ({ navigation }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
@@ -37,6 +34,7 @@ const MyQuizzes = ({ navigation }) => {
   const sheetRef = useRef<BottomSheet>(null);
   const [modalOptionsOpen, setModalOptionsOpen] = useState(false);
   const [handleQuizId, setHandleQuizId] = useState("");
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const uid = auth.currentUser.uid;
 
   const handleSnapPress = useCallback((index) => {
@@ -115,244 +113,251 @@ const MyQuizzes = ({ navigation }) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <HeaderSection
-        title="My Quizzes"
-        onPress={() => navigation.goBack()}
-        icon={icons.back}
-      />
-
-      <FlatList
-        data={allQuizzes}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={EmptyListMessage}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item: quiz }) => (
-          <>
-            <Swipeout
-              backgroundColor="transparent"
-              autoClose={true}
-              right={[
-                {
-                  onPress: () =>
-                    Alert.alert(
-                      "Delete Quiz",
-                      "Are you sure to delete this Quiz?",
-                      [
-                        {
-                          text: "Cancel",
-                          onPress: () => console.log("Cancel Pressed"),
-                          style: "cancel",
-                        },
-                        {
-                          text: "Yes",
-                          onPress: () => {
-                            firestore
-                              .collection("Quizzes")
-                              .doc(quiz.currentQuizId)
-                              .delete()
-                              .then(() => {
-                                ToastAndroid.show(
-                                  "Deleted success!",
-                                  ToastAndroid.SHORT
-                                );
-                              })
-                              .catch((e) => console.log("error", e));
-                          },
-                        },
-                      ]
-                    ),
-
-                  text: "Delete",
-                  backgroundColor: "#ff0000",
-                  color: "#fff",
-                  type: "primary",
-                  component: (
-                    <View
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "100%",
-                        height: "100%",
-                      }}
-                    >
-                      <MaterialCommunityIcons
-                        name="delete-forever"
-                        color={COLORS.white}
-                        size={35}
-                        style={{
-                          alignSelf: "center",
-                          justifyContent: "center",
-                        }}
-                      />
-                    </View>
-                  ),
-                },
-              ]}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  paddingVertical: SIZES.padding,
-                  backgroundColor: COLORS.white,
-                  paddingHorizontal: SIZES.padding,
-                  marginVertical: SIZES.base,
-                  width: "100%",
-                  alignSelf: "center",
-                  alignItems: "center",
-                  opacity: 1,
-                  elevation: 5,
-                }}
-              >
-                {/*Profile Image*/}
-                <View
-                  style={{
-                    width: SIZES.width / 3.5,
-                    height: SIZES.width / 3.5,
-                    justifyContent: "center",
-                  }}
-                >
-                  {quiz.quizImg != "" ? (
-                    <Image
-                      source={{
-                        uri: quiz.quizImg,
-                      }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: 100,
-                        borderWidth: 2,
-                        borderColor: COLORS.gray30,
-                        alignSelf: "center",
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      source={require("../../assets/icons/laughing.png")}
-                      resizeMode="cover"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: 100,
-                        borderWidth: 2,
-                        borderColor: COLORS.gray30,
-                        alignSelf: "center",
-                      }}
-                    />
-                  )}
-                </View>
-                {/* Details */}
-                <View
-                  style={{
-                    flex: 1,
-                    marginLeft: SIZES.radius,
-                    alignItems: "flex-start",
-
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...FONTS.h2,
-                      color: COLORS.black,
-                      fontWeight: "normal",
-                      borderRadius: SIZES.radius,
-                    }}
-                  >
-                    {quiz.title} Quiz
-                  </Text>
-                  <Text
-                    style={{
-                      color: COLORS.gray50,
-                      ...FONTS.h5,
-                      fontWeight: "normal",
-                    }}
-                  >
-                    Created by {quiz.owner}
-                  </Text>
-                  <IconLabel
-                    icon={icons.solve}
-                    label={"Attempted times: " + quiz.attemptCounter}
-                    containerStyle={{
-                      marginLeft: 0,
-                    }}
-                    iconStyle={{
-                      width: 12,
-                      height: 12,
-                      tintColor: COLORS.primary2,
-                    }}
-                    labelStyle={{
-                      marginLeft: 5,
-                      color: COLORS.primary2,
-                      ...FONTS.h5,
-                    }}
-                  />
-
-                  <Text
-                    style={{
-                      ...FONTS.h3,
-                      color: COLORS.primary,
-                      textAlign: "left",
-                      marginTop: SIZES.base / 2,
-                    }}
-                  >
-                    Quiz ID: {quiz.currentQuizId}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalOptionsOpen(!modalOptionsOpen);
-                    setHandleQuizId(quiz.currentQuizId);
-                  }}
-                  style={{ alignSelf: "flex-start" }}
-                >
-                  <SimpleLineIcons
-                    name="options-vertical"
-                    size={24}
-                    style={{ alignSelf: "flex-start" }}
-                  />
-                </TouchableOpacity>
-                {/*Modal Options*/}
-                <ModalOptions
-                  modalOptionsOpen={modalOptionsOpen}
-                  setModalOptionsOpen={setModalOptionsOpen}
-                  currentQuizId={handleQuizId}
-                />
-              </View>
-            </Swipeout>
-          </>
-        )}
-      />
-
+    <>
       <View
         style={{
-          width: SIZES.width,
-
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          bottom: SIZES.padding,
+          flex: 1,
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("TabCreateQuiz");
-          }}
-          style={{
-            borderRadius: 100,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Ionicons name="add-circle" size={55} color={COLORS.secondary} />
-        </TouchableOpacity>
+        <HeaderSection
+          title="My Quizzes"
+          onPress={() => navigation.goBack()}
+          icon={icons.back}
+        />
+
+        <FlatList
+          data={allQuizzes}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={EmptyListMessage}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item: quiz }) => (
+            <>
+              <Swipeout
+                backgroundColor="transparent"
+                autoClose={true}
+                right={[
+                  {
+                    onPress: () =>
+                      Alert.alert(
+                        "Delete Quiz",
+                        "Are you sure to delete this Quiz?",
+                        [
+                          {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel",
+                          },
+                          {
+                            text: "Yes",
+                            onPress: () => {
+                              setIsDeleteLoading(true);
+                              firestore
+                                .collection("Quizzes")
+                                .doc(quiz.currentQuizId)
+                                .delete()
+                                .then(() => {
+                                  /*ToastAndroid.show(
+                                  "Deleted success!",
+                                  ToastAndroid.SHORT);*/
+                                  setIsDeleteLoading(false);
+                                })
+                                .catch((e) => console.log("error", e));
+                            },
+                          },
+                        ]
+                      ),
+
+                    text: "Delete",
+                    backgroundColor: "#ff0000",
+                    color: "#fff",
+                    type: "primary",
+                    component: (
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          name="delete-forever"
+                          color={COLORS.white}
+                          size={35}
+                          style={{
+                            alignSelf: "center",
+                            justifyContent: "center",
+                          }}
+                        />
+                      </View>
+                    ),
+                  },
+                ]}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingVertical: SIZES.padding,
+                    backgroundColor: COLORS.white,
+                    paddingHorizontal: SIZES.padding,
+                    marginVertical: SIZES.base,
+                    width: "100%",
+                    alignSelf: "center",
+                    alignItems: "center",
+                    opacity: 1,
+                    elevation: 5,
+                  }}
+                >
+                  {/*Profile Image*/}
+                  <View
+                    style={{
+                      width: SIZES.width / 3.5,
+                      height: SIZES.width / 3.5,
+                      justifyContent: "center",
+                    }}
+                  >
+                    {quiz.quizImg != "" ? (
+                      <Image
+                        source={{
+                          uri: quiz.quizImg,
+                        }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: 100,
+                          borderWidth: 2,
+                          borderColor: COLORS.gray30,
+                          alignSelf: "center",
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        source={require("../../assets/icons/laughing.png")}
+                        resizeMode="cover"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: 100,
+                          borderWidth: 2,
+                          borderColor: COLORS.gray30,
+                          alignSelf: "center",
+                        }}
+                      />
+                    )}
+                  </View>
+                  {/* Details */}
+                  <View
+                    style={{
+                      flex: 1,
+                      marginLeft: SIZES.radius,
+                      alignItems: "flex-start",
+
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        ...FONTS.h2,
+                        color: COLORS.black,
+                        fontWeight: "normal",
+                        borderRadius: SIZES.radius,
+                      }}
+                    >
+                      {quiz.title} Quiz
+                    </Text>
+                    <Text
+                      style={{
+                        color: COLORS.gray50,
+                        ...FONTS.h5,
+                        fontWeight: "normal",
+                      }}
+                    >
+                      Created by {quiz.owner}
+                    </Text>
+                    <IconLabel
+                      icon={icons.solve}
+                      label={"Attempted times: " + quiz.attemptCounter}
+                      containerStyle={{
+                        marginLeft: 0,
+                      }}
+                      iconStyle={{
+                        width: 12,
+                        height: 12,
+                        tintColor: COLORS.primary2,
+                      }}
+                      labelStyle={{
+                        marginLeft: 5,
+                        color: COLORS.primary2,
+                        ...FONTS.h5,
+                      }}
+                    />
+
+                    <Text
+                      style={{
+                        ...FONTS.h3,
+                        color: COLORS.primary,
+                        textAlign: "left",
+                        marginTop: SIZES.base / 2,
+                      }}
+                    >
+                      Quiz ID: {quiz.currentQuizId}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalOptionsOpen(!modalOptionsOpen);
+                      setHandleQuizId(quiz.currentQuizId);
+                    }}
+                    style={{ alignSelf: "flex-start" }}
+                  >
+                    <SimpleLineIcons
+                      name="options-vertical"
+                      size={24}
+                      style={{ alignSelf: "flex-start" }}
+                    />
+                  </TouchableOpacity>
+                  {/*Modal Options*/}
+                  <ModalOptions
+                    isDeleteLoading={isDeleteLoading}
+                    setIsDeleteLoading={setIsDeleteLoading}
+                    modalOptionsOpen={modalOptionsOpen}
+                    setModalOptionsOpen={setModalOptionsOpen}
+                    currentQuizId={handleQuizId}
+                  />
+                </View>
+              </Swipeout>
+            </>
+          )}
+        />
+        {/*{allQuizzes != null ? (
+          <View
+            style={{
+              width: SIZES.width,
+
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              bottom: SIZES.padding,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("TabCreateQuiz");
+              }}
+              style={{
+                borderRadius: 100,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Ionicons name="add-circle" size={55} color={COLORS.secondary} />
+            </TouchableOpacity>
+          </View>
+        ) : null}*/}
       </View>
-    </View>
+      {isDeleteLoading ? <QuizDelete /> : null}
+    </>
   );
 };
 

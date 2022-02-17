@@ -14,45 +14,78 @@ import FormInput from "../shared/FormInput";
 import FormButton from "../shared/FormButton";
 import { auth } from "../../../firebase";
 import * as firebase from "firebase";
+import QuizLoader from "../QuizLoader";
 
 const ModalEditEmail = ({ modalEmailVisible, setModalEmailVisible, title }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
+  const [error, setError] = useState("");
+  const [isNewEmailLoading, setIsNewEmailLoading] = useState(false);
+
+  const updateError = (error, stateUpdater) => {
+    stateUpdater(error);
+    setTimeout(() => {
+      stateUpdater("");
+    }, 4500);
+  };
+
+  //Validating email
+  const isValidEmail = (value) => {
+    const regx = /^([A-Za-z0-9_\-\.])+\@([[A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    return regx.test(value);
+  };
+
+  //Conditions for Sign In
+  const isValidForm = () => {
+    //Only if all of the fields have value
+    /*  if (currentPassword == "")
+      return updateError("Required your current password!", setError);*/
+    //Validating email
+    if (!isValidEmail(newEmail))
+      return updateError("Invalid email address", setError);
+    //
+    if (newEmail !== confirmEmail)
+      return updateError("Emails does not match!", setError);
+
+    return true;
+  };
+
   //Reauthenticate
-  reauthenticate = (currentPassword) => {
+  /*reauthenticate = (currentPassword) => {
     var user = auth.currentUser;
     var cred = firebase.auth.EmailAuthProvider.credential(
       user.email,
       currentPassword
     );
-    return user.reauthenticateWithCredential(cred);
-  };
-
+    return user.reauthenticateWithCredential(cred).catch((error) => {
+      setIsNewEmailLoading(false);
+    });
+  };*/
   //Set a new password
   const handleOnChangeEmail = () => {
-    if (newEmail === confirmEmail) {
-      this.reauthenticate(currentPassword)
+    if (isValidForm()) {
+      setIsNewEmailLoading(true);
+      /*  this.reauthenticate(currentPassword)
+        .then(() => {*/
+      var user = auth.currentUser;
+      user
+        .updateEmail(newEmail)
         .then(() => {
-          var user = auth.currentUser;
-          user
-            .updateEmail(newEmail)
-            .then(() => {
-              ToastAndroid.show("New email address saved!", ToastAndroid.LONG);
-              setCurrentPassword("");
-              setNewEmail("");
-              setConfirmEmail("");
-              setModalEmailVisible(false);
-            })
-            .catch((error) => {
-              Alert.alert(error.message);
-            });
+          ToastAndroid.show("New email address saved!", ToastAndroid.LONG);
+          setCurrentPassword("");
+          setNewEmail("");
+          setConfirmEmail("");
+          setModalEmailVisible(false);
+          setIsNewEmailLoading(false);
         })
         .catch((error) => {
-          Alert.alert(error.message);
+          setIsNewEmailLoading(false);
         });
-    } else {
-      Alert.alert("Email address did not match");
+      /* })
+        .catch((error) => {
+          setIsNewEmailLoading(false);
+        });*/
     }
   };
 
@@ -66,6 +99,7 @@ const ModalEditEmail = ({ modalEmailVisible, setModalEmailVisible, title }) => {
           setModalEmailVisible(false);
         }}
       >
+        {isNewEmailLoading ? <QuizLoader /> : null}
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modalHeader}>
@@ -85,6 +119,13 @@ const ModalEditEmail = ({ modalEmailVisible, setModalEmailVisible, title }) => {
               />
             </View>
             <View style={styles.textInputContainer}>
+              {error ? (
+                <Text
+                  style={{ color: "red", ...FONTS.h4, textAlign: "center" }}
+                >
+                  {error}
+                </Text>
+              ) : null}
               <View
                 style={{
                   width: "100%",
@@ -97,14 +138,14 @@ const ModalEditEmail = ({ modalEmailVisible, setModalEmailVisible, title }) => {
                 }}
               >
                 {/*Authentication Password */}
-                <FormInput
+                {/*<FormInput
                   autoCapitalize="none"
                   labelText="Current Password"
                   placeholderText="Enter your current password"
                   secureTextEntry={true}
                   value={currentPassword}
                   onChangeText={(value) => setCurrentPassword(value)}
-                />
+                />*/}
                 {/*Enter a new (password, email, etc)*/}
                 <FormInput
                   autoCapitalize="none"

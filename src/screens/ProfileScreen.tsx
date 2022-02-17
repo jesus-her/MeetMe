@@ -194,19 +194,19 @@ const Profile = (props) => {
 
         <ProfileValue
           onPress={() => {
-            setModalVisible(!modalVisible);
+            props.navigation.navigate("ForgotPasswordInside");
           }}
           icon={icons.password}
           label="Password"
-          value="Updated 2 weeks ago"
+          value="********"
         />
 
-        <LineDivider />
-        <ProfileValue
+        {/*<LineDivider />*/}
+        {/*<ProfileValue
           icon={icons.call}
           label="Contact number"
           value="+52 2462224323"
-        />
+        />*/}
       </View>
     );
   }
@@ -215,7 +215,13 @@ const Profile = (props) => {
     return (
       <>
         <View style={styles.profileSectionContainer}>
-          <ProfileValue icon={icons.star_1} value="Stars" />
+          <ProfileValue
+            onPress={() => {
+              props.navigation.navigate("MyQuizzes");
+            }}
+            icon={icons.star_1}
+            value="Stars"
+          />
 
           <LineDivider />
           <ProfileRadioButton

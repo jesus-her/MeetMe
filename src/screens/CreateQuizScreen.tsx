@@ -12,8 +12,9 @@ import {
   ScrollView,
   StatusBar,
   Button,
+  ImageBackground,
 } from "react-native";
-import { COLORS, FONTS, SIZES } from "../constants";
+import { COLORS, FONTS, icons, SIZES } from "../constants";
 import FormButton from "../components/shared/FormButton";
 import FormInput from "../components/shared/FormInput";
 import { createQuiz } from "../utils/database";
@@ -28,6 +29,9 @@ import images from "../constants/images";
 import AudioRecorder from "./AudioRecorder";
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
+import AppLoader from "../components/AppLoader";
+import QuizLoader from "../components/QuizLoader";
+import IconLabel from "../components/IconLabel";
 const CreateQuizScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [imageUri, setImageUri] = useState("");
@@ -47,9 +51,12 @@ const CreateQuizScreen = ({ navigation }) => {
   const [keyTimer, setKeyTimer] = useState(0);
   const [audioUpload, setAudioUpload] = useState(false);
   const owner = auth.currentUser.displayName;
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const [currentAudioId, setCurrentAudioId] = useState("");
+  const [ownerPhotoURL, setOwnerPhotoURL] = useState(auth.currentUser.photoURL);
   const userId = auth.currentUser.uid;
+  const user = auth.currentUser;
 
   //Validate Create QUIZ
   const updateError = (error, stateUpdater) => {
@@ -76,6 +83,9 @@ const CreateQuizScreen = ({ navigation }) => {
 
   const handleQuizSave = async () => {
     if (isValidQuiz()) {
+      setIsLoading(true);
+      /*setOwnerPhotoURL(user.photoURL);*/
+
       const currentQuizId = Math.floor(
         100000 + Math.random() * 9000
       ).toString();
@@ -94,7 +104,8 @@ const CreateQuizScreen = ({ navigation }) => {
         attemptCounter,
         isFavorite,
         sound,
-        currentAudioId
+        currentAudioId,
+        ownerPhotoURL
       );
 
       // Navigate to Add Question string
@@ -118,6 +129,7 @@ const CreateQuizScreen = ({ navigation }) => {
       setKeyTimer((prevKey) => prevKey + 1);
       setAudioUpload(false);
       setCurrentAudioId("");
+      setIsLoading(false);
       /*setIsRecording(false);*/
     }
   };
@@ -128,7 +140,9 @@ const CreateQuizScreen = ({ navigation }) => {
       allowsEditing: true,
     });
     console.log(result);
+
     if (!result.cancelled) {
+      setIsImageLoading(true);
       this.uploadImage(result.uri)
         .then(() => {
           console.log("Image Uploaded");
@@ -157,6 +171,7 @@ const CreateQuizScreen = ({ navigation }) => {
           console.log("you image:" + downloadURL);
           setQuizImg(downloadURL);
           setImageUrl(downloadURL);
+          setIsImageLoading(false);
           return downloadURL;
         });
 
@@ -443,24 +458,55 @@ const CreateQuizScreen = ({ navigation }) => {
               }}
               onPress={selectImage}
             >
-              <Text style={{ opacity: 0.5, color: COLORS.primary }}>
+              <Text
+                style={{ opacity: 0.5, color: COLORS.primary, ...FONTS.h3 }}
+              >
                 + add image
               </Text>
             </TouchableOpacity>
           ) : (
-            <Image
-              source={{
-                uri: imageUri,
-              }}
-              resizeMode={"cover"}
+            <View
               style={{
-                width: 150,
-                height: 150,
-                alignSelf: "center",
-                borderRadius: 100,
-                marginVertical: SIZES.padding,
+                width: "100%",
               }}
-            />
+            >
+              <ImageBackground
+                source={{
+                  uri: imageUri,
+                }}
+                resizeMode={"cover"}
+                imageStyle={{ borderRadius: 100 }}
+                style={{
+                  width: 150,
+                  height: 150,
+                  alignSelf: "center",
+                  borderRadius: 100,
+                  marginVertical: SIZES.padding,
+                  position: "relative",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    setImageUri("");
+                  }}
+                  style={{ position: "absolute", top: -5, right: -5 }}
+                >
+                  <IconLabel
+                    icon={icons.remove}
+                    iconStyle={{
+                      width: 35,
+                      height: 35,
+                      tintColor: COLORS.secondary,
+                    }}
+                    labelStyle={{
+                      marginLeft: 5,
+                      color: COLORS.secondary,
+                      ...FONTS.h4,
+                    }}
+                  />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
           )}
         </View>
         {/*Save Quiz*/}
@@ -472,6 +518,8 @@ const CreateQuizScreen = ({ navigation }) => {
           />
         </View>
       </ScrollView>
+      {isImageLoading ? <QuizLoader /> : null}
+      {isLoading ? <AppLoader /> : null}
     </>
   );
 };

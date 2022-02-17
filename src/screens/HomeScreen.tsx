@@ -282,6 +282,7 @@ const HomeScreen = ({ navigation }) => {
             quizId={quiz.id}
             quizImage={quiz.quizImg}
             owner={quiz.owner}
+            ownerPhoto={quiz.ownerPhotoURL}
           />
         )}
       />

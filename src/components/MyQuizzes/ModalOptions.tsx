@@ -21,6 +21,8 @@ const ModalOptions = ({
   modalOptionsOpen,
   setModalOptionsOpen,
   currentQuizId,
+  isDeleteLoading,
+  setIsDeleteLoading,
 }) => {
   const user = auth.currentUser;
 
@@ -34,13 +36,14 @@ const ModalOptions = ({
       {
         text: "Yes",
         onPress: () => {
+          setModalOptionsOpen(false);
+          setIsDeleteLoading(true);
           firestore
             .collection("Quizzes")
             .doc(currentQuizId)
             .delete()
             .then(() => {
-              ToastAndroid.show("Deleted success!", ToastAndroid.SHORT);
-              setModalOptionsOpen(false);
+              setIsDeleteLoading(false);
             })
             .catch((e) => console.log("error", e));
         },

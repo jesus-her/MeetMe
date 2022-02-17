@@ -51,7 +51,7 @@ const CustomTab = () => {
         name="NewFindScreen"
         component={FindQuizScreen}
         options={{
-          tabBarBadge: 5,
+          /* tabBarBadge: 5,*/
 
           tabBarBadgeStyle: { backgroundColor: COLORS.primary2 },
           tabBarIcon: ({ color, size }) => (

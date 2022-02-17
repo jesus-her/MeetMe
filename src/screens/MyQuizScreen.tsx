@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   KeyboardAvoidingView,
   ScrollView,
   ToastAndroid,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
+  Alert,
 } from "react-native";
-import { COLORS, FONTS, icons, images, SIZES } from "../constants";
+import { COLORS, FONTS, icons, SIZES } from "../constants";
 import FormInput from "../components/shared/FormInput";
 import FormButton from "../components/shared/FormButton";
-import HomeScreen from "./HomeScreen";
+
 import { createQuestion } from "../utils/database";
-import { storage } from "../../firebase";
-import { launchImageLibrary } from "react-native-image-picker";
-import { IconButton } from "../components/ProfileScreen";
+
 import QuizCard from "../components/shared/QuizCard";
 import HeaderSection from "../components/shared/HeaderSection";
+
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import AppLoader from "../components/AppLoader";
+import QuizLoader from "../components/QuizLoader";
 import { LinearGradient } from "expo-linear-gradient";
-import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { firestore } from "../../firebase";
 
 const MyQuizScreen = ({ navigation, route }) => {
   const [currentQuizId, setCurrentQuizId] = useState(
@@ -51,6 +51,7 @@ const MyQuizScreen = ({ navigation, route }) => {
   const [count, setCount] = useState(1);
 
   const [error, setError] = useState("");
+  const hasUnsavedChanges = Boolean(count > 0);
 
   //Validate Create QUIZ
   const updateError = (error, stateUpdater) => {
@@ -107,6 +108,64 @@ const MyQuizScreen = ({ navigation, route }) => {
       setOptionFour(null);
     }
   };
+  const deleteQuiz = () =>
+    Alert.alert("Delete Quiz", "Are you sure to delete this Quiz?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          firestore
+            .collection("Quizzes")
+            .doc(currentQuizId)
+            .delete()
+            .then(() => {
+              console.log("quiz no saved!");
+            })
+            .catch((e) => console.log("error", e));
+        },
+      },
+    ]);
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        if (!hasUnsavedChanges) {
+          // If we don't have unsaved changes, then we don't need to do anything
+          return;
+        }
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+        // Prompt the user before leaving the screen
+        Alert.alert(
+          "Discard changes?",
+          "You have unsaved changes. Are you sure to discard them and leave the screen?",
+          [
+            { text: "Don't leave", style: "cancel", onPress: () => {} },
+            {
+              text: "Discard",
+              style: "destructive",
+              // If the user confirmed, then we dispatch the action we blocked earlier
+              // This will continue the action that had triggered the removal of the screen
+              onPress: () => {
+                navigation.dispatch(e.data.action);
+                firestore
+                  .collection("Quizzes")
+                  .doc(currentQuizId)
+                  .delete()
+                  .then(() => {
+                    console.log("quiz no saved!");
+                  })
+                  .catch((e) => console.log("error", e));
+              },
+            },
+          ]
+        );
+      }),
+    [navigation, hasUnsavedChanges]
+  );
 
   return (
     <>
@@ -150,33 +209,33 @@ const MyQuizScreen = ({ navigation, route }) => {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
+                marginBottom: SIZES.radius,
               }}
             >
-              <View
+              <LinearGradient
+                colors={["#FA6EAE", COLORS.secondary]}
                 style={{
-                  backgroundColor: COLORS.secondary,
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
                   paddingHorizontal: 10,
                   paddingVertical: 4,
                   borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: COLORS.black,
                   alignSelf: "flex-start",
+                  elevation: 3,
                 }}
               >
-                <FontAwesome5
-                  name="question"
-                  size={14}
+                <FontAwesome
+                  name="question-circle"
+                  size={18}
                   style={{ color: COLORS.white }}
                 />
                 <Text
                   style={{ color: COLORS.white, marginLeft: 6, ...FONTS.h3 }}
                 >
-                  : {count}
+                  Total questions saved : {count - 1}
                 </Text>
-              </View>
+              </LinearGradient>
             </View>
 
             {/*Question*/}
@@ -220,10 +279,21 @@ const MyQuizScreen = ({ navigation, route }) => {
               handleOnPress={() => {
                 setCurrentQuizId("");
                 navigation.navigate("Home");
-
                 route.params.setCurrentQuizImage("");
                 setCount(1);
-                ToastAndroid.show("Quizzed saved!", ToastAndroid.SHORT);
+                if (count == 1) {
+                  firestore
+                    .collection("Quizzes")
+                    .doc(currentQuizId)
+                    .delete()
+                    .then(() => {
+                      console.log("quiz no saved!");
+                    })
+                    .catch((e) => console.log("error", e));
+                }
+                if (count != 1) {
+                  ToastAndroid.show("Quizzed saved!", ToastAndroid.SHORT);
+                } else null;
               }}
               style={{
                 marginVertical: 20,

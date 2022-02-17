@@ -14,10 +14,37 @@ import FormInput from "../shared/FormInput";
 import FormButton from "../shared/FormButton";
 import { auth } from "../../../firebase";
 import * as firebase from "firebase";
+import QuizLoader from "../QuizLoader";
 
 const ModalEditName = ({ modalNameVisible, setModalNameVisible, title }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newName, setNewName] = useState("");
+  const [isNewNameLoading, setIsNewNameLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  //Validate Create QUIZ
+  const updateError = (error, stateUpdater) => {
+    stateUpdater(error);
+    setTimeout(() => {
+      stateUpdater("");
+    }, 4500);
+  };
+
+  //Conditions an error messages
+  const isValidForm = () => {
+    //Only if all of the fields have value
+    if (newName == "") {
+      setIsNewNameLoading(false);
+      ToastAndroid.show("Noooo name saved!", ToastAndroid.LONG);
+      setNewName("");
+      setModalNameVisible(false);
+    }
+
+    if (!newName.trim() || newName.length < 3)
+      return updateError("Name must have at least 3 characters", setError);
+
+    return true;
+  };
   //Reauthenticate
   /* reauthenticate = (currentPassword) => {
     var user = auth.currentUser;
@@ -30,17 +57,21 @@ const ModalEditName = ({ modalNameVisible, setModalNameVisible, title }) => {
 
   //Set a new password
   const handleOnChangeName = () => {
-    var user = auth.currentUser;
-    user
-      .updateProfile({ displayName: newName })
-      .then(() => {
-        ToastAndroid.show("New name saved!", ToastAndroid.LONG);
-        setNewName("");
-        setModalNameVisible(false);
-      })
-      .catch((error) => {
-        Alert.alert(error.message);
-      });
+    if (isValidForm()) {
+      setIsNewNameLoading(true);
+      var user = auth.currentUser;
+      user
+        .updateProfile({ displayName: newName })
+        .then(() => {
+          setIsNewNameLoading(false);
+          ToastAndroid.show("New name saved!", ToastAndroid.LONG);
+          setNewName("");
+          setModalNameVisible(false);
+        })
+        .catch((error) => {
+          Alert.alert(error.message);
+        });
+    }
     /*  this.reauthenticate(currentPassword).then(() => {
       var user = auth.currentUser;
       user
@@ -66,6 +97,7 @@ const ModalEditName = ({ modalNameVisible, setModalNameVisible, title }) => {
         setModalNameVisible(false);
       }}
     >
+      {isNewNameLoading ? <QuizLoader /> : null}
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
@@ -85,6 +117,11 @@ const ModalEditName = ({ modalNameVisible, setModalNameVisible, title }) => {
             />
           </View>
           <View style={styles.textInputContainer}>
+            {error ? (
+              <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
+                {error}
+              </Text>
+            ) : null}
             <View
               style={{
                 width: "100%",

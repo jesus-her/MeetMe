@@ -360,7 +360,7 @@ const ByQuizId = ({ navigation, route }) => {
                 height: SIZES.heightPlayScreen / 5,
                 tintColor: COLORS.gray20,
               }}
-              source={require("../../assets/icons/lens.png")}
+              source={require("../../assets/icons/codigo-qr.png")}
             />
             <Text
               style={{

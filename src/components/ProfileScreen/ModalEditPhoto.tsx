@@ -18,11 +18,17 @@ import { auth, storage } from "../../../firebase";
 import * as firebase from "firebase";
 import * as ImagePicker from "expo-image-picker";
 import { updatePhoto } from "../../utils/auth";
+import QuizLoader from "../QuizLoader";
+import { firestore, db } from "../../../firebase";
+
+import { updatePhotoInQuiz } from "../../utils/database";
 
 const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [photoURL, setPhotoURL] = useState("https://i.imgur.com/IN5sYw6.png");
   const [imageUri, setImageUri] = useState("https://i.imgur.com/IN5sYw6.png");
+  const [isImageLoading, setIsImageLoading] = useState(false);
+  const uid = auth.currentUser.uid;
   //Reauthenticate
   /*
   reauthenticate = (currentPassword) => {
@@ -42,11 +48,21 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
       .then(() => {
         ToastAndroid.show("New photo saved!", ToastAndroid.LONG);
         setModalPhotoVisible(false);
+
         setImageUri("https://i.imgur.com/IN5sYw6.png");
       })
       .catch((error) => {
         Alert.alert(error.message);
+        console.log(error.message);
       });
+    /*db.ref("Quizzes/101391").update({ ownerPhotoURL: photoURL });*/
+    /*firestore
+      .collection("Quizzes")
+      .where("userId", "==", uid)
+      .set({ ownerPhotoURL: photoURL })
+      .then(() => {
+        console.log("it works");
+      });*/
 
     // Load PhotoURL to Firebase  SignUp
     // this.reauthenticate(currentPassword)
@@ -76,6 +92,7 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
     });
     console.log(result);
     if (!result.cancelled) {
+      setIsImageLoading(true);
       this.uploadImage(result.uri)
         .then(() => {
           console.log("Image Uploaded");
@@ -84,6 +101,13 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
           Alert.alert(error);
         });
       setImageUri(result.uri);
+      /* firestore
+        .collection("Quizzes")
+        .where("userId", "==", uid)
+        .update({ ownerPhotoURL: photoURL })
+        .then(() => {
+          console.log("it works");
+        });*/
     }
   };
 
@@ -105,6 +129,8 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
         .then((downloadURL) => {
           console.log("you image:" + downloadURL);
           setPhotoURL(downloadURL);
+          setIsImageLoading(false);
+
           return downloadURL;
         });
 
@@ -124,6 +150,7 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
           setModalPhotoVisible(false);
         }}
       >
+        {isImageLoading ? <QuizLoader /> : null}
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modalHeader}>

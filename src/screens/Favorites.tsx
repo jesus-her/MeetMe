@@ -122,7 +122,7 @@ const Favorites = ({ navigation }) => {
       }}
     >
       <HeaderSection
-        title="My favorites"
+        title="Global favorites"
         onPress={() => navigation.goBack()}
         icon={icons.back}
       />

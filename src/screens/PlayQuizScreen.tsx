@@ -187,7 +187,8 @@ const PlayQuizScreen = ({ navigation, route }) => {
             {/* Quiz by: */}
             <Text
               style={{
-                ...FONTS.h5,
+                fontWeight: "bold",
+                fontSize: quizOwner.length < 10 ? 14 : 10,
                 marginLeft: 10,
                 color: COLORS.primary,
                 textAlign: "center",

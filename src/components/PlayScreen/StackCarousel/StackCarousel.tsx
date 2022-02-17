@@ -173,7 +173,11 @@ const OverflowItems = ({ data, scrollXAnimated }) => {
                 <IconLabel
                   icon={icons.profile}
                   label={item.owner}
-                  labelStyle={{ color: COLORS.primary2, ...FONTS.h3 }}
+                  labelStyle={{
+                    color: COLORS.primary2,
+                    fontWeight: "bold",
+                    fontSize: item.owner.length < 10 ? 16 : 12,
+                  }}
                   iconStyle={{
                     width: 20,
                     height: 20,

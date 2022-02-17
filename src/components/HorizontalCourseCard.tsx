@@ -25,7 +25,7 @@ const HorizontalCourseCard = ({
   favorite,
 }) => {
   const navigation = useNavigation();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(true);
 
   const updateFavorite = () => {
     setIsFavorite(!isFavorite);

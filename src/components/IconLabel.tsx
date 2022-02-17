@@ -14,8 +14,6 @@ const IconLabel = ({ containerStyle, icon, iconStyle, label, labelStyle }) => {
       <Image
         source={icon}
         style={{
-          width: 20,
-          height: 20,
           ...iconStyle,
         }}
       />

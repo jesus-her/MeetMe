@@ -18,6 +18,29 @@ const ModalEditPassword = ({ modalVisible, setModalVisible, title }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const updateError = (error, stateUpdater) => {
+    stateUpdater(error);
+    setTimeout(() => {
+      stateUpdater("");
+    }, 4500);
+  };
+
+  //Conditions for Sign In
+  const isValidForm = () => {
+    //Only if all of the fields have value
+    if (currentPassword == "")
+      return updateError("Required your current password!", setError);
+    //Validating email
+    if (!newPassword.trim() || newPassword.length < 8)
+      return updateError("Password must have at least 8 characters", setError);
+    if (newPassword !== confirmPassword)
+      return updateError("Emails does not match!", setError);
+
+    return true;
+  };
+
   //Reauthenticate
   reauthenticate = (currentPassword) => {
     var user = auth.currentUser;
@@ -30,28 +53,30 @@ const ModalEditPassword = ({ modalVisible, setModalVisible, title }) => {
 
   //Set a new password
   const handleOnChangePassword = () => {
-    if (newPassword === confirmPassword) {
-      this.reauthenticate(currentPassword)
-        .then(() => {
-          var user = auth.currentUser;
-          user
-            .updatePassword(newPassword)
-            .then(() => {
-              ToastAndroid.show("New password saved!", ToastAndroid.LONG);
-              setCurrentPassword("");
-              setNewPassword("");
-              setConfirmPassword("");
-              setModalVisible(false);
-            })
-            .catch((error) => {
-              Alert.alert(error.message);
-            });
-        })
-        .catch((error) => {
-          Alert.alert(error.message);
-        });
-    } else {
-      Alert.alert("Passwords did not match");
+    if (isValidForm()) {
+      this.reauthenticate(currentPassword).then(() => {
+        var user = auth.currentUser;
+        user
+          .updatePassword(newPassword)
+          .then(() => {
+            ToastAndroid.show("New password saved!", ToastAndroid.LONG);
+            setCurrentPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+            setModalVisible(false);
+          })
+          .catch(
+            function (err) {
+              // console.log(test.message);
+              setError("The password is invalid");
+              /*error = err.Error;*/
+              /*console.log(err.Error);*/
+              // console.log("hola", err[0]);
+              /* alert(err);*/
+              /*  console.log(err);*/
+            }.bind(this)
+          );
+      });
     }
   };
 
@@ -84,6 +109,11 @@ const ModalEditPassword = ({ modalVisible, setModalVisible, title }) => {
             />
           </View>
           <View style={styles.textInputContainer}>
+            {error ? (
+              <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
+                {error}
+              </Text>
+            ) : null}
             <View
               style={{
                 width: "100%",

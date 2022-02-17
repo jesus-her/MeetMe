@@ -15,6 +15,7 @@ import EditProfileScreen from "../screens/EditProfileScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { Ionicons } from "@expo/vector-icons";
 import Quiz from "../screens/Quiz";
+import ForgotPassword from "../screens/ForgotPassword";
 
 const Stack = createStackNavigator();
 
@@ -116,6 +117,13 @@ export default function CustomStackNavigator() {
           title: "Welcome",
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        options={{
+          title: "",
+        }}
+        name="ForgotPasswordInside"
+        component={ForgotPassword}
       />
     </Stack.Navigator>
   );

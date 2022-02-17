@@ -7,12 +7,15 @@ import {
   Button,
   ToastAndroid,
   KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import FormButton from "../components/shared/FormButton";
 import FormInput from "../components/shared/FormInput";
 import { COLORS, FONTS } from "../constants";
 import { signUp } from "../utils/auth";
 import { firestore } from "../../firebase";
+import AppLoader from "../components/AppLoader";
 
 const SignUpScreen = ({ navigation }) => {
   const [displayName, setDisplayName] = useState("");
@@ -21,6 +24,7 @@ const SignUpScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   //Validate Create QUIZ
   const updateError = (error, stateUpdater) => {
@@ -62,7 +66,8 @@ const SignUpScreen = ({ navigation }) => {
 
   const handleOnSubmit = () => {
     if (isValidForm()) {
-      signUp(email, password, displayName);
+      setIsLoading(true);
+      signUp(email, password, displayName, setIsLoading, setError);
     }
   };
 
@@ -84,90 +89,99 @@ const SignUpScreen = ({ navigation }) => {
   };*/
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.white,
-        alignItems: "center",
-        justifyContent: "flex-start",
-        padding: 20,
-      }}
-    >
-      {/* Header */}
-      <Text
-        style={{
-          fontSize: 24,
-          color: COLORS.black,
-          fontWeight: "bold",
-          marginVertical: 32,
-        }}
-      >
-        Sign Up
-      </Text>
-
-      {/* Username */}
-      {error ? (
-        <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
-          {error}
-        </Text>
-      ) : null}
-      <FormInput
-        labelText="Username"
-        placeholderText="Username or Nickname"
-        onChangeText={(value) => setDisplayName(value)}
-        /*value={displayName}*/
-      />
-      {/*<Button title="save username" onPress={() => saveNewUser()} />*/}
-
-      {/* Email */}
-      <FormInput
-        autoCapitalize="none"
-        labelText="Email"
-        placeholderText="Enter your email"
-        onChangeText={(value) => setEmail(value)}
-        value={email}
-        keyboardType={"email-address"}
-      />
-
-      {/* Password */}
-      <FormInput
-        labelText="Password"
-        placeholderText="Enter your password"
-        onChangeText={(value) => setPassword(value)}
-        value={password}
-        secureTextEntry={true}
-      />
-
-      {/* Confirm Password */}
-      <FormInput
-        labelText="Confirm Password"
-        placeholderText="Confirm your password"
-        onChangeText={(value) => setConfirmPassword(value)}
-        value={confirmPassword}
-        secureTextEntry={true}
-      />
-
-      {/* Submit button */}
-      <FormButton
-        labelText="Sign up"
-        handleOnPress={handleOnSubmit}
-        style={{ width: "100%" }}
-      />
-
-      {/* Footer */}
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 20 }}
-      >
-        <Text>Already have an account?</Text>
-        <Text
-          style={{ marginLeft: 4, color: COLORS.primary }}
-          onPress={() => navigation.navigate("SignInScreen")}
+    <>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{
+            flex: 1,
+            backgroundColor: COLORS.white,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            padding: 20,
+          }}
         >
-          Sign in
-        </Text>
-      </View>
-    </KeyboardAvoidingView>
+          {/* Header */}
+          <Text
+            style={{
+              fontSize: 24,
+              color: COLORS.black,
+              fontWeight: "bold",
+              marginVertical: 32,
+            }}
+          >
+            Sign Up
+          </Text>
+
+          {/* Username */}
+          {error ? (
+            <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
+              {error}
+            </Text>
+          ) : null}
+          <FormInput
+            labelText="Username"
+            placeholderText="Username or Nickname"
+            onChangeText={(value) => setDisplayName(value)}
+            /*value={displayName}*/
+          />
+          {/*<Button title="save username" onPress={() => saveNewUser()} />*/}
+
+          {/* Email */}
+          <FormInput
+            autoCapitalize="none"
+            labelText="Email"
+            placeholderText="Enter your email"
+            onChangeText={(value) => setEmail(value)}
+            value={email}
+            keyboardType={"email-address"}
+          />
+
+          {/* Password */}
+          <FormInput
+            labelText="Password"
+            placeholderText="Enter your password"
+            onChangeText={(value) => setPassword(value)}
+            value={password}
+            secureTextEntry={true}
+          />
+
+          {/* Confirm Password */}
+          <FormInput
+            labelText="Confirm Password"
+            placeholderText="Confirm your password"
+            onChangeText={(value) => setConfirmPassword(value)}
+            value={confirmPassword}
+            secureTextEntry={true}
+          />
+
+          {/* Submit button */}
+          <FormButton
+            labelText="Sign up"
+            handleOnPress={handleOnSubmit}
+            style={{ width: "100%" }}
+          />
+
+          {/* Footer */}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 20,
+            }}
+          >
+            <Text>Already have an account?</Text>
+            <Text
+              style={{ marginLeft: 4, color: COLORS.primary }}
+              onPress={() => navigation.navigate("SignInScreen")}
+            >
+              Sign in
+            </Text>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+      {isLoading ? <AppLoader /> : null}
+    </>
   );
 };
 

@@ -5,31 +5,21 @@ import {
   SafeAreaView,
   StatusBar,
   FlatList,
-  TouchableOpacity,
   Image,
-  TextInput,
-  Button,
   TouchableHighlight,
   KeyboardAvoidingView,
 } from "react-native";
-import FormButton from "../components/shared/FormButton";
-import {
-  getQuestionsByQuizId,
-  getQuizById,
-  getQuizzes,
-  getUserQuizzes,
-} from "../utils/database";
+
 import { COLORS, FONTS, SIZES } from "../constants";
 import QuizCard from "../components/shared/QuizCard";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import HeaderSection from "../components/shared/HeaderSection";
-import { BlurView } from "expo-blur";
+
 import images from "../constants/images";
 import { IconButton } from "../components/ProfileScreen";
 import icons from "../constants/icons";
 import { useNavigation, useScrollToTop } from "@react-navigation/native";
-import SearchBar from "react-native-searchbar";
+
 import { Searchbar } from "react-native-paper";
 import { auth, firestore, storage } from "../../firebase";
 import IconLabel from "../components/IconLabel";
@@ -264,7 +254,7 @@ const FindQuizScreen = ({ navigation, route }) => {
             }}
           >
             <QuizCard
-              sound={quiz.sound}
+              /*sound={quiz.sound}*/
               currentAudioId={quiz.currentAudioId}
               currentQuizTitle={quiz.title}
               currentQuizImage={quiz.quizImg}

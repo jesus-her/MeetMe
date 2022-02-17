@@ -12,7 +12,7 @@ const DrawerFooter = () => {
       <View style={styles.footer}>
         <DrawerIcon
           icon="information-circle-outline"
-          label="Info"
+          label="About"
           onPress={() => {
             navigation.navigate("Welcome");
           }}
