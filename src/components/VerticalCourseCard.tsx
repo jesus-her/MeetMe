@@ -55,9 +55,10 @@ const VerticalCourseCard = ({
 
           <Text
             style={{
-              ...FONTS.h4,
               color: COLORS.black,
               marginLeft: SIZES.base,
+              ...FONTS.h4,
+              width: SIZES.width / 2.5,
             }}
           >
             {owner}

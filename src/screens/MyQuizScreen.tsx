@@ -6,6 +6,7 @@ import {
   ScrollView,
   ToastAndroid,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { COLORS, FONTS, icons, SIZES } from "../constants";
 import FormInput from "../components/shared/FormInput";
@@ -21,6 +22,8 @@ import AppLoader from "../components/AppLoader";
 import QuizLoader from "../components/QuizLoader";
 import { LinearGradient } from "expo-linear-gradient";
 import { firestore } from "../../firebase";
+import IconLabel from "../components/IconLabel";
+import { LineDivider } from "../components/ProfileScreen";
 
 const MyQuizScreen = ({ navigation, route }) => {
   const [currentQuizId, setCurrentQuizId] = useState(
@@ -35,9 +38,9 @@ const MyQuizScreen = ({ navigation, route }) => {
   const [currentQuizImage, setCurrentQuizImage] = useState(
     route.params.currentQuizImage
   );
-  const [currentImageUri, setCurrentImageUri] = useState(
+  /*const [currentImageUri, setCurrentImageUri] = useState(
     route.params.currentImageUri
-  );
+  );*/
   const [quizOwner, setQuizOwner] = useState(route.params.quizOwner);
 
   const [question, setQuestion] = useState("");
@@ -47,6 +50,8 @@ const MyQuizScreen = ({ navigation, route }) => {
   const [optionTwo, setOptionTwo] = useState("");
   const [optionThree, setOptionThree] = useState(null);
   const [optionFour, setOptionFour] = useState(null);
+  const [showOptionThree, setShowOptionThree] = useState(false);
+  const [showOptionFour, setShowOptionFour] = useState(false);
 
   const [count, setCount] = useState(1);
 
@@ -68,6 +73,8 @@ const MyQuizScreen = ({ navigation, route }) => {
     //If title have 3 or more characters
     if (!question.trim() || question.length < 3)
       return updateError("Question must have at least 3 characters", setError);
+    if (!question.trim() || question.length > 30)
+      return updateError("Question is too long!", setError);
     //provide the correct answer
     if (correctAnswer == "")
       return updateError("You must provide the correct answer", setError);
@@ -106,7 +113,30 @@ const MyQuizScreen = ({ navigation, route }) => {
       setOptionTwo("");
       setOptionThree(null);
       setOptionFour(null);
+      setShowOptionThree(false);
+      setShowOptionFour(false);
     }
+  };
+
+  const handleAddOptions = () => {
+    if (!showOptionThree) {
+      setShowOptionThree(true);
+    }
+    if (showOptionFour == false && showOptionThree == true) {
+      setShowOptionFour(true);
+    }
+    /*  if (showOptionFour == true && showOptionThree == true) {
+      setShowOptionFour(false);
+      setOptionFour(null);
+    }*/
+    /*if (
+      showOptionFour == false &&
+      showOptionThree == true &&
+      optionFour == null
+    ) {
+      setShowOptionThree(false);
+      setOptionThree(null);
+    }*/
   };
   const deleteQuiz = () =>
     Alert.alert("Delete Quiz", "Are you sure to delete this Quiz?", [
@@ -197,11 +227,6 @@ const MyQuizScreen = ({ navigation, route }) => {
               QuizID={currentQuizId}
               currentAudioId={currentAudioId}
             />
-            {error ? (
-              <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
-                {error}
-              </Text>
-            ) : null}
 
             {/*Question Counter*/}
             <View
@@ -237,7 +262,11 @@ const MyQuizScreen = ({ navigation, route }) => {
                 </Text>
               </LinearGradient>
             </View>
-
+            {error ? (
+              <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
+                {error}
+              </Text>
+            ) : null}
             {/*Question*/}
             <FormInput
               labelText={"Question " + count}
@@ -253,21 +282,64 @@ const MyQuizScreen = ({ navigation, route }) => {
                 onChangeText={(val) => setCorrectAnswer(val)}
                 value={correctAnswer}
               />
+
               <FormInput
                 labelText="Option 2"
                 onChangeText={(val) => setOptionTwo(val)}
+                color={COLORS.incorrect}
                 value={optionTwo}
               />
-              <FormInput
-                labelText="Option 3"
-                onChangeText={(val) => setOptionThree(val)}
-                value={optionThree}
-              />
-              <FormInput
-                labelText="Option 4"
-                onChangeText={(val) => setOptionFour(val)}
-                value={optionFour}
-              />
+              {showOptionThree != false ? (
+                <FormInput
+                  labelText="Option 3"
+                  icon={!showOptionFour ? "remove-circle" : ""}
+                  color={COLORS.incorrect}
+                  _changeIcon={() => {
+                    if (showOptionThree == true) {
+                      setShowOptionThree(!showOptionThree);
+                      setOptionThree(null);
+                      console.log("presss 3");
+                    }
+                  }}
+                  onChangeText={(val) => setOptionThree(val)}
+                  value={optionThree}
+                />
+              ) : null}
+
+              {showOptionFour != false ? (
+                <FormInput
+                  labelText="Option 4"
+                  icon="remove-circle"
+                  color={COLORS.incorrect}
+                  _changeIcon={() => {
+                    if (showOptionFour == true) {
+                      setShowOptionFour(!showOptionFour);
+                      setOptionFour(null);
+                      console.log("presss");
+                    }
+                  }}
+                  onChangeText={(val) => setOptionFour(val)}
+                  value={optionFour}
+                />
+              ) : null}
+              {showOptionFour != true ? (
+                <TouchableOpacity onPress={handleAddOptions}>
+                  <IconLabel
+                    containerStyle={{
+                      alignSelf: "center",
+                      marginVertical: SIZES.padding,
+                    }}
+                    label="Add Option"
+                    labelStyle={{ color: COLORS.primary2 }}
+                    iconStyle={{
+                      width: 25,
+                      height: 25,
+                      tintColor: COLORS.primary2,
+                    }}
+                    icon={icons.add}
+                  />
+                </TouchableOpacity>
+              ) : null}
             </View>
             <FormButton
               labelText="Save Question"

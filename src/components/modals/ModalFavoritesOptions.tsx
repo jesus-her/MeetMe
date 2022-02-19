@@ -21,6 +21,8 @@ const ModalFavoritesOptions = ({
   modalOptionsOpen,
   setModalOptionsOpen,
   currentQuizId,
+  isRemoveFavoriteLoading,
+  setIsRemoveFavoriteLoading,
 }) => {
   const user = auth.currentUser;
 
@@ -37,18 +39,23 @@ const ModalFavoritesOptions = ({
         {
           text: "Yes",
           onPress: () => {
+            setModalOptionsOpen(false);
+            setIsRemoveFavoriteLoading(true);
             firestore
               .collection("Quizzes")
               .doc(currentQuizId)
               .update({ isFavorite: false })
               .then(() => {
+                setIsRemoveFavoriteLoading(false);
                 ToastAndroid.show(
                   "Remove from your favorites!",
                   ToastAndroid.SHORT
                 );
-                setModalOptionsOpen(false);
               })
-              .catch((e) => console.log("error", e));
+              .catch((e) => {
+                console.log("error", e);
+                setIsRemoveFavoriteLoading(false);
+              });
           },
         },
       ]

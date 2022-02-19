@@ -126,7 +126,8 @@ const QuizCard = ({
           <Text
             style={{
               color: COLORS.white,
-              ...FONTS.h2,
+              fontSize: owner.length > 15 ? 16 : 22,
+              fontWeight: "bold",
               textAlign: "center",
             }}
           >

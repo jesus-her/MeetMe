@@ -8,6 +8,8 @@ import CreateQuizScreen from "../screens/CreateQuizScreen";
 
 import StackCarousel from "../components/PlayScreen/StackCarousel/StackCarousel";
 import Quiz from "../components/MyQuiz/Quiz";
+import AudioPlayer from "../screens/AudioPlayer";
+import ShareIt from "../screens/Share";
 
 const Tab = createBottomTabNavigator();
 
@@ -74,6 +76,20 @@ const CustomTab = () => {
           ),
         }}
       />
+      {/*  <Tab.Screen
+        name="Share"
+        component={ShareIt}
+        options={{
+          tabBarBadgeStyle: { backgroundColor: COLORS.primary2 },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="local-fire-department"
+              color={color}
+              size={SIZES.heightNav / 2}
+            />
+          ),
+        }}
+      />*/}
     </Tab.Navigator>
   );
 };

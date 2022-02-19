@@ -34,10 +34,7 @@ const HorizontalCourseCard = ({
       .doc(quizId)
       .update({ isFavorite: isFavorite })
       .then(() => {
-        ToastAndroid.show(
-          "Added to your favorites successfully!",
-          ToastAndroid.SHORT
-        );
+        console.log("added to favorites");
       })
       .catch((e) => console.log("error", e));
   };

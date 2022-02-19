@@ -1,4 +1,5 @@
 const animation = require("../../assets/icons/animation.png");
+const add = require("../../assets/icons/add.png");
 const back = require("../../assets/icons/back.png");
 const call = require("../../assets/icons/call.png");
 const camera = require("../../assets/icons/camera.png");
@@ -19,9 +20,9 @@ const model_3d = require("../../assets/icons/model_3d.png");
 const networking = require("../../assets/icons/networking.png");
 
 const notification = require("../../assets/icons/notification.png");
-const password = require("../../assets/icons/password.png");
+const password = require("../../assets/icons/padlock.png");
 const play = require("../../assets/icons/play.png");
-const profile = require("../../assets/icons/profile.png");
+const profile = require("../../assets/icons/user.png");
 const reminder = require("../../assets/icons/reminder.png");
 const right_arrow = require("../../assets/icons/right_arrow.png");
 const search = require("../../assets/icons/search.png");
@@ -43,6 +44,8 @@ const unmute = require("../../assets/icons/speaker-filled-audio-tool.png");
 const rec = require("../../assets/icons/rec.png");
 const music = require("../../assets/icons/music.png");
 const remove = require("../../assets/icons/close.png");
+const logout = require("../../assets/icons/logout.png");
+const writing = require("../../assets/icons/writing.png");
 export default {
   animation,
   back,
@@ -88,4 +91,7 @@ export default {
   rec,
   music,
   remove,
+  logout,
+  writing,
+  add,
 };

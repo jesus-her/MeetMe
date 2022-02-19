@@ -149,7 +149,7 @@ const FindQuizScreen = ({ navigation, route }) => {
           width: 55,
           height: 55,
           position: "absolute",
-          bottom: SIZES.radius,
+          top: SIZES.heightNav + SIZES.radius,
           right: SIZES.radius,
           zIndex: 10,
           elevation: 3,
@@ -159,7 +159,7 @@ const FindQuizScreen = ({ navigation, route }) => {
         }}
       >
         <LinearGradient
-          colors={[COLORS.primary3, COLORS.primary2]}
+          colors={["#FA6EAE", COLORS.secondary]}
           start={{ x: 1, y: 0.1 }}
           end={{ x: 1, y: 0.75 }}
           style={{

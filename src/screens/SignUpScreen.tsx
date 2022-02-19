@@ -25,6 +25,10 @@ const SignUpScreen = ({ navigation }) => {
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [icon, setIcon] = useState("eye");
+  const [hidePassword, setHidePassword] = useState(true);
+  const [icon2, setIcon2] = useState("eye");
+  const [hidePassword2, setHidePassword2] = useState(true);
 
   //Validate Create QUIZ
   const updateError = (error, stateUpdater) => {
@@ -71,6 +75,16 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
+  const _changeIcon = () => {
+    icon !== "eye-off"
+      ? (setIcon("eye-off"), setHidePassword(false))
+      : (setIcon("eye"), setHidePassword(true));
+  };
+  const _changeIcon2 = () => {
+    icon2 !== "eye-off"
+      ? (setIcon2("eye-off"), setHidePassword2(false))
+      : (setIcon2("eye"), setHidePassword2(true));
+  };
   /*const handleOnSubmit = () => {
     if (isValidForm()) {
       signUp(email, password, displayName);
@@ -143,7 +157,9 @@ const SignUpScreen = ({ navigation }) => {
             placeholderText="Enter your password"
             onChangeText={(value) => setPassword(value)}
             value={password}
-            secureTextEntry={true}
+            secureTextEntry={hidePassword}
+            icon={icon}
+            _changeIcon={_changeIcon}
           />
 
           {/* Confirm Password */}
@@ -152,7 +168,9 @@ const SignUpScreen = ({ navigation }) => {
             placeholderText="Confirm your password"
             onChangeText={(value) => setConfirmPassword(value)}
             value={confirmPassword}
-            secureTextEntry={true}
+            secureTextEntry={hidePassword2}
+            icon2={icon2}
+            _changeIcon2={_changeIcon2}
           />
 
           {/* Submit button */}

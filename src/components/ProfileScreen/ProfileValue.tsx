@@ -3,7 +3,7 @@ import { TouchableOpacity, View, Text, Image } from "react-native";
 import { COLORS, FONTS, SIZES, icons } from "../../constants";
 
 // @ts-ignore
-const ProfileValue = ({ icon, value, label, onPress }) => {
+const ProfileValue = ({ icon, value, label, onPress, valueStyles }) => {
   return (
     <TouchableOpacity
       style={{
@@ -55,6 +55,7 @@ const ProfileValue = ({ icon, value, label, onPress }) => {
         <Text
           style={{
             ...FONTS.h3,
+            ...valueStyles,
           }}
         >
           {value}

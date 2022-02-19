@@ -9,7 +9,7 @@ import {
   StatusBar,
 } from "react-native";
 
-import { auth } from "../../firebase";
+import { auth, firestore } from "../../firebase";
 
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 import {
@@ -23,16 +23,36 @@ import ModalEditPassword from "../components/ProfileScreen/ModalEditPassword";
 import ModalEditEmail from "../components/ProfileScreen/ModalEditEmail";
 import ModalEditName from "../components/ProfileScreen/ModalEditName";
 import ModalEditPhoto from "../components/ProfileScreen/ModalEditPhoto";
+import { signOut } from "../utils/auth";
 
 const Profile = (props) => {
   const [newCourseNotification, setNewCourseNotification] =
     React.useState(false);
   const [studyReminder, setStudyReminder] = React.useState(false);
-
+  const [allQuizzes, setAllQuizzes] = useState([]);
+  const uid = auth.currentUser.uid;
   const [modalVisible, setModalVisible] = useState(false);
   const [modalEmailVisible, setModalEmailVisible] = useState(false);
   const [modalNameVisible, setModalNameVisible] = useState(false);
   const [modalPhotoVisible, setModalPhotoVisible] = useState(false);
+
+  useEffect(() => {
+    const userQuizzes = firestore
+      .collection("Quizzes")
+      .where("userId", "==", uid)
+      .onSnapshot((querySnapshot) => {
+        const quizzes = [];
+        querySnapshot.forEach((quiz) => {
+          quizzes.push({
+            ...quiz.data(),
+            key: quiz.id,
+          });
+          /*console.log(quiz.id);*/
+        });
+        setAllQuizzes(quizzes);
+      });
+    return () => userQuizzes();
+  }, []);
 
   function renderProfileCard() {
     const user = auth.currentUser;
@@ -200,6 +220,14 @@ const Profile = (props) => {
           label="Password"
           value="********"
         />
+        <LineDivider />
+
+        <ProfileValue
+          onPress={signOut}
+          icon={icons.logout}
+          value="Sign Out"
+          valueStyles={{ color: COLORS.incorrect }}
+        />
 
         {/*<LineDivider />*/}
         {/*<ProfileValue
@@ -219,8 +247,9 @@ const Profile = (props) => {
             onPress={() => {
               props.navigation.navigate("MyQuizzes");
             }}
-            icon={icons.star_1}
-            value="Stars"
+            icon={icons.writing}
+            label="My quizzes"
+            value={"Total Quizzes: " + allQuizzes.length}
           />
 
           <LineDivider />

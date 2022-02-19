@@ -3,6 +3,7 @@ import {
   Alert,
   Keyboard,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -26,6 +27,8 @@ const SignInScreen = ({ navigation }) => {
   const [error, setError] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [icon, setIcon] = useState("eye");
+  const [hidePassword, setHidePassword] = useState(true);
 
   //Facebook Auth ID: 805370967103344
   //Clave secreta: 0a8562f89afb05c917778a2ad963ff94
@@ -89,6 +92,11 @@ const SignInScreen = ({ navigation }) => {
         );
     }
   };
+  const _changeIcon = () => {
+    icon !== "eye-off"
+      ? (setIcon("eye-off"), setHidePassword(false))
+      : (setIcon("eye"), setHidePassword(true));
+  };
 
   const loginWithFacebook = async () => {
     try {
@@ -138,6 +146,10 @@ const SignInScreen = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          backgroundColor={COLORS.primary}
+          barStyle={"light-content"}
+        />
         <Text style={styles.header}>Sign In</Text>
         {error ? (
           <Text style={{ color: "red", ...FONTS.h4, textAlign: "center" }}>
@@ -160,7 +172,9 @@ const SignInScreen = ({ navigation }) => {
           placeholderText="Enter your password"
           onChangeText={(value) => setPassword(value)}
           value={password}
-          secureTextEntry={true}
+          secureTextEntry={hidePassword}
+          icon={icon}
+          _changeIcon={_changeIcon}
         />
 
         {/*Forgot password*/}
@@ -188,15 +202,21 @@ const SignInScreen = ({ navigation }) => {
         />
         {/* Footer*/}
         <View
-          style={{ flexDirection: "row", alignItems: "center", marginTop: 20 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: 20,
+          }}
         >
-          <Text>Don't have an account?</Text>
+          <Text style={{ ...FONTS.h4, fontWeight: "900" }}>
+            Don't have an account?
+          </Text>
           <TouchableOpacity>
             <Text
               style={{
                 marginLeft: 4,
                 color: COLORS.primary,
-                fontWeight: "900",
+                ...FONTS.h4,
               }}
               onPress={() => navigation.navigate("SignUpScreen")}
             >
@@ -205,7 +225,7 @@ const SignInScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         {/*Facebook Sign In*/}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{ position: "absolute", bottom: SIZES.padding }}
           onPress={loginWithFacebook}
         >
@@ -226,7 +246,7 @@ const SignInScreen = ({ navigation }) => {
               alignSelf: "center",
             }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
         {isLoading ? <AppLoader /> : null}
       </SafeAreaView>
     </TouchableWithoutFeedback>

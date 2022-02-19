@@ -7,6 +7,7 @@ import {
   Modal,
   Animated,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { COLORS, FONTS, icons, SIZES } from "../../constants";
 import data from "./data";
@@ -18,6 +19,7 @@ import LineDivider from "../LineDivider";
 import { Line } from "react-native-svg";
 import FormButton from "../shared/FormButton";
 import { RectButton } from "react-native-gesture-handler";
+import { firestore } from "../../../firebase";
 
 const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
   /*const allQuestions = data;*/
@@ -28,6 +30,7 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
+  const hasUnsavedChanges = Boolean(score == 0);
   const navigation = useNavigation();
 
   const validateAnswer = (selectedOption) => {
@@ -75,10 +78,47 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
     setShowNextButton(false);
     Animated.timing(progress, {
       toValue: 0,
-      duration: 1000,
+      duration: 1500,
       useNativeDriver: false,
     }).start();
   };
+  /*useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        if (!hasUnsavedChanges) {
+          // If we don't have unsaved changes, then we don't need to do anything
+          return;
+        }
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+        // Prompt the user before leaving the screen
+        Alert.alert(
+          "Discard changes?",
+          "You have unsaved answers. Are you sure to discard them and leave the screen?",
+          [
+            { text: "Continue Quiz", style: "cancel", onPress: () => {} },
+            {
+              text: "Discard",
+              style: "default",
+              // If the user confirmed, then we dispatch the action we blocked earlier
+              // This will continue the action that had triggered the removal of the screen
+              onPress: () => {
+                navigation.dispatch(e.data.action);
+                /!* firestore
+                                    .collection("Quizzes")
+                                    .doc(currentQuizId)
+                                    .delete()
+                                    .then(() => {
+                                        console.log("quiz no saved!");
+                                    })
+                                    .catch((e) => console.log("error", e));*!/
+              },
+            },
+          ]
+        );
+      }),
+    [navigation, hasUnsavedChanges]
+  );*/
 
   const renderQuestion = () => {
     return (
@@ -93,8 +133,8 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
           style={{
             flexDirection: "row",
             alignItems: "flex-end",
-            borderBottomWidth: 2,
-            borderColor: COLORS.primary3,
+            borderBottomWidth: 3,
+            borderColor: COLORS.primary,
             width: SIZES.width - SIZES.padding * 2,
             alignSelf: "center",
             paddingBottom: SIZES.radius,
@@ -198,10 +238,16 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
                 marginRight: 12,
               }}
             >
-              Next
+              {currentQuestionIndex == allQuestions.length - 1
+                ? "See Results"
+                : "Next"}
             </Text>
             <Image
-              source={icons.right_arrow}
+              source={
+                currentQuestionIndex == allQuestions.length - 1
+                  ? icons.checked
+                  : icons.right_arrow
+              }
               resizeMode="contain"
               style={styles.icon}
             />
@@ -225,7 +271,7 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
           width: "100%",
           height: 20,
           borderRadius: 20,
-          backgroundColor: "#00000020",
+          backgroundColor: COLORS.primary + "50",
         }}
       >
         <Animated.View
@@ -233,7 +279,7 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
             {
               height: 20,
               borderRadius: 20,
-              backgroundColor: COLORS.primary,
+              backgroundColor: COLORS.primary3,
             },
             {
               width: progressAnim,
@@ -284,15 +330,15 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
                     borderWidth: 3,
                     borderColor:
                       option == correctOption
-                        ? COLORS.primary3
+                        ? COLORS.correct
                         : option == currentOptionSelected
-                        ? COLORS.secondary
+                        ? COLORS.incorrect
                         : COLORS.additionalColor9 + "50",
                     backgroundColor:
                       option == correctOption
-                        ? COLORS.primary3 + "25"
+                        ? COLORS.correct + "70"
                         : option == currentOptionSelected
-                        ? COLORS.secondary + "25"
+                        ? COLORS.incorrect + "70"
                         : COLORS.additionalColor4 + "25",
                     height: SIZES.heightPlayScreen / 12,
                     width: SIZES.width - SIZES.padding,
@@ -317,7 +363,7 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
                         width: 30,
                         height: 30,
                         borderRadius: 30 / 2,
-                        backgroundColor: COLORS.primary3,
+                        backgroundColor: COLORS.correct,
                         justifyContent: "center",
                         alignItems: "center",
                       }}
@@ -330,7 +376,7 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
                         width: 30,
                         height: 30,
                         borderRadius: 30 / 2,
-                        backgroundColor: COLORS.secondary,
+                        backgroundColor: COLORS.incorrect,
                         justifyContent: "center",
                         alignItems: "center",
                       }}

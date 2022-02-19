@@ -165,6 +165,40 @@ const ByQuizId = ({ navigation, route }) => {
         position: "relative",
       }}
     >
+      {/*Find by Quiz Id*/}
+      <TouchableHighlight
+        style={{
+          borderRadius: 50,
+          backgroundColor: COLORS.secondary,
+          width: 55,
+          height: 55,
+          position: "absolute",
+          top: SIZES.heightNav + SIZES.radius,
+          right: SIZES.radius,
+          zIndex: 10,
+          elevation: 3,
+        }}
+        onPress={() => {
+          navigation.navigate("NewFindScreen");
+        }}
+      >
+        <LinearGradient
+          colors={[COLORS.primary2, COLORS.primary]}
+          start={{ x: 1, y: 0.1 }}
+          end={{ x: 1, y: 0.75 }}
+          style={{
+            width: 55,
+            height: 55,
+            borderRadius: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            position: "relative",
+          }}
+        >
+          <FontAwesome name="search" size={30} color={COLORS.white} />
+        </LinearGradient>
+      </TouchableHighlight>
       <StatusBar backgroundColor={COLORS.primary} barStyle={"light-content"} />
       {/*Header*/}
       <LinearGradient
@@ -214,13 +248,13 @@ const ByQuizId = ({ navigation, route }) => {
           keyboardType="number-pad"
           theme={{ colors: { text: COLORS.white } }}
           style={{
-            backgroundColor: COLORS.primary,
+            backgroundColor: COLORS.primary2,
             marginHorizontal: SIZES.base,
             ...FONTS.h3,
             fontWeight: "bold",
             paddingHorizontal: 10,
             width: "90%",
-            height: SIZES.heightNav,
+            height: SIZES.heightNav - SIZES.base,
             borderRadius: 50,
 
             position: "absolute",
@@ -229,7 +263,7 @@ const ByQuizId = ({ navigation, route }) => {
           }}
           value={search}
           placeholder="Search by Quiz ID"
-          placeholderTextColor={COLORS.gray10}
+          placeholderTextColor={COLORS.white + "99"}
           onChangeText={(text) => searchFilter(text)}
         />
 
@@ -360,13 +394,12 @@ const ByQuizId = ({ navigation, route }) => {
                 height: SIZES.heightPlayScreen / 5,
                 tintColor: COLORS.gray20,
               }}
-              source={require("../../assets/icons/codigo-qr.png")}
+              source={require("../../assets/icons/glasses-with-mustache.png")}
             />
             <Text
               style={{
                 ...FONTS.h1,
                 color: COLORS.primary,
-                fontStyle: "italic",
                 textAlign: "center",
               }}
             >

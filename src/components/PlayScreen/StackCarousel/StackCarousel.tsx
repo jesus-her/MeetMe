@@ -204,20 +204,22 @@ export default function StackCarousel({ navigation }) {
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
   const [allPopularQuizzes, setAllPopularQuizzes] = useState([]);
+  /*  const [scrollEnabled, setScrollEnabled] = useState(false);*/
 
   const setActiveIndex = React.useCallback((activeIndex) => {
     scrollXIndex.setValue(activeIndex);
     setIndex(activeIndex);
   });
 
+  /*
   React.useEffect(() => {
-    if (index === data.length - VISIBLE_ITEMS - 1) {
+    if (index === allPopularQuizzes.length - 1) {
       // get new data
       // fetch more data
-      /* const newData = [...data, ...data];
-      setData(newData);*/
+      setScrollEnabled(false);
     }
   });
+*/
 
   React.useEffect(() => {
     Animated.spring(scrollXAnimated, {
@@ -310,7 +312,7 @@ export default function StackCarousel({ navigation }) {
       direction={Directions.LEFT}
       onHandlerStateChange={(ev) => {
         if (ev.nativeEvent.state === State.END) {
-          if (index === data.length - 1) {
+          if (index === allPopularQuizzes.length - 1) {
             return;
           }
           setActiveIndex(index + 1);
@@ -343,7 +345,6 @@ export default function StackCarousel({ navigation }) {
             keyExtractor={(item) => `PopularQuizzes-${item.id}`}
             /*keyExtractor={(_, index) => String(index)}*/
             horizontal
-            inverted
             contentContainerStyle={{
               flex: 1,
               justifyContent: "center",
@@ -386,7 +387,7 @@ export default function StackCarousel({ navigation }) {
                 <Animated.View
                   style={{
                     position: "absolute",
-                    left: -ITEM_WIDTH / 2.5,
+                    left: -ITEM_WIDTH / 1.75,
                     opacity,
                     transform: [
                       {

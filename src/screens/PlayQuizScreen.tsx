@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from "react";
 import {
-  FlatList,
   Image,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { COLORS, FONTS, icons, SIZES } from "../constants";
 import { getQuizById, getQuestionsByQuizId } from "../utils/database";
-import ResultModal from "../components/PlayScreen/ResultModal";
-import CheckButton from "../components/CheckButton";
-import LiquidSwipe from "../components/PlayScreen/LiquidSwipe";
+
 import { IconButton } from "../components/ProfileScreen";
 
-import { LinearGradient } from "expo-linear-gradient";
 import { firestore, firebase_db } from "../../firebase";
-import PlayButton from "../components/shared/PlayButton";
-import { Ionicons } from "@expo/vector-icons";
+
 import Quiz from "../components/MyQuiz/Quiz";
 
 const PlayQuizScreen = ({ navigation, route }) => {
@@ -31,10 +25,10 @@ const PlayQuizScreen = ({ navigation, route }) => {
 
   const [questions, setQuestions] = useState([]);
 
-  const [correctCount, setCorrectCount] = useState(0);
+  /*  const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [isResultModalVisible, setIsResultModalVisible] = useState(false);
-  const [scrollEnabled, setScrollEnabled] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(false);*/
 
   //Attempts counter
   const attempts = async (currentQuizId) => {
@@ -137,7 +131,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "center",
           paddingVertical: 10,
           paddingHorizontal: SIZES.radius,
           backgroundColor: COLORS.white,
@@ -148,6 +142,10 @@ const PlayQuizScreen = ({ navigation, route }) => {
         {/* Back Icon */}
         <IconButton
           icon={icons.back}
+          containerStyle={{
+            position: "absolute",
+            left: SIZES.padding,
+          }}
           iconStyle={{
             tintColor: COLORS.black,
           }}
@@ -163,8 +161,8 @@ const PlayQuizScreen = ({ navigation, route }) => {
             <Image
               source={{ uri: quizImg }}
               style={{
-                width: SIZES.heightNav / 1.5,
-                height: SIZES.heightNav / 1.5,
+                width: SIZES.heightNav / 1.25,
+                height: SIZES.heightNav / 1.25,
                 borderRadius: SIZES.heightNav,
               }}
             />
@@ -172,8 +170,8 @@ const PlayQuizScreen = ({ navigation, route }) => {
             <Image
               source={require("../../assets/icons/laughing.png")}
               style={{
-                width: SIZES.heightNav / 1.5,
-                height: SIZES.heightNav / 1.5,
+                width: SIZES.heightNav / 1.25,
+                height: SIZES.heightNav / 1.25,
                 borderRadius: SIZES.heightNav,
                 tintColor: COLORS.black,
               }}
@@ -182,16 +180,20 @@ const PlayQuizScreen = ({ navigation, route }) => {
 
           <View>
             {/* Title */}
-            <Text style={{ ...FONTS.h3, marginLeft: 10 }}>{title}</Text>
+            <Text
+              style={{ ...FONTS.h3, marginLeft: SIZES.base, textAlign: "left" }}
+            >
+              {title}
+            </Text>
 
             {/* Quiz by: */}
             <Text
               style={{
                 fontWeight: "bold",
                 fontSize: quizOwner.length < 10 ? 14 : 10,
-                marginLeft: 10,
+                marginLeft: SIZES.base,
                 color: COLORS.primary,
-                textAlign: "center",
+                textAlign: "left",
               }}
             >
               Quiz by: {quizOwner}
@@ -199,7 +201,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
           </View>
         </View>
 
-        {/* Correct and incorrect count*/}
+        {/*  Correct and incorrect count
         <View
           style={{
             flexDirection: "row",
@@ -208,7 +210,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
             position: "relative",
           }}
         >
-          {/*Correct*/}
+          Correct
           <View
             style={{
               backgroundColor: COLORS.primary2,
@@ -233,7 +235,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
             </Text>
           </View>
 
-          {/*Incorrect*/}
+          Incorrect
           <View
             style={{
               backgroundColor: COLORS.secondary,
@@ -253,157 +255,28 @@ const PlayQuizScreen = ({ navigation, route }) => {
               {incorrectCount}
             </Text>
           </View>
-        </View>
+        </View>*/}
       </View>
 
       {/* Questions and Options list */}
-      <FlatList
-        data={questions}
-        pagingEnabled={true}
-        scrollEnabled={scrollEnabled}
-        style={{
-          flex: 1,
-        }}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.question}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              backgroundColor: COLORS.white,
-            }}
-          >
-            {/* Result Modal */}
-            <ResultModal
-              isModalVisible={isResultModalVisible}
-              correctCount={correctCount}
-              incorrectCount={incorrectCount}
-              totalCount={questions.length}
-              handleOnClose={() => {
-                setIsResultModalVisible(false);
-              }}
-              handleRetry={() => {
-                setCorrectCount(0);
-                setIncorrectCount(0);
-                getQuizAndQuestionDetails();
-                setIsResultModalVisible(false);
-              }}
-              handleHome={() => {
-                navigation.goBack();
-                setIsResultModalVisible(false);
-              }}
-            />
-            {/*<LiquidSwipe
-              allQuestionsLength={questions.length}
-              question={item.question}
-              quizImage={quizImg}
-              correctCount={correctCount}
-              incorrectCount={incorrectCount}
-              quizOwner={quizOwner}
-              quizImg={quizImg}
-              quizTitle={title}
-              allOptions={item.allOptions.map((option, optionIndex) => {
-                return (
-                  <>
-                    {
-                      option != null ? (
-                        <TouchableOpacity
-                          key={optionIndex}
-                          style={{
-                            paddingVertical: SIZES.radius,
-                            paddingHorizontal: SIZES.padding,
-                            borderRadius: SIZES.radius,
-                            backgroundColor: getOptionBgColor(item, option),
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "flex-start",
-                            width: "100%",
-                          }}
-                          onPress={() => {
-                            if (item.selectedOption) {
-                              return null;
-                            }
-                            // Increase correct/incorrect count
-                            if (option == item.correct_answer) {
-                              setCorrectCount(correctCount + 1);
-                            } else {
-                              setIncorrectCount(incorrectCount + 1);
-                            }
-
-                            let tempQuestions = [...questions];
-                            tempQuestions[index].selectedOption = option;
-                            setQuestions([...tempQuestions]);
-                          }}
-                        >
-                          <LinearGradient
-                            colors={[
-                              COLORS.primary,
-                              COLORS.primary2,
-                              COLORS.primary3,
-                            ]}
-                            style={{
-                              width: 25,
-                              height: 25,
-                              borderWidth: 3,
-                              borderColor: COLORS.black,
-                              marginRight: SIZES.padding,
-
-                              borderRadius: 25,
-                              backgroundColor: getOptionTextColor(item, option),
-                            }}
-                          />
-
-                          <Text
-                            style={{
-                              ...FONTS.h3,
-                              color: getOptionTextColor(item, option),
-                            }}
-                          >
-                            {option}
-                          </Text>
-                        </TouchableOpacity>
-                      ) : null
-                    }
-                  </>
-                );
-              })}
-            />*/}
-            <Quiz
-              quizId={currentQuizId}
-              allQuestions={questions}
-              shuffle={getQuizAndQuestionDetails}
-              attempts={attempts}
-              /* correctOption={item.correct_option}
-              setQuestions={setQuestions}
-              allQuestionsLength={questions.length}
-              question={item.question}
-              quizImage={quizImg}
-              correctCount={correctCount}
-              incorrectCount={incorrectCount}
-              setIncorrectCount={setIncorrectCount}
-              quizOwner={quizOwner}
-              quizImg={quizImg}
-              quizTitle={title}
-              selectedOption={item.selectedOption}
-              allOptions={item.allOptions}*/
-            />
-          </View>
-        )}
-        /*ListFooterComponent={() => (
-          <View
-            style={{
-              height: SIZES.heightPlayScreen,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <CheckButton
-              handleOnPress={() => {
-                setIsResultModalVisible(true);
-                attempts(currentQuizId);
-              }}
-            />
-          </View>
-        )}*/
+      <Quiz
+        quizId={currentQuizId}
+        allQuestions={questions}
+        shuffle={getQuizAndQuestionDetails}
+        attempts={attempts}
+        /* correctOption={item.correct_option}
+          setQuestions={setQuestions}
+          allQuestionsLength={questions.length}
+          question={item.question}
+          quizImage={quizImg}
+          correctCount={correctCount}
+          incorrectCount={incorrectCount}
+          setIncorrectCount={setIncorrectCount}
+          quizOwner={quizOwner}
+          quizImg={quizImg}
+          quizTitle={title}
+          selectedOption={item.selectedOption}
+          allOptions={item.allOptions}*/
       />
     </SafeAreaView>
   );

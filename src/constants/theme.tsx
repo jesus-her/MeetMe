@@ -16,6 +16,8 @@ export const COLORS = {
   /*secondary: "#FC5A51", */
   secondary: "#F72585", // Orange
   secondary2: "#7209B7",
+  correct: "#23CE6B",
+  incorrect: "#E71D36",
   statusBar: "rgba(114,9,183,0.75)",
   gray10: "#E5E5E5",
   gray20: "#CCCCCC",

@@ -12419,6 +12419,11 @@ react-native-searchbar@^1.16.0:
     lodash "^4.16.4"
     react-native-vector-icons "^4.4.2"
 
+react-native-share@^7.3.6:
+  version "7.3.6"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.6.tgz#cab3e4e485cecee662ae5dd8a757fc6ec7c5140a"
+  integrity sha512-oqwWS9/Tzvo0+3RXVNH1hXIthYvOicN/iJbVEv0YMIQLlsuIeoSQ4zh9Yre1APzRKoF8+En+G2XApQk7UaI5Kg==
+
 react-native-shared-element@0.7.0:
   version "0.7.0"
   resolved "https://registry.npmjs.org/react-native-shared-element/-/react-native-shared-element-0.7.0.tgz"
