@@ -172,7 +172,7 @@ const ModalFavoritesOptions = ({
 
 const styles = StyleSheet.create({
   centeredView: {
-    backgroundColor: "rgba(0,0,0,0.1)",
+    backgroundColor: "rgba(0,0,0,0.25)",
     height: SIZES.height,
     width: SIZES.width,
     justifyContent: "flex-end",

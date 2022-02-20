@@ -60,9 +60,9 @@ const ModalOptions = ({
       }}
     >
       <View
-        onStartShouldSetResponder={() => {
+        /*onStartShouldSetResponder={() => {
           setModalOptionsOpen(!modalOptionsOpen);
-        }}
+        }}*/
         /*onPress={() => {
           setModalOptionsOpen(!modalOptionsOpen);
         }}*/
@@ -107,7 +107,10 @@ const ModalOptions = ({
             <TouchableOpacity
               onPress={() => {
                 Clipboard.setString(currentQuizId);
-                ToastAndroid.show("Copied to clipboard!", ToastAndroid.SHORT);
+                ToastAndroid.show(
+                  "Quiz ID copied to clipboard!",
+                  ToastAndroid.SHORT
+                );
                 setModalOptionsOpen(false);
               }}
               style={{
@@ -161,7 +164,7 @@ const ModalOptions = ({
 
 const styles = StyleSheet.create({
   centeredView: {
-    backgroundColor: "rgba(0,0,0,0.1)",
+    backgroundColor: "rgba(0,0,0,0.25)",
     height: SIZES.height,
     width: SIZES.width,
     justifyContent: "flex-end",

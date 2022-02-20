@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   Alert,
+  Clipboard,
   FlatList,
   Image,
   ImageBackground,
@@ -135,6 +136,41 @@ const MyQuizzes = ({ navigation }) => {
               <Swipeout
                 backgroundColor="transparent"
                 autoClose={true}
+                left={[
+                  {
+                    text: "Copy",
+                    onPress: () => {
+                      Clipboard.setString(quiz.currentQuizId);
+                      ToastAndroid.show(
+                        "Quiz ID copied to clipboard!",
+                        ToastAndroid.SHORT
+                      );
+                    },
+                    backgroundColor: COLORS.correct,
+                    color: "#fff",
+                    type: "delete",
+                    component: (
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      >
+                        <Ionicons
+                          name="copy"
+                          color={COLORS.white}
+                          size={35}
+                          style={{
+                            alignSelf: "center",
+                            justifyContent: "center",
+                          }}
+                        />
+                      </View>
+                    ),
+                  },
+                ]}
                 right={[
                   {
                     onPress: () =>
@@ -317,14 +353,6 @@ const MyQuizzes = ({ navigation }) => {
                       style={{ alignSelf: "flex-start" }}
                     />
                   </TouchableOpacity>
-                  {/*Modal Options*/}
-                  <ModalOptions
-                    isDeleteLoading={isDeleteLoading}
-                    setIsDeleteLoading={setIsDeleteLoading}
-                    modalOptionsOpen={modalOptionsOpen}
-                    setModalOptionsOpen={setModalOptionsOpen}
-                    currentQuizId={handleQuizId}
-                  />
                 </View>
               </Swipeout>
             </>
@@ -355,6 +383,14 @@ const MyQuizzes = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         ) : null}*/}
+        {/*Modal Options*/}
+        <ModalOptions
+          isDeleteLoading={isDeleteLoading}
+          setIsDeleteLoading={setIsDeleteLoading}
+          modalOptionsOpen={modalOptionsOpen}
+          setModalOptionsOpen={setModalOptionsOpen}
+          currentQuizId={handleQuizId}
+        />
       </View>
       {isDeleteLoading ? <QuizDelete /> : null}
     </>

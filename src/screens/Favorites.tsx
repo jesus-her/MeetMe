@@ -337,17 +337,17 @@ const Favorites = ({ navigation }) => {
                     />
                   </TouchableOpacity>
                   {/*Modal Options*/}
-                  <ModalFavoritesOptions
-                    isRemoveFavoriteLoading={isRemoveFavoriteLoading}
-                    setIsRemoveFavoriteLoading={setIsRemoveFavoriteLoading}
-                    modalOptionsOpen={modalOptionsOpen}
-                    setModalOptionsOpen={setModalOptionsOpen}
-                    currentQuizId={handleQuizId}
-                  />
                 </View>
               </Swipeout>
             </>
           )}
+        />
+        <ModalFavoritesOptions
+          isRemoveFavoriteLoading={isRemoveFavoriteLoading}
+          setIsRemoveFavoriteLoading={setIsRemoveFavoriteLoading}
+          modalOptionsOpen={modalOptionsOpen}
+          setModalOptionsOpen={setModalOptionsOpen}
+          currentQuizId={handleQuizId}
         />
       </View>
       {isRemoveFavoriteLoading ? <QuizDelete /> : null}

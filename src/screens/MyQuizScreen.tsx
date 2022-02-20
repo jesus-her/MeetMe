@@ -81,6 +81,42 @@ const MyQuizScreen = ({ navigation, route }) => {
     //Option 2
     if (optionTwo == "")
       return updateError("You must enter at least two options", setError);
+
+    //Possible repeat options
+    if (correctAnswer === optionTwo)
+      return updateError("Options must be differents!", setError);
+    if (correctAnswer === optionThree)
+      return updateError("Options must be differents!", setError);
+    if (correctAnswer === optionFour)
+      return updateError("Options must be differents!", setError);
+    //
+    if (optionTwo === optionThree)
+      return updateError("Options must be differents!", setError);
+    if (optionTwo === optionFour)
+      return updateError("Options must be differents!", setError);
+    if (optionThree === optionTwo)
+      return updateError("Options must be differents!", setError);
+    /* if (optionThree == optionFour && showOptionFour == showOptionThree)
+      return setShowOptionFour(false);
+    setShowOptionThree(false);
+
+    updateError("Try to save your question again!", setError);*/
+
+    /* if (optionThree && optionFour == null && showOptionFour == showOptionThree)
+      return setShowOptionFour(false);
+    setShowOptionThree(false);*/
+    /* if (optionFour === optionThree)
+      return updateError("Options must be differents!", setError);*/
+    if (optionFour === optionTwo)
+      return updateError("Options must be differents!", setError);
+    if (
+      showOptionThree &&
+      showOptionFour == true &&
+      optionThree &&
+      optionFour == null
+    )
+      return setShowOptionFour(false);
+    setShowOptionThree(false);
     return true;
   };
 
