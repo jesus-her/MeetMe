@@ -40,6 +40,7 @@ const CreateQuizScreen = ({ navigation }) => {
   const [transferred, setTransferred] = useState(0);
   /*const [uploading, setUploading] = useState(false);*/
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavoriteBy, setIsFavoriteBy] = useState([]);
   const [quizImg, setQuizImg] = useState("");
   const [error, setError] = useState("");
   const [attemptCounter, setAttemptCounter] = useState(0);
@@ -103,6 +104,7 @@ const CreateQuizScreen = ({ navigation }) => {
         userId,
         attemptCounter,
         isFavorite,
+        isFavoriteBy,
         sound,
         currentAudioId,
         ownerPhotoURL

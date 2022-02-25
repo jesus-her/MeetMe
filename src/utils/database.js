@@ -9,6 +9,7 @@ export const createQuiz = (
   userId,
   attemptCounter,
   isFavorite,
+  isFavoriteBy,
   sound,
   currentAudioId,
   ownerPhotoURL
@@ -21,6 +22,7 @@ export const createQuiz = (
     currentQuizId,
     attemptCounter,
     isFavorite,
+    isFavoriteBy,
     sound,
     currentAudioId,
     ownerPhotoURL,
@@ -40,6 +42,14 @@ export const createQuestion = (currentQuizId, currentQuestionId, question) => {
 // Get All Quizzes
 export const getQuizzes = () => {
   return firestore.collection("Quizzes").get();
+};
+// Get All Leaderboard
+export const getLeaderboard = (currentQuizId) => {
+  firestore
+    .collection("Quizzes")
+    .doc(currentQuizId)
+    .collection("LeaderBoard")
+    .get();
 };
 
 export const updatePhotoInQuiz = async (photoURL, uid) => {

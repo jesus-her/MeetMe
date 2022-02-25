@@ -463,7 +463,7 @@ export default function StackCarousel({ navigation }) {
                         iconStyle={{
                           width: 15,
                           height: 15,
-                          tintColor: COLORS.primary3,
+                          tintColor: COLORS.white,
                         }}
                         labelStyle={{
                           marginLeft: 5,
@@ -471,6 +471,28 @@ export default function StackCarousel({ navigation }) {
                           ...FONTS.h4,
                         }}
                       />
+
+                      {/*<TouchableOpacity>
+                        Attempts
+                        <IconLabel
+                          icon={icons.podium}
+                          label={"View leaderboard"}
+                          containerStyle={{
+                            marginLeft: 0,
+                            alignSelf: "center",
+                          }}
+                          iconStyle={{
+                            width: 20,
+                            height: 20,
+                            tintColor: COLORS.primary3,
+                          }}
+                          labelStyle={{
+                            marginLeft: 5,
+                            color: COLORS.white,
+                            ...FONTS.h4,
+                          }}
+                        />
+                      </TouchableOpacity>*/}
                     </View>
                   </LinearGradient>
                 </Animated.View>

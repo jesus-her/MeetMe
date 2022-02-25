@@ -93,7 +93,7 @@ const ModalOptions = ({
               <MaterialCommunityIcons
                 name="delete-forever"
                 color={COLORS.black}
-                size={30}
+                size={27}
               />
               <Text
                 style={{
@@ -121,17 +121,18 @@ const ModalOptions = ({
                 width: "100%",
               }}
             >
-              <Ionicons name="copy" color={COLORS.black} size={24} />
+              <Ionicons name="copy" color={COLORS.black} size={20} />
               <Text
                 style={{
                   ...FONTS.h3,
                   marginLeft: SIZES.padding,
+                  color: COLORS.black,
                 }}
               >
                 Copy Quiz ID
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/*<TouchableOpacity
               onPress={() => console.log("press")}
               style={{
                 width: "100%",
@@ -154,7 +155,7 @@ const ModalOptions = ({
               >
                 Share
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
           </View>
         </View>
       </View>
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     padding: SIZES.padding,
     elevation: 5,
     width: "100%",
-    height: "30%",
+    height: SIZES.height / 3,
   },
   modalHeader: {
     width: "100%",
@@ -190,9 +191,8 @@ const styles = StyleSheet.create({
   textInputContainer: {
     marginVertical: SIZES.padding,
     width: "100%",
-    height: "100%",
-
-    justifyContent: "space-around",
+    height: "90%",
+    justifyContent: "space-evenly",
   },
 });
 

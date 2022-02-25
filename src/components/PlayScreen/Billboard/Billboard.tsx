@@ -19,12 +19,14 @@ import { getMovies } from "./api";
 import Genres from "./Genres";
 import Rating from "./Raiting";
 import { LinearGradient } from "expo-linear-gradient";
-import { COLORS, FONTS, SIZES } from "../../../constants";
+import { COLORS, FONTS, icons, SIZES } from "../../../constants";
 import CheckButton from "../../CheckButton";
 import QuestionHeader from "../../QuestionHeader";
+import IconLabel from "../../IconLabel";
+import LeaderboardLoader from "../../LeaderboardLoader";
 
 const SPACING = 10;
-const ITEM_SIZE = Platform.OS === "ios" ? width * 0.72 : width * 0.74;
+const ITEM_SIZE = Platform.OS === "ios" ? width * 0.33 : width * 0.33;
 const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
 const BACKDROP_HEIGHT = height * 0.65;
 
@@ -36,45 +38,17 @@ const Loading = () => (
 
 const Backdrop = ({ movies, scrollX }) => {
   return (
-    <View style={{ height: BACKDROP_HEIGHT, width, position: "absolute" }}>
-      <FlatList
-        data={movies.reverse()}
-        keyExtractor={(item) => item.key + "-backdrop"}
-        removeClippedSubviews={false}
-        contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
-        renderItem={({ item, index }) => {
-          if (!item.backdrop) {
-            return null;
-          }
-          const translateX = scrollX.interpolate({
-            inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
-            outputRange: [0, width],
-            extrapolate: "clamp",
-          });
-          return (
-            <Animated.View
-              removeClippedSubviews={false}
-              style={{
-                position: "absolute",
-                width: translateX,
-                height,
-                overflow: "hidden",
-              }}
-            >
-              <Image
-                source={{ uri: item.backdrop }}
-                style={{
-                  width,
-                  height: BACKDROP_HEIGHT,
-                  position: "absolute",
-                }}
-              />
-            </Animated.View>
-          );
-        }}
-      />
+    <View
+      style={{
+        height: SIZES.heightPlayScreen / 2,
+        width,
+        position: "absolute",
+      }}
+    >
       <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", "white"]}
+        colors={["rgba(0, 0, 0, 0)", COLORS.white]}
+        start={{ x: 0.5, y: 0.5 }}
+        end={{ x: 0.5, y: 1.5 }}
         style={{
           height: BACKDROP_HEIGHT,
           width,
@@ -86,7 +60,7 @@ const Backdrop = ({ movies, scrollX }) => {
   );
 };
 
-export default function Billboard() {
+export default function Billboard({ allLeaderboard }) {
   const [movies, setMovies] = React.useState([]);
   const scrollX = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
@@ -97,28 +71,24 @@ export default function Billboard() {
       setMovies([{ key: "empty-left" }, ...movies, { key: "empty-right" }]);
     };
 
-    if (movies.length === 0) {
+    if (allLeaderboard.length === 0) {
       fetchData(movies);
     }
   }, [movies]);
 
-  if (movies.length === 0) {
-    return <Loading />;
+  if (allLeaderboard.length === 0) {
+    return <LeaderboardLoader />;
   }
 
   return (
     <View style={styles.container}>
-      <QuestionHeader
-        label="¿Mi película favorita?"
-        colors={[COLORS.primary2, COLORS.secondary2]}
-        textColor={COLORS.white}
-      />
-      <Backdrop movies={movies} scrollX={scrollX} />
+      <Backdrop movies={allLeaderboard} scrollX={scrollX} />
       <Animated.FlatList
         showsHorizontalScrollIndicator={false}
         pagingEnabled={true}
-        data={movies}
-        keyExtractor={(item) => item.key}
+        data={allLeaderboard.slice(0, 3)}
+        maxToRenderPerBatch={3}
+        keyExtractor={(item, index) => index.toString()}
         horizontal
         bounces={false}
         decelerationRate={Platform.OS === "ios" ? 0 : 0.98}
@@ -131,11 +101,7 @@ export default function Billboard() {
           { useNativeDriver: false }
         )}
         scrollEventThrottle={16}
-        renderItem={({ item, index }) => {
-          if (!item.poster) {
-            return <View style={{ width: EMPTY_ITEM_SIZE }} />;
-          }
-
+        renderItem={({ item: quiz, index }) => {
           const inputRange = [
             (index - 2) * ITEM_SIZE,
             (index - 1) * ITEM_SIZE,
@@ -144,42 +110,92 @@ export default function Billboard() {
 
           const translateY = scrollX.interpolate({
             inputRange,
-            outputRange: [150, 75, 150],
+            outputRange: [75, 150, 75],
             extrapolate: "clamp",
           });
 
-          return (
-            <View style={{ width: ITEM_SIZE }}>
-              <Animated.View
+          if (quiz.score > 0) {
+            return (
+              <View
                 style={{
-                  marginHorizontal: SPACING,
-                  padding: SPACING * 1.5,
-                  alignItems: "center",
-                  transform: [{ translateY }],
-                  backgroundColor: "white",
-                  borderRadius: 34,
-                  marginBottom: 150,
+                  width: ITEM_SIZE,
+                  paddingVertical: SIZES.padding,
                 }}
               >
-                <Image
-                  source={{ uri: item.poster }}
-                  style={styles.posterImage}
-                />
-                <Text
-                  style={{ ...FONTS.h2, textAlign: "center" }}
-                  numberOfLines={2}
+                <Animated.View
+                  style={{
+                    marginHorizontal: SPACING,
+                    padding: SPACING,
+                    alignItems: "center",
+                    transform: [{ translateY }],
+                    backgroundColor: "white",
+                    borderRadius: SIZES.radius * 2,
+                    marginBottom: 250,
+                  }}
                 >
-                  {item.title}
-                </Text>
-                {/*<Rating rating={item.rating} />
+                  <IconLabel
+                    icon={icons.king}
+                    iconStyle={{
+                      width: SIZES.width / 9,
+                      height: SIZES.width / 9,
+                      alignSelf: "center",
+                    }}
+                    containerStyle={{
+                      position: "absolute",
+                      top: -35,
+
+                      flexDirection: "column",
+                    }}
+                  />
+                  {quiz.attemptedByPhotoURL != "" ? (
+                    <Image
+                      source={{ uri: quiz.attemptedByPhotoURL }}
+                      style={styles.posterImage}
+                    />
+                  ) : (
+                    <Image
+                      source={{ uri: "https://i.imgur.com/IN5sYw6.png" }}
+                      style={styles.posterImage}
+                    />
+                  )}
+
+                  <Text
+                    style={{
+                      ...FONTS.h3,
+                      marginLeft: SIZES.radius,
+                      fontSize: quiz.attemptedBy.length < 20 ? 16 : 9,
+                      textAlign: "center",
+                    }}
+                    numberOfLines={2}
+                  >
+                    {quiz.attemptedBy}
+                  </Text>
+                  {/*<Rating rating={item.rating} />
                 <Genres genres={item.genres} />*/}
-                {/*<Text style={{ fontSize: 12 }} numberOfLines={3}>
-                  {item.description}
+                  <IconLabel
+                    icon={icons.star}
+                    label={quiz.score}
+                    containerStyle={{
+                      marginLeft: 0,
+                    }}
+                    iconStyle={{
+                      width: 15,
+                      height: 15,
+                      tintColor: COLORS.secondary,
+                    }}
+                    labelStyle={{
+                      marginLeft: 5,
+                      color: COLORS.secondary,
+                      ...FONTS.h4,
+                    }}
+                  />
+                  {/*  <Text style={{ ...FONTS.h4, color: COLORS.secondary }}>
+                  {quiz.score}
                 </Text>*/}
-                <CheckButton />
-              </Animated.View>
-            </View>
-          );
+                </Animated.View>
+              </View>
+            );
+          } else null;
         }}
       />
     </View>
@@ -188,28 +204,28 @@ export default function Billboard() {
 
 const styles = StyleSheet.create({
   loadingContainer: {
-    height: SIZES.heightPlayScreen,
+    height: SIZES.heightPlayScreen / 2,
     width: SIZES.width,
     alignItems: "center",
     justifyContent: "center",
   },
   container: {
-    height: SIZES.heightPlayScreen,
+    height: SIZES.heightPlayScreen / 2,
     width: SIZES.width,
-    paddingTop: SIZES.padding,
+    backgroundColor: COLORS.secondary,
   },
   paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: "bold",
+    ...FONTS.h4,
     textAlign: "center",
   },
   posterImage: {
-    width: "100%",
-    height: ITEM_SIZE * 1.2,
+    width: ITEM_SIZE / 1.5,
+    height: ITEM_SIZE / 1.5,
     resizeMode: "cover",
-    borderRadius: 24,
+    borderRadius: 100,
     margin: 0,
     marginBottom: 5,
+    borderWidth: 3,
+    borderColor: COLORS.primary,
   },
 });

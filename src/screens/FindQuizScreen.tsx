@@ -8,6 +8,7 @@ import {
   Image,
   TouchableHighlight,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from "react-native";
 
 import { COLORS, FONTS, SIZES } from "../constants";
@@ -24,6 +25,7 @@ import { Searchbar } from "react-native-paper";
 import { auth, firestore, storage } from "../../firebase";
 import IconLabel from "../components/IconLabel";
 import { Audio } from "expo-av";
+import { getQuizzes } from "../utils/database";
 
 const FindQuizScreen = ({ navigation, route }) => {
   const [allQuizzes, setAllQuizzes] = useState([]);
@@ -37,24 +39,24 @@ const FindQuizScreen = ({ navigation, route }) => {
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
-  /*const getAllQuizzes = async () => {
-      setRefreshing(true);
-      const quizzes = await getQuizzes();
+  const getAllQuizzes = async () => {
+    setRefreshing(true);
+    const quizzes = await getQuizzes();
 
-      // Transform quiz data
-      let tempQuizzes = [];
-      await quizzes.docs.forEach(async (quiz) => {
-        await tempQuizzes.push({ id: quiz.id, ...quiz.data() });
-      });
-      await setAllQuizzes([...tempQuizzes]);
-      setFilterData([...tempQuizzes]);
+    // Transform quiz data
+    let tempQuizzes = [];
+    await quizzes.docs.forEach(async (quiz) => {
+      await tempQuizzes.push({ id: quiz.id, ...quiz.data() });
+    });
+    await setAllQuizzes([...tempQuizzes]);
+    setFilterData([...tempQuizzes]);
 
-      setRefreshing(false);
-    };
+    setRefreshing(false);
+  };
 
-    useEffect(() => {
-      getAllQuizzes();
-    }, []);*/
+  useEffect(() => {
+    getAllQuizzes();
+  }, []);
 
   useEffect(() => {
     const getAllQuizzes = firestore
@@ -236,7 +238,7 @@ const FindQuizScreen = ({ navigation, route }) => {
         ref={ref}
         ListEmptyComponent={EmptyListMessage}
         showsVerticalScrollIndicator={false}
-        /*onRefresh={getAllQuizzes}*/
+        onRefresh={getAllQuizzes}
         refreshing={refreshing}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item: quiz }) => (
@@ -264,6 +266,7 @@ const FindQuizScreen = ({ navigation, route }) => {
             {/* {quiz.description != "" ? (
                 <Text style={{ opacity: 0.5 }}>{quiz.description}</Text>
               ) : null}*/}
+
             <TouchableHighlight
               style={{
                 borderRadius: 50,
@@ -341,6 +344,33 @@ const FindQuizScreen = ({ navigation, route }) => {
                 />
               </LinearGradient>
             </TouchableHighlight>
+            <TouchableOpacity
+              activeOpacity={0.35}
+              style={{ marginTop: SIZES.base }}
+              onPress={() => {
+                navigation.navigate("Leaderboard", {
+                  quizId: quiz.id,
+                  quizImg: quiz.quizImg,
+                  quizOwner: quiz.owner,
+                  quizTitle: quiz.title,
+                });
+              }}
+            >
+              <IconLabel
+                icon={icons.podium}
+                label="View Leaderboard"
+                iconStyle={{
+                  width: 25,
+                  height: 25,
+                  tintColor: COLORS.secondary,
+                }}
+                labelStyle={{
+                  marginLeft: 5,
+                  color: COLORS.secondary,
+                  ...FONTS.h4,
+                }}
+              />
+            </TouchableOpacity>
           </View>
         )}
       />

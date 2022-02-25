@@ -55,14 +55,21 @@ const ModalEditPhoto = ({ modalPhotoVisible, setModalPhotoVisible, title }) => {
         Alert.alert(error.message);
         console.log(error.message);
       });
-    /*db.ref("Quizzes/101391").update({ ownerPhotoURL: photoURL });*/
-    /*firestore
-      .collection("Quizzes")
+
+    /*firestore.collection("Quizzes").where("userId", "==", uid).update;*/
+    /*  db.ref("Quizzes")
       .where("userId", "==", uid)
-      .set({ ownerPhotoURL: photoURL })
+      .update({ ownerPhotoURL: photoURL })
       .then(() => {
-        console.log("it works");
+        console.log("update");
       });*/
+    /*firestore
+          .collection("Quizzes")
+          .where("userId", "==", uid)
+          .set({ ownerPhotoURL: photoURL })
+          .then(() => {
+              console.log("it works");
+          });*/
 
     // Load PhotoURL to Firebase  SignUp
     // this.reauthenticate(currentPassword)

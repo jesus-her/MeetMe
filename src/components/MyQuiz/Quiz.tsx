@@ -19,9 +19,17 @@ import LineDivider from "../LineDivider";
 import { Line } from "react-native-svg";
 import FormButton from "../shared/FormButton";
 import { RectButton } from "react-native-gesture-handler";
-import { firestore } from "../../../firebase";
+import { firestore, auth } from "../../../firebase";
 
-const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
+const Quiz = ({
+  allQuestions,
+  shuffle,
+  attempts,
+  quizId,
+  quizImg,
+  quizOwner,
+  quizTitle,
+}) => {
   /*const allQuestions = data;*/
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
@@ -31,7 +39,27 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
   const hasUnsavedChanges = Boolean(score == 0);
+  const uid = auth.currentUser.uid;
+  const attemptedBy = auth.currentUser.displayName;
+  const attemptedByPhotoURL = auth.currentUser.photoURL;
   const navigation = useNavigation();
+  const currentLeaderboardId = Math.floor(
+    100000 + Math.random() * 9000
+  ).toString();
+  const leaderboard = () => {
+    firestore
+      .collection("Quizzes")
+      .doc(quizId)
+      .collection("LeaderBoard")
+      .doc(currentLeaderboardId)
+      .set({
+        score,
+        uid,
+        attemptedBy,
+        attemptedByPhotoURL,
+        allQuestions: allQuestions.length,
+      });
+  };
 
   const validateAnswer = (selectedOption) => {
     let correct_option = allQuestions[currentQuestionIndex]["correct_answer"];
@@ -50,6 +78,8 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
       // Last Question
       // Show Score Modal
       setShowScoreModal(true);
+      //print leaderboard in database
+      leaderboard();
       //Add +1 to counter attempt
       attempts(quizId);
     } else {
@@ -537,7 +567,62 @@ const Quiz = ({ allQuestions, shuffle, attempts, quizId }) => {
                 </Text>
               </TouchableOpacity>
             </LinearGradient>
-            {/* Go Home */}
+            {/* Leaderboard */}
+            <LinearGradient
+              colors={[COLORS.primary, COLORS.primary2]}
+              start={{ x: 0.1, y: 0.5 }}
+              end={{ x: 1, y: 1 }}
+              style={{
+                margin: 16,
+                borderRadius: 30,
+                alignSelf: "center",
+                borderWidth: 1,
+                borderColor: COLORS.primary,
+                width: "100%",
+                height: 40,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+
+                  borderRadius: 30,
+                  height: 40,
+                }}
+                onPress={() => {
+                  setShowScoreModal(true);
+                  navigation.navigate("Leaderboard", {
+                    quizId: quizId,
+                    quizImg: quizImg,
+                    quizOwner: quizOwner,
+                    quizTitle: quizTitle,
+                  });
+                }}
+              >
+                <Image
+                  source={require("../../../assets/icons/podium.png")}
+                  resizeMode="contain"
+                  style={{
+                    width: 20,
+                    height: 20,
+                    tintColor: COLORS.white,
+                    marginRight: 10,
+                  }}
+                />
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: COLORS.white,
+                    ...FONTS.h3,
+                  }}
+                >
+                  View Leaderboard
+                </Text>
+              </TouchableOpacity>
+            </LinearGradient>
             {/* Try again */}
 
             <LinearGradient

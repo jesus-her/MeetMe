@@ -51,7 +51,7 @@ const Favorites = ({ navigation }) => {
   useEffect(() => {
     const favoriteQuizzes = firestore
       .collection("Quizzes")
-      .where("isFavorite", "==", true)
+      .where("isFavoriteBy", "array-contains-any", [uid])
       .onSnapshot((querySnapshot) => {
         const quizzes = [];
         querySnapshot.forEach((quiz) => {

@@ -13,9 +13,10 @@ import ProfileScreen from "../screens/ProfileScreen";
 
 import EditProfileScreen from "../screens/EditProfileScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Quiz from "../screens/Quiz";
 import ForgotPassword from "../screens/ForgotPassword";
+import Leaderboard from "../screens/Leaderboard";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,13 @@ export default function CustomStackNavigator() {
       <Stack.Screen
         name="Drawer"
         component={CustomDrawer}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Leaderboard"
+        component={Leaderboard}
         options={{
           headerShown: false,
         }}
@@ -66,6 +74,7 @@ export default function CustomStackNavigator() {
           headerShown: true,
         }}
       />
+
       <Stack.Screen
         name="PlayQuiz"
         component={PlayQuizScreen}

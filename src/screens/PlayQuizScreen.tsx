@@ -15,6 +15,7 @@ import { IconButton } from "../components/ProfileScreen";
 import { firestore, firebase_db } from "../../firebase";
 
 import Quiz from "../components/MyQuiz/Quiz";
+import AppLoader from "../components/AppLoader";
 
 const PlayQuizScreen = ({ navigation, route }) => {
   const [currentQuizId, setCurrentQuizId] = useState(route.params.quizId);
@@ -24,6 +25,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState("");
 
   const [questions, setQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   /*  const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
@@ -53,6 +55,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
   };
 
   const getQuizAndQuestionDetails = async () => {
+    setIsLoading(true);
     // Get Quiz
     let currentQuiz = await getQuizById(currentQuizId);
     currentQuiz = currentQuiz.data();
@@ -77,7 +80,7 @@ const PlayQuizScreen = ({ navigation, route }) => {
       ]);
       await tempQuestions.push(question);
     });
-
+    setIsLoading(false);
     setQuestions([...tempQuestions]);
     setQuestionsLength([...tempQuestions]);
   };
@@ -115,93 +118,98 @@ const PlayQuizScreen = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        height: SIZES.height,
-        position: "relative",
-      }}
-    >
-      <StatusBar
-        hidden={false}
-        backgroundColor={COLORS.white}
-        barStyle={"dark-content"}
-      />
-      {/* Top Bar */}
-      <View
+    <>
+      <SafeAreaView
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          paddingVertical: 10,
-          paddingHorizontal: SIZES.radius,
-          backgroundColor: COLORS.white,
-          elevation: 4,
-          height: SIZES.heightNav,
+          height: SIZES.height,
+          position: "relative",
         }}
       >
-        {/* Back Icon */}
-        <IconButton
-          icon={icons.back}
-          containerStyle={{
-            position: "absolute",
-            left: SIZES.padding,
-          }}
-          iconStyle={{
-            tintColor: COLORS.black,
-          }}
-          /* containerStyle={{ position: "absolute", left: SIZES.radius }}*/
-          onPress={() => navigation.goBack()}
+        <StatusBar
+          hidden={false}
+          backgroundColor={COLORS.white}
+          barStyle={"dark-content"}
         />
+        {/* Top Bar */}
         <View
           style={{
             flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingVertical: 10,
+            paddingHorizontal: SIZES.radius,
+            backgroundColor: COLORS.white,
+            elevation: 4,
+            height: SIZES.heightNav,
           }}
         >
-          {quizImg != "" ? (
-            <Image
-              source={{ uri: quizImg }}
-              style={{
-                width: SIZES.heightNav / 1.25,
-                height: SIZES.heightNav / 1.25,
-                borderRadius: SIZES.heightNav,
-              }}
-            />
-          ) : (
-            <Image
-              source={require("../../assets/icons/laughing.png")}
-              style={{
-                width: SIZES.heightNav / 1.25,
-                height: SIZES.heightNav / 1.25,
-                borderRadius: SIZES.heightNav,
-                tintColor: COLORS.black,
-              }}
-            />
-          )}
+          {/* Back Icon */}
+          <IconButton
+            icon={icons.back}
+            containerStyle={{
+              position: "absolute",
+              left: SIZES.padding,
+            }}
+            iconStyle={{
+              tintColor: COLORS.black,
+            }}
+            /* containerStyle={{ position: "absolute", left: SIZES.radius }}*/
+            onPress={() => navigation.goBack()}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+            }}
+          >
+            {quizImg != "" ? (
+              <Image
+                source={{ uri: quizImg }}
+                style={{
+                  width: SIZES.heightNav / 1.25,
+                  height: SIZES.heightNav / 1.25,
+                  borderRadius: SIZES.heightNav,
+                }}
+              />
+            ) : (
+              <Image
+                source={require("../../assets/icons/laughing.png")}
+                style={{
+                  width: SIZES.heightNav / 1.25,
+                  height: SIZES.heightNav / 1.25,
+                  borderRadius: SIZES.heightNav,
+                  tintColor: COLORS.black,
+                }}
+              />
+            )}
 
-          <View>
-            {/* Title */}
-            <Text
-              style={{ ...FONTS.h3, marginLeft: SIZES.base, textAlign: "left" }}
-            >
-              {title}
-            </Text>
+            <View>
+              {/* Title */}
+              <Text
+                style={{
+                  ...FONTS.h3,
+                  marginLeft: SIZES.base,
+                  textAlign: "left",
+                }}
+              >
+                {title}
+              </Text>
 
-            {/* Quiz by: */}
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: quizOwner.length < 10 ? 14 : 10,
-                marginLeft: SIZES.base,
-                color: COLORS.primary,
-                textAlign: "left",
-              }}
-            >
-              Quiz by: {quizOwner}
-            </Text>
+              {/* Quiz by: */}
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: quizOwner.length < 10 ? 14 : 10,
+                  marginLeft: SIZES.base,
+                  color: COLORS.primary,
+                  textAlign: "left",
+                }}
+              >
+                Quiz by: {quizOwner}
+              </Text>
+            </View>
           </View>
-        </View>
 
-        {/*  Correct and incorrect count
+          {/*  Correct and incorrect count
         <View
           style={{
             flexDirection: "row",
@@ -256,15 +264,18 @@ const PlayQuizScreen = ({ navigation, route }) => {
             </Text>
           </View>
         </View>*/}
-      </View>
+        </View>
 
-      {/* Questions and Options list */}
-      <Quiz
-        quizId={currentQuizId}
-        allQuestions={questions}
-        shuffle={getQuizAndQuestionDetails}
-        attempts={attempts}
-        /* correctOption={item.correct_option}
+        {/* Questions and Options list */}
+        <Quiz
+          quizId={currentQuizId}
+          allQuestions={questions}
+          shuffle={getQuizAndQuestionDetails}
+          attempts={attempts}
+          quizImg={quizImg}
+          quizOwner={quizOwner}
+          quizTitle={title}
+          /* correctOption={item.correct_option}
           setQuestions={setQuestions}
           allQuestionsLength={questions.length}
           question={item.question}
@@ -277,8 +288,10 @@ const PlayQuizScreen = ({ navigation, route }) => {
           quizTitle={title}
           selectedOption={item.selectedOption}
           allOptions={item.allOptions}*/
-      />
-    </SafeAreaView>
+        />
+      </SafeAreaView>
+      {isLoading ? <AppLoader /> : null}
+    </>
   );
 };
 

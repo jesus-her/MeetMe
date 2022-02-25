@@ -73,7 +73,7 @@ const MyQuizScreen = ({ navigation, route }) => {
     //If title have 3 or more characters
     if (!question.trim() || question.length < 3)
       return updateError("Question must have at least 3 characters", setError);
-    if (!question.trim() || question.length > 30)
+    if (!question.trim() || question.length > 80)
       return updateError("Question is too long!", setError);
     //provide the correct answer
     if (correctAnswer == "")

@@ -46,6 +46,10 @@ const music = require("../../assets/icons/music.png");
 const remove = require("../../assets/icons/close.png");
 const logout = require("../../assets/icons/logout.png");
 const writing = require("../../assets/icons/writing.png");
+const king = require("../../assets/icons/king.png");
+const podium = require("../../assets/icons/podium.png");
+const qr = require("../../assets/icons/codigo-qr.png");
+const info = require("../../assets/icons/informacion.png");
 export default {
   animation,
   back,
@@ -94,4 +98,8 @@ export default {
   logout,
   writing,
   add,
+  king,
+  podium,
+  qr,
+  info,
 };

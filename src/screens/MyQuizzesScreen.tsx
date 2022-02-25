@@ -353,6 +353,27 @@ const MyQuizzes = ({ navigation }) => {
                       style={{ alignSelf: "flex-start" }}
                     />
                   </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      navigation.navigate("Leaderboard", {
+                        quizId: quiz.currentQuizId,
+                        quizImg: quiz.quizImg,
+                        quizOwner: quiz.owner,
+                        quizTitle: quiz.title,
+                      });
+                    }}
+                    style={{
+                      position: "absolute",
+                      bottom: SIZES.base,
+                      right: SIZES.base,
+                    }}
+                  >
+                    <IconLabel
+                      icon={icons.podium}
+                      iconStyle={{ width: 30, height: 30 }}
+                    />
+                  </TouchableOpacity>
                 </View>
               </Swipeout>
             </>

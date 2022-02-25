@@ -92,7 +92,7 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
             }}
           />
 
-          <Drawer.Screen
+          {/*<Drawer.Screen
             name="Favorites"
             component={Favorites}
             options={{
@@ -102,7 +102,7 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
                 <MaterialIcons name="favorite" size={22} color={color} />
               ),
             }}
-          />
+          />*/}
         </Drawer.Navigator>
       </View>
     </>

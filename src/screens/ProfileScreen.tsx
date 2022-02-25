@@ -253,23 +253,30 @@ const Profile = (props) => {
           />
 
           <LineDivider />
-          <ProfileRadioButton
+          <ProfileValue
+            onPress={() => {
+              props.navigation.navigate("Welcome");
+            }}
+            icon={icons.info}
+            value={"About this app"}
+          />
+          {/*<ProfileRadioButton
             icon={icons.newQuiz}
             label="New Quizzes Notification"
             isSelected={newCourseNotification}
             onPress={() => {
               setNewCourseNotification(!newCourseNotification);
             }}
-          />
-          <LineDivider />
-          <ProfileRadioButton
+          />*/}
+          {/*<LineDivider />*/}
+          {/* <ProfileRadioButton
             icon={icons.eye}
             label="My Quiz Visible"
             isSelected={studyReminder}
             onPress={() => {
               setStudyReminder(!studyReminder);
             }}
-          />
+          />*/}
         </View>
       </>
     );

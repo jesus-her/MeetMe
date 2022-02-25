@@ -65,8 +65,7 @@ const VerticalCourseCard = ({
           </Text>
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.75}
+        <View
           style={{
             backgroundColor: COLORS.white,
             width: 270,
@@ -75,13 +74,6 @@ const VerticalCourseCard = ({
             alignSelf: "center",
             marginTop: SIZES.base,
             ...containerStyle,
-          }}
-          onPress={() => {
-            navigation.navigate("PlayQuiz", {
-              quizId: quizId,
-              quizImg: quizImage,
-              quizOwner: owner,
-            });
           }}
         >
           {/* Thumbnail */}
@@ -129,10 +121,76 @@ const VerticalCourseCard = ({
           <View
             style={{
               flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            {/* Play */}
+            {/* Leaderboard */}
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Leaderboard", {
+                  quizId: quizId,
+                  quizImg: quizImage,
+                  quizOwner: owner,
+                  quizTitle: quizTitle,
+                });
+              }}
+              style={{
+                width: 45,
+                height: 45,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 25,
+                backgroundColor: COLORS.primary3,
+                position: "relative",
+              }}
+            >
+              <Image
+                source={icons.podium}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: COLORS.white,
+                }}
+              />
+            </TouchableOpacity>
+
+            {/* Info */}
+
             <View
+              style={{
+                paddingHorizontal: SIZES.radius,
+              }}
+            >
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: quizTitle.length < 10 ? 18 : 14,
+                  fontWeight: "bold",
+                }}
+              >
+                {quizTitle}
+              </Text>
+
+              <Text
+                style={{
+                  ...FONTS.h5,
+                  color: COLORS.primary,
+                }}
+              >
+                Quiz ID: {quizId}
+              </Text>
+            </View>
+            {/* Play */}
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={() => {
+                navigation.navigate("PlayQuiz", {
+                  quizId: quizId,
+                  quizImg: quizImage,
+                  quizOwner: owner,
+                });
+              }}
               style={{
                 width: 45,
                 height: 45,
@@ -176,44 +234,12 @@ const VerticalCourseCard = ({
                 style={{
                   width: 20,
                   height: 20,
+                  tintColor: COLORS.white,
                 }}
               />
-            </View>
-
-            {/* Info */}
-
-            <View
-              style={{
-                flexShrink: 1,
-                paddingHorizontal: SIZES.radius,
-              }}
-            >
-              <Text
-                style={{
-                  flex: 1,
-                  ...FONTS.h3,
-                  fontSize: 18,
-                  fontWeight: "bold",
-                }}
-              >
-                {quizTitle}
-              </Text>
-
-              {/*<IconLabel
-                icon={icons.profile}
-                label={owner}
-                iconStyle={{
-                  width: 25,
-                  height: 25,
-                  tintColor: COLORS.additionalColor4,
-                }}
-                containerStyle={{
-                  marginTop: SIZES.base,
-                }}
-              />*/}
-            </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
+        </View>
       </View>
     </>
   );

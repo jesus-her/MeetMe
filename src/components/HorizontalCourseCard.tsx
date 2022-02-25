@@ -12,7 +12,7 @@ import IconLabel from "./IconLabel";
 import CustomButton2 from "./CustomButton2";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { firestore } from "../../firebase";
+import { firestore, auth } from "../../firebase";
 
 const HorizontalCourseCard = ({
   course,
@@ -25,18 +25,37 @@ const HorizontalCourseCard = ({
   favorite,
 }) => {
   const navigation = useNavigation();
-  const [isFavorite, setIsFavorite] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavoriteBy, setIsFavoriteBy] = useState([]);
+  const uid = auth.currentUser.uid;
 
   const updateFavorite = () => {
-    setIsFavorite(!isFavorite);
-    firestore
-      .collection("Quizzes")
-      .doc(quizId)
-      .update({ isFavorite: isFavorite })
-      .then(() => {
-        console.log("added to favorites");
-      })
-      .catch((e) => console.log("error", e));
+    /*setIsFavorite(!isFavorite);
+    if (isFavorite == false) {*/
+
+    if (isFavoriteBy != uid) {
+      setIsFavoriteBy([uid]);
+      firestore
+        .collection("Quizzes")
+        .doc(quizId)
+        .update({ /*isFavorite: isFavorite,*/ isFavoriteBy: isFavoriteBy })
+        .then(() => {
+          console.log("added to favorites");
+        })
+        .catch((e) => console.log("error", e));
+    } else {
+      firestore
+        .collection("Quizzes")
+        .doc(quizId)
+        .update({
+          isFavoriteBy: firestore.FieldValue.arrayRemove(uid),
+        })
+        .then(() => {
+          ToastAndroid.show("Deleted success!", ToastAndroid.SHORT);
+        })
+        .catch((e) => console.log("error", e));
+    }
+    /*} else setIsFavoriteBy([]);*/
   };
 
   return (
@@ -52,7 +71,7 @@ const HorizontalCourseCard = ({
       }}
     >
       {/*Favourite button*/}
-      <TouchableOpacity
+      {/*<TouchableOpacity
         activeOpacity={0.8}
         onPress={updateFavorite}
         style={{
@@ -79,7 +98,7 @@ const HorizontalCourseCard = ({
             tintColor: favorite ? COLORS.secondary : COLORS.additionalColor4,
           }}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
       {quizImage != "" ? (
         <Image
           source={{ uri: quizImage }}
@@ -143,12 +162,21 @@ const HorizontalCourseCard = ({
         >
           <Text
             style={{
-              ...FONTS.body4,
+              ...FONTS.h4,
+              color: COLORS.primary2,
             }}
           >
             By {owner}
           </Text>
         </View>
+        <Text
+          style={{
+            ...FONTS.h5,
+            color: COLORS.black,
+          }}
+        >
+          Quiz ID: {quizId}
+        </Text>
 
         {/*Attempts*/}
         <View
@@ -192,43 +220,84 @@ const HorizontalCourseCard = ({
             }}
           />*/}
         </View>
-        {/*Button*/}
-        <TouchableOpacity
-          activeOpacity={0.8}
+        <View
           style={{
-            paddingVertical: 5,
-            paddingHorizontal: 30,
-            borderRadius: 50,
-            backgroundColor: COLORS.secondary,
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
             flexDirection: "row",
-            position: "relative",
-            marginTop: 7,
-          }}
-          onPress={() => {
-            navigation.navigate("PlayQuiz", {
-              quizId: quizId,
-              quizImg: quizImage,
-              quizOwner: owner,
-            });
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Text style={{ color: COLORS.white, ...FONTS.h3, letterSpacing: 5 }}>
-            Play
-          </Text>
-          <Ionicons
-            name="play"
-            size={22}
+          <TouchableOpacity
             style={{
-              alignSelf: "center",
-              color: COLORS.white,
-              position: "absolute",
-              right: SIZES.padding,
+              width: "25%",
+              backgroundColor: COLORS.primary3,
+              borderRadius: 100,
+
+              paddingHorizontal: 15,
+              marginTop: 7,
             }}
-          />
-        </TouchableOpacity>
+            activeOpacity={0.5}
+            onPress={() => {
+              navigation.navigate("Leaderboard", {
+                quizId: quizId,
+                quizImg: quizImage,
+                quizOwner: owner,
+                quizTitle: quizTitle,
+              });
+            }}
+          >
+            <Image
+              source={icons.podium}
+              resizeMode="contain"
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 60,
+                tintColor: COLORS.white,
+                alignSelf: "center",
+              }}
+            />
+          </TouchableOpacity>
+          {/*Button*/}
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{
+              paddingVertical: 5,
+              paddingHorizontal: 15,
+              borderRadius: 50,
+              backgroundColor: COLORS.secondary,
+              width: "70%",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+              position: "relative",
+              marginTop: 7,
+            }}
+            onPress={() => {
+              navigation.navigate("PlayQuiz", {
+                quizId: quizId,
+                quizImg: quizImage,
+                quizOwner: owner,
+              });
+            }}
+          >
+            <Text
+              style={{ color: COLORS.white, ...FONTS.h3, letterSpacing: 2.5 }}
+            >
+              Play
+            </Text>
+            <Ionicons
+              name="play"
+              size={22}
+              style={{
+                alignSelf: "center",
+                color: COLORS.white,
+                position: "absolute",
+                right: SIZES.base,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
