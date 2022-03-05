@@ -2,19 +2,14 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { COLORS, SIZES } from "../constants";
 import CustomDrawer from "./CustomDrawer";
-import PlayScreen from "../screens/PlayScreen";
 import Picker from "../Picker/Picker";
-
 import CreateQuizScreen from "../screens/CreateQuizScreen";
 import MyQuizScreen from "../screens/MyQuizScreen";
 import FindQuizScreen from "../screens/FindQuizScreen";
 import PlayQuizScreen from "../screens/PlayQuizScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-
 import EditProfileScreen from "../screens/EditProfileScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import Quiz from "../screens/Quiz";
 import ForgotPassword from "../screens/ForgotPassword";
 import Leaderboard from "../screens/Leaderboard";
 
@@ -80,16 +75,6 @@ export default function CustomStackNavigator() {
         component={PlayQuizScreen}
         options={{
           title: "@titleQuiz",
-          headerShown: false,
-          headerTransparent: false,
-        }}
-      />
-
-      <Stack.Screen
-        name="Play"
-        component={PlayScreen}
-        options={{
-          title: "@Username Quiz",
           headerShown: false,
           headerTransparent: false,
         }}

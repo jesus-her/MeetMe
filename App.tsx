@@ -4,8 +4,6 @@ import { StatusBar } from "react-native";
 import CustomStackNavigator from "./src/navigation/CustomStackNavigator";
 import AuthStackNavigator from "./src/navigation/AuthStackNavigator";
 import { auth } from "./firebase";
-import HomeScreen from "./src/screens/HomeScreen";
-import WelcomeScreen from "./src/screens/WelcomeScreen";
 console.log("statusBarHeight: ", StatusBar.currentHeight);
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);

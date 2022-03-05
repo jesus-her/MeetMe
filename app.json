@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Quizzed",
-    "slug": "season4",
+    "slug": "quizzed",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/TheQuizLogoWhiteBackground.png",
